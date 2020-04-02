@@ -1,0 +1,3 @@
+rootProject.name='DxLibraries'
+include ':app'
+include ':dxrecyclerview'
