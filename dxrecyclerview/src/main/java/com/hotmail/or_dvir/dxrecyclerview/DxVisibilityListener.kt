@@ -10,14 +10,14 @@ class DxVisibilityListener {
      *
      * note that this will trigger immediately (assuming your adapter contains at least 1 item).
      */
-    var onFirstItemVisible: emptyListener? = null
+    var onFirstItemVisible: EmptyListener? = null
 
     /**
      * a listener to be invoked when the FIRST item on your list is INVISIBLE.
      *
      * note that if the entire list fits in the [DxRecyclerView], this will NEVER trigger.
      */
-    var onFirstItemInvisible: emptyListener? = null
+    var onFirstItemInvisible: EmptyListener? = null
 
     /**
      * a listener to be invoked when the LAST item on your list is VISIBLE.
@@ -25,7 +25,7 @@ class DxVisibilityListener {
      * note that if the entire list fits in the [DxRecyclerView], this will trigger immediately
      * (assuming your adapter contains at least 1 item).
      */
-    var onLastItemVisible: emptyListener? = null
+    var onLastItemVisible: EmptyListener? = null
 
     /**
      * a listener to be invoked when the LAST item on your list is INVISIBLE.
@@ -35,7 +35,7 @@ class DxVisibilityListener {
      *
      * note that if the entire list DOES fit in the [DxRecyclerView], this will NEVER trigger.
      */
-    var onLastItemInvisible: emptyListener? = null
+    var onLastItemInvisible: EmptyListener? = null
 
     internal fun atLeastOneListenerSet() = atLeastOneListenerFirst() || atLeastOneListenerLast()
     internal fun atLeastOneListenerFirst() = onFirstItemInvisible != null || onFirstItemVisible != null

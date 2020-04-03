@@ -38,7 +38,7 @@ dependencies {
     //DxRecyclerView
     implementation project(path: ':dxrecyclerview')
 
-    //mockito
-    testImplementation 'org.mockito:mockito-core:3.3.3'
-    androidTestImplementation 'org.mockito:mockito-android:3.3.3'
+    //mockk
+    testImplementation "io.mockk:mockk:1.9.3"
+    androidTestImplementation "io.mockk:mockk-android:1.9.3"
 }

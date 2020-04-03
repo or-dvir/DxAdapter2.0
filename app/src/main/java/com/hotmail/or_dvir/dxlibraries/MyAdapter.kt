@@ -10,12 +10,11 @@ import kotlinx.android.synthetic.main.list_item.view.*
 
 class MyAdapter : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
 
-    private var items = listOf<MyItem>()
-
-    fun setItems(newItems: List<MyItem>) {
-        items = newItems
-        notifyDataSetChanged()
-    }
+    var items = listOf<MyItem>()
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getItemCount() = items.size
 

@@ -2,6 +2,7 @@ package com.hotmail.or_dvir.dxrecyclerview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener.*

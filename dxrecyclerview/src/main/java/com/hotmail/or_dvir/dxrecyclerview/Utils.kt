@@ -5,4 +5,4 @@ package com.hotmail.or_dvir.dxrecyclerview
  *
  * the listener does not accept or return anything.
  */
-internal typealias emptyListener = () -> Unit
+typealias EmptyListener = () -> Unit
