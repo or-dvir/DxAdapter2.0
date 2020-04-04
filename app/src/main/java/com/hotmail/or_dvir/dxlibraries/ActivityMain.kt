@@ -25,9 +25,6 @@ class ActivityMain : AppCompatActivity() {
             mAdapter.items = (listOf(MyItem("one"), MyItem("two")))
 
             mAdapter.items = (listOf(MyItem("1"), MyItem("2")))
-            mAdapter.items = (listOf(MyItem("3"), MyItem("4")))
-            mAdapter.items = (listOf(MyItem("5"), MyItem("6")))
-
 
             onItemsVisibilityListener = DxVisibilityListener().apply {
                 onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
@@ -39,6 +36,8 @@ class ActivityMain : AppCompatActivity() {
                     onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
                     onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
                 }
+
+                mAdapter.items = (listOf(MyItem("3"), MyItem("4")))
             }, 3000)
         }
     }
