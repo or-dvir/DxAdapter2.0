@@ -10,13 +10,9 @@ import org.junit.Rule
 import org.junit.Test
 
 class TestDxRecyclerView {
-    //    private val firstVisible = mockk<EmptyListener>()
-//    private val firstInvisible = mockk<EmptyListener>()
     private var mFirstVisible: EmptyListener = {}
     private var mFirstInvisible: EmptyListener = {}
 
-    //    private var lastVisible = mockk<EmptyListener>()
-//    private var lastInvisible = mockk<EmptyListener>()
     private var mLastVisible: EmptyListener = {}
     private var mLastInvisible: EmptyListener = {}
 
@@ -55,25 +51,7 @@ class TestDxRecyclerView {
         activityScenario.scenario.onActivity { task.invoke(it) }
 
     @Test
-    fun visibilityListenerShortListTest() {
-//        val firstVisible = mockk<EmptyListener>()
-//        val firstInvisible = mockk<EmptyListener>()
-//        every { firstVisible.invoke() } just runs
-//        every { firstInvisible.invoke() } just runs
-//
-//        val lastVisible = mockk<EmptyListener>()
-//        val lastInvisible = mockk<EmptyListener>()
-//        every { lastVisible.invoke() } just runs
-//        every { lastInvisible.invoke() } just runs
-//
-//        val listener = DxVisibilityListener().apply {
-//            onFirstItemVisible = mFirstVisible
-//            onFirstItemInvisible = mFirstInvisible
-//
-//            onLastItemVisible = mLastVisible
-//            onLastItemInvisible = mLastInvisible
-//        }
-
+    fun visibilityListeners_shortListTest() {
         //creating a short list so both first and last fit on the screen
         setListForActivity(2)
 
