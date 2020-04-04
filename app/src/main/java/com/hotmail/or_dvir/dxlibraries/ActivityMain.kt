@@ -1,15 +1,11 @@
 package com.hotmail.or_dvir.dxlibraries
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.annotation.VisibleForTesting
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
-import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
-import com.hotmail.or_dvir.dxrecyclerview.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityMain : AppCompatActivity() {
@@ -24,21 +20,19 @@ class ActivityMain : AppCompatActivity() {
             setLayoutManagerVertical()
             mAdapter.items = (listOf(MyItem("one"), MyItem("two")))
 
-            mAdapter.items = (listOf(MyItem("1"), MyItem("2")))
-
-            onItemsVisibilityListener = DxVisibilityListener().apply {
-                onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
-                onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
-            }
-
-            postDelayed({
-                onItemsVisibilityListener = DxVisibilityListener().apply {
-                    onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
-                    onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
-                }
-
-                mAdapter.items = (listOf(MyItem("3"), MyItem("4")))
-            }, 3000)
+//            onItemsVisibilityListener = DxVisibilityListener().apply {
+//                onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
+//                onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
+//            }
+//
+//            postDelayed({
+//                onItemsVisibilityListener = DxVisibilityListener().apply {
+//                    onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
+//                    onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
+//                }
+//
+//                mAdapter.items = (listOf(MyItem("3"), MyItem("4")))
+//            }, 3000)
         }
     }
 
