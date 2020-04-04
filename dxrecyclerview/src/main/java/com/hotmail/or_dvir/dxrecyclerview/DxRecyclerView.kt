@@ -2,14 +2,15 @@ package com.hotmail.or_dvir.dxrecyclerview
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener.*
+import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener.ScrollDirection
 import kotlin.math.abs
 
 /**
- * a wrapper for RecyclerView with built-in visibility and scroll listeners
+ * a wrapper for RecyclerView with built-in listeners
+ * @see [onItemsVisibilityListener]
+ * @see onScrollListener
  */
 class DxRecyclerView @JvmOverloads constructor(
     context: Context,
@@ -21,9 +22,11 @@ class DxRecyclerView @JvmOverloads constructor(
      * a visibility listener for items in this [DxRecyclerView].
      * the listener may be triggered when set, and when the recycler view is scrolled.
      *
+     * * the listener is tied only to the [DxRecyclerView] and NOT to it's adapter.
+     * this means that it will NOT be triggered when the adapter updates.
      * * only the most recently set listener will be active.
      * * its possible for the listener (more precisely it's inner listeners) to trigger immediately or
-     * not at all. see [DxVisibilityListener] for details
+     * not at all. see [DxVisibilityListener] for details.
      *
      * @see [DxVisibilityListener]
      */
@@ -67,31 +70,8 @@ class DxRecyclerView @JvmOverloads constructor(
                     }
 
                     invokeVisibilityListeners()
-//                    onItemsVisibilityListener?.apply {
-//                        if (atLeastOneListenerSet()) {
-//                            invokeVisibilityListeners()
-//                        }
-//                    }
                 }
             })
-    }
-
-    private fun invokeAllListeners() {
-//        onScrollListener?.apply {
-//            when {
-//                dx > 0 -> invokeScrollListener(dx, ScrollDirection.RIGHT)
-//                dx < 0 -> invokeScrollListener(dx, ScrollDirection.LEFT)
-//
-//                dy > 0 -> invokeScrollListener(dy, ScrollDirection.DOWN)
-//                dy < 0 -> invokeScrollListener(dy, ScrollDirection.UP)
-//            }
-//        }
-
-//        onItemsVisibilityListener?.apply {
-//            if (atLeastOneListenerSet()) {
-//                invokeVisibilityListeners()
-//            }
-//        }
     }
 
     private fun invokeScrollListener(scrollValue: Int, direction: ScrollDirection) {
@@ -108,13 +88,11 @@ class DxRecyclerView @JvmOverloads constructor(
     }
 
     private fun invokeVisibilityListeners() {
-        ///////////////////////////////////////////////////////
         if (onItemsVisibilityListener == null ||
             !onItemsVisibilityListener!!.atLeastOneListenerSet()
         ) {
             return
         }
-        ///////////////////////////////////////////////////////
 
         layoutManager?.let { layMan ->
             if (layMan !is LinearLayoutManager)
