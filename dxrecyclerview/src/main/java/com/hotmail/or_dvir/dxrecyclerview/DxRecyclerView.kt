@@ -21,6 +21,10 @@ class DxRecyclerView @JvmOverloads constructor(
      * a listener to be invoked when this [DxRecyclerView] is scrolled.
      */
     var onItemsVisibilityListener: DxVisibilityListener? = null
+        set(value) {
+            field = value
+            invokeVisibilityListeners()
+        }
 
     /**
      * a listener that will be invoked when this [DxRecyclerView] is scrolled.
@@ -48,7 +52,7 @@ class DxRecyclerView @JvmOverloads constructor(
             object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-
+                    Log.i("aaaaa", "dx: $dx, dy: $dy")
                     onScrollListener?.apply {
                         when {
                             dx > 0 -> invokeScrollListener(dx, ScrollDirection.RIGHT)
@@ -59,13 +63,32 @@ class DxRecyclerView @JvmOverloads constructor(
                         }
                     }
 
-                    onItemsVisibilityListener?.apply {
-                        if (atLeastOneListenerSet()) {
-                            triggerVisibilityListeners()
-                        }
-                    }
+                    invokeVisibilityListeners()
+//                    onItemsVisibilityListener?.apply {
+//                        if (atLeastOneListenerSet()) {
+//                            invokeVisibilityListeners()
+//                        }
+//                    }
                 }
             })
+    }
+
+    private fun invokeAllListeners() {
+//        onScrollListener?.apply {
+//            when {
+//                dx > 0 -> invokeScrollListener(dx, ScrollDirection.RIGHT)
+//                dx < 0 -> invokeScrollListener(dx, ScrollDirection.LEFT)
+//
+//                dy > 0 -> invokeScrollListener(dy, ScrollDirection.DOWN)
+//                dy < 0 -> invokeScrollListener(dy, ScrollDirection.UP)
+//            }
+//        }
+
+//        onItemsVisibilityListener?.apply {
+//            if (atLeastOneListenerSet()) {
+//                invokeVisibilityListeners()
+//            }
+//        }
     }
 
     private fun invokeScrollListener(scrollValue: Int, direction: ScrollDirection) {
@@ -81,7 +104,15 @@ class DxRecyclerView @JvmOverloads constructor(
         }
     }
 
-    private fun triggerVisibilityListeners() {
+    private fun invokeVisibilityListeners() {
+        ///////////////////////////////////////////////////////
+        if (onItemsVisibilityListener == null ||
+            !onItemsVisibilityListener!!.atLeastOneListenerSet()
+        ) {
+            return
+        }
+        ///////////////////////////////////////////////////////
+
         layoutManager?.let { layMan ->
 
             if (layMan !is LinearLayoutManager)

@@ -7,6 +7,7 @@ import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -25,21 +26,31 @@ class ActivityMain : AppCompatActivity() {
             setLayoutManagerVertical()
             mAdapter.items = (listOf(MyItem("one"), MyItem("two")))
 
-//            onItemsVisibilityListener = DxVisibilityListener().apply {
-//                onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
+            onItemsVisibilityListener = DxVisibilityListener().apply {
+                onFirstItemVisible = { Log.i("aaaaa", "first listener") }
 //                onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
+            }
+//            onScrollListener = DxScrollListener(0).apply {
+//                onScrollDown = { Log.i("aaaaa", "down") }
+//                onScrollUp = { Log.i("aaaaa", "up") }
+//                onScrollLeft = { Log.i("aaaaa", "left") }
+//                onScrollRight = { Log.i("aaaaa", "right") }
 //            }
 
-            when called from onCreate() the recycler view scroll listener is called.
-            when called from test, scroll listener is called before the visibility listener is set,
-            and then the on scroll is not called anymore which means the visibility listener is not
-            triggered
-
-            why does it work from onCreate but not from test?
+            found the answer! (kind of)
+            the key is to invoke the listeners in the recyclerview class whenever they are set
+                    that way they will also be trigerred if they are set at a later stage on the recycler view
 
             mAdapter.items = (listOf(MyItem("1"), MyItem("2")))
             mAdapter.items = (listOf(MyItem("3"), MyItem("4")))
             mAdapter.items = (listOf(MyItem("5"), MyItem("6")))
+
+            postDelayed({
+                onItemsVisibilityListener = DxVisibilityListener().apply {
+                    onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
+                    onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
+                }
+            }, 3000)
         }
     }
 
