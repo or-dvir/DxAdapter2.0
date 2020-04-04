@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxlibraries
 
+import android.util.Log
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.EmptyListener
@@ -10,22 +11,29 @@ import org.junit.Rule
 import org.junit.Test
 
 class TestDxRecyclerView {
-    private var mFirstVisible: EmptyListener = {}
-    private var mFirstInvisible: EmptyListener = {}
+    private lateinit var mFirstVisible: EmptyListener
+    private lateinit var mFirstInvisible: EmptyListener
 
-    private var mLastVisible: EmptyListener = {}
-    private var mLastInvisible: EmptyListener = {}
+    private var counter = 0
+
+    private lateinit var mLastVisible: EmptyListener
+    private lateinit var mLastInvisible: EmptyListener
 
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 
     @Before
     fun setupIndividualListeners() {
-        mFirstVisible = spyk(mFirstVisible)
-        mFirstInvisible = spyk(mFirstInvisible)
+        mFirstVisible = spyk({})
+        mFirstInvisible = spyk({})
 
-        mLastVisible = spyk(mLastVisible)
-        mLastInvisible = spyk(mLastInvisible)
+        mLastVisible = spyk({
+            counter++
+            return@spyk
+        })
+        mLastInvisible = spyk({})
+
+        counter = 0
     }
 
     @Before
@@ -43,7 +51,8 @@ class TestDxRecyclerView {
 
     private fun setListForActivity(listSize: Int) {
         onActivity {
-            it.mAdapter.items = List(listSize) { MyItem("name") }
+            Log.i("aaaaa", "setting test list of size $listSize")
+            it.mAdapter.items = List(listSize) { index -> MyItem("items $index") }
         }
     }
 
@@ -55,45 +64,38 @@ class TestDxRecyclerView {
         //creating a short list so both first and last fit on the screen
         setListForActivity(2)
 
-        //first and last item visibility listeners should be invoked
+        //mFirstVisible and mLastVisible should be invoked
         verify(exactly = 1) { mFirstVisible.invoke() }
         verify(exactly = 1) { mLastVisible.invoke() }
+        Log.i("aaaaa", "counter after short test: $counter")
 
-        //first and last item invisibility listeners should NOT be invoked
+        //mFirstInvisible and mLastInvisible should NOT be invoked
         verify(exactly = 0) { mFirstInvisible.invoke() }
         verify(exactly = 0) { mLastInvisible.invoke() }
+    }
 
+    @Test
+    fun visibilityListeners_longListTest() {
+        //creating a long list that should not fit entirely on the screen
+        setListForActivity(100)
 
-//        val listener2 = DxVisibilityListener().apply {
-//            onFirstItemVisible = mFirstVisible
-//            onFirstItemInvisible = mFirstInvisible
-//
-//            onLastItemVisible = mLastVisible
-//            onLastItemInvisible = mLastInvisible
-//        }
-//
-//        //creating a large list that should not fit on the screen
-//        onActivity {
-//            it.apply {
-//                it.mAdapter.items = (List(100) { index ->
-//                    MyItem("item $index")
-//                })
-//            }
-//        }
-//
-//        //only lastItemInvisible should be invoked
-//        verify(exactly = 1) { mLastInvisible.invoke() }
-//        verify(exactly = 0) { lastVisible.invoke() }
-//        verify(exactly = 0) { firstInvisible.invoke() }
-//        verify(exactly = 0) { firstVisible.invoke() }
+        //mFirstVisible and mLastInvisible should be invoked
+        verify(exactly = 1) { mFirstVisible.invoke() }
+        verify(exactly = 1) { mLastInvisible.invoke() }
+
+        //mFirstInvisible and mLastVisible should NOT be invoked
+        verify(exactly = 0) { mFirstInvisible.invoke() }
+        Log.i("aaaaa", "counter before failing test: $counter")
+        this test is failing for some reason. maybe has to do with the order of setting
+            the items and setting the listener to the activity...
+        verify(exactly = 0) { mLastVisible.invoke() }
+
 
         //todo for some reason i get unresolved reference R.id.activityMain_rv
 //        onView(withId(R.id.activityMain_rv)).perform(
 //        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
 //            RecyclerViewActions.scrollToPosition<ViewHolder>(50)
 //        )
-//
-//        verify(exactly = 1) { firstInvisible.invoke() }
 
         //todo
         // set adapter with large list - make sure last item invisible not triggered
