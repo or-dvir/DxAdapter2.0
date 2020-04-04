@@ -9,7 +9,7 @@ import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener.*
 import kotlin.math.abs
 
 /**
- * a wrapper for RecyclerView with built-in listeners
+ * a wrapper for RecyclerView with built-in visibility and scroll listeners
  */
 class DxRecyclerView @JvmOverloads constructor(
     context: Context,
@@ -18,7 +18,14 @@ class DxRecyclerView @JvmOverloads constructor(
 ) : RecyclerView(context, attrs, defStyle) {
 
     /**
-     * a listener to be invoked when this [DxRecyclerView] is scrolled.
+     * a visibility listener for items in this [DxRecyclerView].
+     * the listener may be triggered when set, and when the recycler view is scrolled.
+     *
+     * * only the most recently set listener will be active.
+     * * its possible for the listener (more precisely it's inner listeners) to trigger immediately or
+     * not at all. see [DxVisibilityListener] for details
+     *
+     * @see [DxVisibilityListener]
      */
     var onItemsVisibilityListener: DxVisibilityListener? = null
         set(value) {
@@ -28,13 +35,10 @@ class DxRecyclerView @JvmOverloads constructor(
 
     /**
      * a listener that will be invoked when this [DxRecyclerView] is scrolled.
+     *
+     * @see DxScrollListener
      */
     var onScrollListener: DxScrollListener? = null
-
-    private var notifiedFirstVisible = false
-    private var notifiedFirstInvisible = false
-    private var notifiedLastVisible = false
-    private var notifiedLastInvisible = false
 
     //todo add support for other types of layout managers
     // note that grid layout manager extends linear layout manager.
@@ -52,7 +56,6 @@ class DxRecyclerView @JvmOverloads constructor(
             object : OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    Log.i("aaaaa", "dx: $dx, dy: $dy")
                     onScrollListener?.apply {
                         when {
                             dx > 0 -> invokeScrollListener(dx, ScrollDirection.RIGHT)
@@ -114,38 +117,36 @@ class DxRecyclerView @JvmOverloads constructor(
         ///////////////////////////////////////////////////////
 
         layoutManager?.let { layMan ->
-
             if (layMan !is LinearLayoutManager)
                 return@let
 
             var visiblePos: Int
 
-            onItemsVisibilityListener?.let {
-
-                if (it.atLeastOneListenerFirst()) {
+            onItemsVisibilityListener?.apply {
+                if (atLeastOneListenerFirst()) {
                     visiblePos = layMan.findFirstVisibleItemPosition()
 
                     when {
                         visiblePos == NO_POSITION -> { /*do nothing*/
                         }
                         visiblePos == 0 -> {
-                            if (!notifiedFirstVisible) {
-                                it.onFirstItemVisible?.invoke()
-                                notifiedFirstVisible = true
-                                notifiedFirstInvisible = false
+                            if (!flagNotifiedFirstVisible) {
+                                onFirstItemVisible?.invoke()
+                                flagNotifiedFirstVisible = true
+                                flagNotifiedFirstInvisible = false
                             }
                         }
 
                         //if we get here, visiblePos is NOT 0
-                        !notifiedFirstInvisible -> {
-                            it.onFirstItemInvisible?.invoke()
-                            notifiedFirstVisible = false
-                            notifiedFirstInvisible = true
+                        !flagNotifiedFirstInvisible -> {
+                            onFirstItemInvisible?.invoke()
+                            flagNotifiedFirstVisible = false
+                            flagNotifiedFirstInvisible = true
                         }
                     }
                 }
 
-                if (it.atLeastOneListenerLast()) {
+                if (atLeastOneListenerLast()) {
                     visiblePos = layMan.findLastVisibleItemPosition()
                     val numItems = adapter?.itemCount
 
@@ -153,18 +154,18 @@ class DxRecyclerView @JvmOverloads constructor(
                         visiblePos == NO_POSITION || numItems == null -> { /*do nothing*/
                         }
                         visiblePos == (numItems - 1) -> {
-                            if (!notifiedLastVisible) {
-                                it.onLastItemVisible?.invoke()
-                                notifiedLastVisible = true
-                                notifiedLastInvisible = false
+                            if (!flagNotifiedLastVisible) {
+                                onLastItemVisible?.invoke()
+                                flagNotifiedLastVisible = true
+                                flagNotifiedLastInvisible = false
                             }
                         }
 
                         //if we get here, lastPos is NOT (numItems -1)
-                        !notifiedLastInvisible -> {
-                            it.onLastItemInvisible?.invoke()
-                            notifiedLastVisible = false
-                            notifiedLastInvisible = true
+                        !flagNotifiedLastInvisible -> {
+                            onLastItemInvisible?.invoke()
+                            flagNotifiedLastVisible = false
+                            flagNotifiedLastInvisible = true
                         }
                     }
                 }

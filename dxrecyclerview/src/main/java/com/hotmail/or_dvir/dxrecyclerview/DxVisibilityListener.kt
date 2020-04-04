@@ -1,9 +1,18 @@
 package com.hotmail.or_dvir.dxrecyclerview
 
 /**
- * a class containing individual visibility listeners for the first and last items in [DxRecyclerView]
+ * a class containing individual visibility items in [DxRecyclerView]
+ *
+ * @see onFirstItemVisible
+ * @see onFirstItemInvisible
+ * @see onLastItemVisible
+ * @see onLastItemInvisible
  */
 class DxVisibilityListener {
+    internal var flagNotifiedFirstVisible = false
+    internal var flagNotifiedFirstInvisible = false
+    internal var flagNotifiedLastVisible = false
+    internal var flagNotifiedLastInvisible = false
 
     /**
      * a listener to be invoked when the FIRST item on your list is VISIBLE.
@@ -15,14 +24,14 @@ class DxVisibilityListener {
     /**
      * a listener to be invoked when the FIRST item on your list is INVISIBLE.
      *
-     * note that if the entire list fits in the [DxRecyclerView], this will NEVER trigger.
+     * note that if the entire list fits on the screen, this will NEVER trigger.
      */
     var onFirstItemInvisible: EmptyListener? = null
 
     /**
      * a listener to be invoked when the LAST item on your list is VISIBLE.
      *
-     * note that if the entire list fits in the [DxRecyclerView], this will trigger immediately
+     * note that if the entire list fits on the screen, this will trigger immediately
      * (assuming your adapter contains at least 1 item).
      */
     var onLastItemVisible: EmptyListener? = null
@@ -30,10 +39,10 @@ class DxVisibilityListener {
     /**
      * a listener to be invoked when the LAST item on your list is INVISIBLE.
      *
-     * note that if the entire list does NOT fit in the [DxRecyclerView], this will trigger immediately
+     * note that if the entire list does NOT fit on the screen, this will trigger immediately
      * (assuming your adapter contains at least 1 item).
      *
-     * note that if the entire list DOES fit in the [DxRecyclerView], this will NEVER trigger.
+     * note that if the entire list DOES fit on the screen, this will NEVER trigger.
      */
     var onLastItemInvisible: EmptyListener? = null
 
