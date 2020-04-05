@@ -2,6 +2,7 @@ package com.hotmail.or_dvir.dxrecyclerview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener.ScrollDirection
@@ -107,13 +108,18 @@ class DxRecyclerView @JvmOverloads constructor(
                 var visiblePos: Int
 
                 onItemsVisibilityListener?.apply {
+
+                    Log.i("aaaaa", "has global listener")
                     if (atLeastOneListenerFirst()) {
+                        Log.i("aaaaa", "has first item listener")
                         visiblePos = layMan.findFirstVisibleItemPosition()
+                        Log.i("aaaaa", "first visible position $visiblePos")
                         when {
                             visiblePos == NO_POSITION -> { /*do nothing*/
                             }
                             visiblePos == 0 -> {
                                 if (!flagNotifiedFirstVisible) {
+                                    Log.i("aaaaa", "trigger first item listener: ${onFirstItemVisible != null}")
                                     onFirstItemVisible?.invoke()
                                     flagNotifiedFirstVisible = true
                                     flagNotifiedFirstInvisible = false

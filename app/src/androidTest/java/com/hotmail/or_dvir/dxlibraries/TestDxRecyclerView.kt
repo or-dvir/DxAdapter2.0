@@ -24,8 +24,8 @@ class TestDxRecyclerView {
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 
-    //call order to @Before method seems to be reversed so add
-    //prefix to the method name accordingly
+    //call order to @Before functions seems to be reversed so add
+    //prefix to the function names accordingly
 
     @Before
     fun z_setupIndividualListeners() {
@@ -41,6 +41,7 @@ class TestDxRecyclerView {
     fun y_setEmptyList_setupVisibilityListener() {
         onActivity {
             setListForActivity(0)
+            Log.i("aaaaa", "setting listener from test")
             it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
                 onFirstItemVisible = mFirstVisible
                 onFirstItemInvisible = mFirstInvisible
@@ -63,6 +64,7 @@ class TestDxRecyclerView {
 
     @Test
     fun visibilityListeners_shortListTest() {
+        Log.i("aaaaa", "=================STARTING SHORT LIST TEST=================")
         //creating a short list so both first and last fit on the screen
         setListForActivity(2)
 
@@ -77,6 +79,7 @@ class TestDxRecyclerView {
 
     @Test
     fun visibilityListeners_longListTest() {
+        Log.i("aaaaa", "=================STARTING LONG LIST TEST=================")
         //creating a long list that should not fit entirely on the screen
         setListForActivity(100)
 
