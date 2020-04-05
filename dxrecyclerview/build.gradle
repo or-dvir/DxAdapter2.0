@@ -32,4 +32,9 @@ dependencies {
     //todo should i use implementation or api?
     //recycler view
     api 'androidx.recyclerview:recyclerview:1.1.0'
+
+    //todo when dxcountingidlingresource is exported to a library,
+    //todo do i need to change this line to import the library instead of the projecet
+    //todo or is it ok to leave it like this???
+    implementation project(path: ':dxcountingidlingresource')
 }

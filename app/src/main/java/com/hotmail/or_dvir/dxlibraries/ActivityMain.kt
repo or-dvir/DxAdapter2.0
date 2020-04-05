@@ -14,10 +14,12 @@ class ActivityMain : AppCompatActivity() {
     //todo
     // export each module as its own library!!!
     // remove unnecessary dependencies FOR EACH MODULE!!!!
+    //      pay SPECIAL ATTENTION to modules that depends on one-another (e.g. DxRecyclerView and DxCountingIdlingResource)
     // go over all to-do's from ALL the modules
     // define project wide constants for versions of:
     //      EVERYTHING IN ALL BUILD.GRADLE FILES!!!!!
     // add documentation about which dependencies EACH MODULE forwards to the user
+    //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
