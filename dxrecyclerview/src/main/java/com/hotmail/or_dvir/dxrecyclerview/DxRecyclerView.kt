@@ -4,7 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hotmail.or_dvir.dxidlingresource.DxCountingIdlingResource
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener.ScrollDirection
+import org.jetbrains.annotations.TestOnly
 import kotlin.math.abs
 
 /**
@@ -17,6 +19,16 @@ class DxRecyclerView @JvmOverloads constructor(
     attrs: AttributeSet? = null,
     defStyle: Int = 0
 ) : RecyclerView(context, attrs, defStyle) {
+
+    companion object {
+        val IDLING_RESOURCE_NAME = "${DxRecyclerView::class.java.simpleName} idling resource"
+    }
+
+    //todo add note in documentation that this needs to be registered in instrumentation tests
+    // also note that in order for it to actually take effect, you must perform an instrumented test
+    // (that is just the way espresso works) e.g. for this is actually work you must perform
+    // an instrumented test that should always pass
+    val idlingResource = DxCountingIdlingResource(IDLING_RESOURCE_NAME)
 
     /**
      * a visibility listener for items in this [DxRecyclerView].
@@ -42,6 +54,12 @@ class DxRecyclerView @JvmOverloads constructor(
      * @see DxScrollListener
      */
     var onScrollListener: DxScrollListener? = null
+
+    /**
+     * a convenience method that retrieves the instance of this [DxRecyclerView]'s idling resource
+     */
+    @TestOnly
+    fun getIdlingResourceInstance() = idlingResource.resource
 
     //todo add support for other types of layout managers
     // note that grid layout manager extends linear layout manager.
@@ -99,14 +117,19 @@ class DxRecyclerView @JvmOverloads constructor(
                 return@let
             }
 
-            //all of the following logic depends on layMan.findFirstVisibleItemPosition()
-            //which does NOT take into account changes since the last layout pass.
-            //therefore we must make sure to wait for the layout pass in order to receive
-            //the most up-to-date information
-            post {
-                var visiblePos: Int
+            onItemsVisibilityListener?.apply {
+                //notes:
+                //-all of the following logic depends on layMan.findFirstVisibleItemPosition()
+                //which does NOT take into account changes since the last layout pass.
+                //therefore we must make sure to wait for the layout pass in order to receive
+                //the most up-to-date information
+                //
+                //-since there is some delay until the next layout pass,
+                //we increment idlingResource as to make sure instrumented (UI) testing doesn't fail.
+                idlingResource.increment("invokeVisibilityListeners()")
+                post {
+                    var visiblePos: Int
 
-                onItemsVisibilityListener?.apply {
                     if (atLeastOneListenerFirst()) {
                         visiblePos = layMan.findFirstVisibleItemPosition()
                         when {
@@ -153,6 +176,8 @@ class DxRecyclerView @JvmOverloads constructor(
                             }
                         }
                     }
+
+                    idlingResource.decrement("invokeVisibilityListeners()")
                 }
             }
         }

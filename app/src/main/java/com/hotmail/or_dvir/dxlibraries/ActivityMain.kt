@@ -19,7 +19,8 @@ class ActivityMain : AppCompatActivity() {
     // define project wide constants for versions of:
     //      EVERYTHING IN ALL BUILD.GRADLE FILES!!!!!
     // add documentation about which dependencies EACH MODULE forwards to the user
-    //
+    // make sure to have proper documentation for all classes in ALL MODULES
+    // add readme file to all modules
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
