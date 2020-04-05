@@ -1,6 +1,7 @@
 package com.hotmail.or_dvir.dxlibraries
 
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration

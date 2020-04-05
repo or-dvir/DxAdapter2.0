@@ -96,55 +96,62 @@ class DxRecyclerView @JvmOverloads constructor(
         }
 
         layoutManager?.let { layMan ->
-            if (layMan !is LinearLayoutManager)
+            if (layMan !is LinearLayoutManager) {
                 return@let
+            }
 
-            var visiblePos: Int
+            //all of the following logic depends on layMan.findFirstVisibleItemPosition()
+            //which does NOT take into account changes since the last layout pass.
+            //therefore we must make sure to wait for the layout pass in order to receive
+            //the most up-to-date information
+            post {
+                var visiblePos: Int
 
-            onItemsVisibilityListener?.apply {
-                if (atLeastOneListenerFirst()) {
-                    visiblePos = layMan.findFirstVisibleItemPosition()
-
-                    when {
-                        visiblePos == NO_POSITION -> { /*do nothing*/
-                        }
-                        visiblePos == 0 -> {
-                            if (!flagNotifiedFirstVisible) {
-                                onFirstItemVisible?.invoke()
-                                flagNotifiedFirstVisible = true
-                                flagNotifiedFirstInvisible = false
+                onItemsVisibilityListener?.apply {
+                    if (atLeastOneListenerFirst()) {
+                        visiblePos = layMan.findFirstVisibleItemPosition()
+                        when {
+                            visiblePos == NO_POSITION -> { /*do nothing*/
                             }
-                        }
+                            visiblePos == 0 -> {
+                                if (!flagNotifiedFirstVisible) {
+                                    onFirstItemVisible?.invoke()
+                                    flagNotifiedFirstVisible = true
+                                    flagNotifiedFirstInvisible = false
+                                }
+                            }
 
-                        //if we get here, visiblePos is NOT 0
-                        !flagNotifiedFirstInvisible -> {
-                            onFirstItemInvisible?.invoke()
-                            flagNotifiedFirstVisible = false
-                            flagNotifiedFirstInvisible = true
+                            //if we get here, visiblePos is NOT 0
+                            !flagNotifiedFirstInvisible -> {
+                                onFirstItemInvisible?.invoke()
+                                flagNotifiedFirstVisible = false
+                                flagNotifiedFirstInvisible = true
+                            }
                         }
                     }
-                }
 
-                if (atLeastOneListenerLast()) {
-                    visiblePos = layMan.findLastVisibleItemPosition()
-                    val numItems = adapter?.itemCount
+                    if (atLeastOneListenerLast()) {
+                        visiblePos = layMan.findLastVisibleItemPosition()
 
-                    when {
-                        visiblePos == NO_POSITION || numItems == null -> { /*do nothing*/
-                        }
-                        visiblePos == (numItems - 1) -> {
-                            if (!flagNotifiedLastVisible) {
-                                onLastItemVisible?.invoke()
-                                flagNotifiedLastVisible = true
-                                flagNotifiedLastInvisible = false
+                        val numItems = adapter?.itemCount
+
+                        when {
+                            visiblePos == NO_POSITION || numItems == null -> { /*do nothing*/
                             }
-                        }
+                            visiblePos == (numItems - 1) -> {
+                                if (!flagNotifiedLastVisible) {
+                                    onLastItemVisible?.invoke()
+                                    flagNotifiedLastVisible = true
+                                    flagNotifiedLastInvisible = false
+                                }
+                            }
 
-                        //if we get here, lastPos is NOT (numItems -1)
-                        !flagNotifiedLastInvisible -> {
-                            onLastItemInvisible?.invoke()
-                            flagNotifiedLastVisible = false
-                            flagNotifiedLastInvisible = true
+                            //if we get here, lastPos is NOT (numItems -1)
+                            !flagNotifiedLastInvisible -> {
+                                onLastItemInvisible?.invoke()
+                                flagNotifiedLastVisible = false
+                                flagNotifiedLastInvisible = true
+                            }
                         }
                     }
                 }

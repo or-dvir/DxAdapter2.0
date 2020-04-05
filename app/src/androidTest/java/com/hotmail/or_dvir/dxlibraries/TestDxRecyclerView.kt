@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxlibraries
 
+import android.util.Log
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.EmptyListener
@@ -17,9 +18,6 @@ class TestDxRecyclerView {
     private lateinit var mFirstVisible: EmptyListener
     private lateinit var mFirstInvisible: EmptyListener
 
-    //todo delete this when done fixing bug
-    private var counter = 0
-
     private lateinit var mLastVisible: EmptyListener
     private lateinit var mLastInvisible: EmptyListener
 
@@ -34,19 +32,17 @@ class TestDxRecyclerView {
         mFirstVisible = spyk({})
         mFirstInvisible = spyk({})
 
-        mLastVisible = spyk({
-            counter++
-            return@spyk
-        })
+        mLastVisible = spyk({})
         mLastInvisible = spyk({})
-
-        counter = 0
     }
 
     //make sure this function runs second - add 'b' for name
     @Before
-    fun y_setupVisibilityListener() {
+    fun y_setEmptyList_setupVisibilityListener() {
         onActivity {
+            setListForActivity(0)
+
+            Log.i("aaaaa", "setting listener from test")
             it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
                 onFirstItemVisible = mFirstVisible
                 onFirstItemInvisible = mFirstInvisible
@@ -59,6 +55,7 @@ class TestDxRecyclerView {
 
     private fun setListForActivity(listSize: Int) {
         onActivity {
+            Log.i("aaaaa", "setting list from test. size $listSize")
             it.mAdapter.items = List(listSize) { index -> MyItem("items $index") }
         }
     }
@@ -91,8 +88,6 @@ class TestDxRecyclerView {
 
         //mFirstInvisible and mLastVisible should NOT be invoked
         verify(exactly = 0) { mFirstInvisible.invoke() }
-
-
         verify(exactly = 0) { mLastVisible.invoke() }
 
 
