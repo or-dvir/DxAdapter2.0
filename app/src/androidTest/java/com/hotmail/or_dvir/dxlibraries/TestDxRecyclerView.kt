@@ -1,10 +1,10 @@
 package com.hotmail.or_dvir.dxlibraries
 
-import android.util.Log
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.EmptyListener
-import io.mockk.*
+import io.mockk.spyk
+import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.Before
 import org.junit.FixMethodOrder
