@@ -127,7 +127,6 @@ class DxRecyclerView @JvmOverloads constructor(
 
                 if (atLeastOneListenerLast()) {
                     visiblePos = layMan.findLastVisibleItemPosition()
-                    Log.i("aaaaa", "last visible position: $visiblePos")
                     val numItems = adapter?.itemCount
 
                     when {
@@ -135,7 +134,6 @@ class DxRecyclerView @JvmOverloads constructor(
                         }
                         visiblePos == (numItems - 1) -> {
                             if (!flagNotifiedLastVisible) {
-                                Log.i("aaaaa", "trigger last item visible")
                                 onLastItemVisible?.invoke()
                                 flagNotifiedLastVisible = true
                                 flagNotifiedLastInvisible = false
@@ -144,7 +142,6 @@ class DxRecyclerView @JvmOverloads constructor(
 
                         //if we get here, lastPos is NOT (numItems -1)
                         !flagNotifiedLastInvisible -> {
-                            Log.i("aaaaa", "trigger last item in-visible")
                             onLastItemInvisible?.invoke()
                             flagNotifiedLastVisible = false
                             flagNotifiedLastInvisible = true

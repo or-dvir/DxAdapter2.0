@@ -7,13 +7,17 @@ import com.hotmail.or_dvir.dxrecyclerview.EmptyListener
 import io.mockk.*
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.Before
+import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runners.MethodSorters
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class TestDxRecyclerView {
     private lateinit var mFirstVisible: EmptyListener
     private lateinit var mFirstInvisible: EmptyListener
 
+    //todo delete this when done fixing bug
     private var counter = 0
 
     private lateinit var mLastVisible: EmptyListener
@@ -22,8 +26,11 @@ class TestDxRecyclerView {
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 
+    //call order to @Before method seems to be reversed so add
+    //prefix to the method name accordingly
+
     @Before
-    fun setupIndividualListeners() {
+    fun z_setupIndividualListeners() {
         mFirstVisible = spyk({})
         mFirstInvisible = spyk({})
 
@@ -36,8 +43,9 @@ class TestDxRecyclerView {
         counter = 0
     }
 
+    //make sure this function runs second - add 'b' for name
     @Before
-    fun setupVisibilityListener() {
+    fun y_setupVisibilityListener() {
         onActivity {
             it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
                 onFirstItemVisible = mFirstVisible
@@ -51,7 +59,6 @@ class TestDxRecyclerView {
 
     private fun setListForActivity(listSize: Int) {
         onActivity {
-            Log.i("aaaaa", "setting test list of size $listSize")
             it.mAdapter.items = List(listSize) { index -> MyItem("items $index") }
         }
     }
@@ -67,7 +74,6 @@ class TestDxRecyclerView {
         //mFirstVisible and mLastVisible should be invoked
         verify(exactly = 1) { mFirstVisible.invoke() }
         verify(exactly = 1) { mLastVisible.invoke() }
-        Log.i("aaaaa", "counter after short test: $counter")
 
         //mFirstInvisible and mLastInvisible should NOT be invoked
         verify(exactly = 0) { mFirstInvisible.invoke() }
@@ -85,9 +91,8 @@ class TestDxRecyclerView {
 
         //mFirstInvisible and mLastVisible should NOT be invoked
         verify(exactly = 0) { mFirstInvisible.invoke() }
-        Log.i("aaaaa", "counter before failing test: $counter")
-        this test is failing for some reason. maybe has to do with the order of setting
-            the items and setting the listener to the activity...
+
+
         verify(exactly = 0) { mLastVisible.invoke() }
 
 
