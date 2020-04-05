@@ -19,13 +19,13 @@ class DxCountingIdlingResource(private val uniqueName: String) {
     val resource = CountingIdlingResource(uniqueName)
 
     fun increment(calledFrom: String) {
-        Log.i(TAG, "idling resource $uniqueName incremented from $calledFrom")
+        Log.i(TAG, "idling resource \"$uniqueName\" incremented from $calledFrom")
         resource.increment()
     }
 
     fun decrement(calledFrom: String) {
         if (!resource.isIdleNow) {
-            Log.i(TAG, "idling resource $uniqueName decremented from $calledFrom")
+            Log.i(TAG, "idling resource \"$uniqueName\" decremented from $calledFrom")
             resource.decrement()
         }
     }

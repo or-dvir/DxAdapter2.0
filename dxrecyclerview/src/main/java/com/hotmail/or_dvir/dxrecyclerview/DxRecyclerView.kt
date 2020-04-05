@@ -21,7 +21,8 @@ class DxRecyclerView @JvmOverloads constructor(
 ) : RecyclerView(context, attrs, defStyle) {
 
     companion object {
-        val IDLING_RESOURCE_NAME = "${DxRecyclerView::class.java.simpleName} idling resource"
+        val TAG = DxRecyclerView::class.java.simpleName
+        val IDLING_RESOURCE_NAME = "${TAG}IdlingResource"
     }
 
     //todo add note in documentation that this needs to be registered in instrumentation tests
@@ -75,6 +76,17 @@ class DxRecyclerView @JvmOverloads constructor(
 
         addOnScrollListener(
             object : OnScrollListener() {
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    if (newState == SCROLL_STATE_IDLE) {
+                        //scrolling event finished - decrement idlingResource so UI tests can continue
+                        idlingResource.decrement("${TAG}.onScrollStateChanged()")
+                    } else {
+                        //increment idlingResource until scroll event finished so UI tests don't fail
+                        idlingResource.increment("${TAG}.onScrollStateChanged()")
+                    }
+                }
+
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
                     onScrollListener?.apply {
@@ -124,9 +136,9 @@ class DxRecyclerView @JvmOverloads constructor(
                 //therefore we must make sure to wait for the layout pass in order to receive
                 //the most up-to-date information
                 //
-                //-since there is some delay until the next layout pass,
-                //we increment idlingResource as to make sure instrumented (UI) testing doesn't fail.
-                idlingResource.increment("invokeVisibilityListeners()")
+                //-since there is some delay until the next layout pass, we increment idlingResource
+                //so UI tests don't fail.
+                idlingResource.increment("${TAG}.invokeVisibilityListeners()")
                 post {
                     var visiblePos: Int
 
@@ -177,7 +189,8 @@ class DxRecyclerView @JvmOverloads constructor(
                         }
                     }
 
-                    idlingResource.decrement("invokeVisibilityListeners()")
+                    //post{} block finished - decrement idlingResource so UI tests can continue
+                    idlingResource.decrement("${TAG}.invokeVisibilityListeners()")
                 }
             }
         }
