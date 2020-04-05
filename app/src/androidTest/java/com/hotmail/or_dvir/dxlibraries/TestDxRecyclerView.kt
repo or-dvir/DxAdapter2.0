@@ -41,8 +41,6 @@ class TestDxRecyclerView {
     fun y_setEmptyList_setupVisibilityListener() {
         onActivity {
             setListForActivity(0)
-
-            Log.i("aaaaa", "setting listener from test")
             it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
                 onFirstItemVisible = mFirstVisible
                 onFirstItemInvisible = mFirstInvisible
