@@ -1,3 +1,4 @@
 rootProject.name='DxLibraries'
 include ':app'
 include ':dxrecyclerview'
+include ':dxidlingresource'

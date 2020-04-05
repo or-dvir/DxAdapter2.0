@@ -1,19 +1,17 @@
 package com.hotmail.or_dvir.dxlibraries
 
-import android.util.Log
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.EmptyListener
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_main.*
+import org.junit.After
 import org.junit.Before
-import org.junit.FixMethodOrder
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runners.MethodSorters
 
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class TestDxRecyclerView {
     private lateinit var mFirstVisible: EmptyListener
     private lateinit var mFirstInvisible: EmptyListener
@@ -24,11 +22,23 @@ class TestDxRecyclerView {
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 
-    //call order to @Before functions seems to be reversed so add
-    //prefix to the function names accordingly
+    @Before
+    fun registerIdlingResource()
+    {
+        IdlingRegistry.getInstance()
+            .register( idle resource instance)
+
+    }
+
+    @After
+    fun unregisterIdlingResource()
+    {
+        IdlingRegistry.getInstance()
+            .register( idle resource instance)
+    }
 
     @Before
-    fun z_setupIndividualListeners() {
+    fun setupIndividualListeners() {
         mFirstVisible = spyk({})
         mFirstInvisible = spyk({})
 
@@ -38,10 +48,9 @@ class TestDxRecyclerView {
 
     //make sure this function runs second - add 'b' for name
     @Before
-    fun y_setEmptyList_setupVisibilityListener() {
+    fun setEmptyList_setupVisibilityListener() {
         onActivity {
             setListForActivity(0)
-            Log.i("aaaaa", "setting listener from test")
             it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
                 onFirstItemVisible = mFirstVisible
                 onFirstItemInvisible = mFirstInvisible
@@ -54,7 +63,6 @@ class TestDxRecyclerView {
 
     private fun setListForActivity(listSize: Int) {
         onActivity {
-            Log.i("aaaaa", "setting list from test. size $listSize")
             it.mAdapter.items = List(listSize) { index -> MyItem("items $index") }
         }
     }
@@ -64,9 +72,17 @@ class TestDxRecyclerView {
 
     @Test
     fun visibilityListeners_shortListTest() {
-        Log.i("aaaaa", "=================STARTING SHORT LIST TEST=================")
         //creating a short list so both first and last fit on the screen
         setListForActivity(2)
+
+
+        ITS FAILING BECAUSE I ADDED A POST CALL TO THE RECYCLER VIEW !!!
+        SO THE TEST FAILS BECAUSE IT RUNS BEFORE THE RECYCLER VIEW FINISHED ITS LAYOUT "RUN"
+        Thread.sleep(200)
+
+
+        make idling resource into its own library!!!!!!!
+
 
         //mFirstVisible and mLastVisible should be invoked
         verify(exactly = 1) { mFirstVisible.invoke() }
@@ -79,7 +95,6 @@ class TestDxRecyclerView {
 
     @Test
     fun visibilityListeners_longListTest() {
-        Log.i("aaaaa", "=================STARTING LONG LIST TEST=================")
         //creating a long list that should not fit entirely on the screen
         setListForActivity(100)
 

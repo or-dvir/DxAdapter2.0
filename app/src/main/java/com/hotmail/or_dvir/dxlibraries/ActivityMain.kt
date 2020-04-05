@@ -11,6 +11,14 @@ import kotlinx.android.synthetic.main.activity_main.*
 class ActivityMain : AppCompatActivity() {
     var mAdapter = MyAdapter()
 
+    //todo
+    // export each module as its own library!!!
+    // remove unnecessary dependencies FOR EACH MODULE!!!!
+    // go over all to-do's from ALL the modules
+    // define project wide constants for versions of:
+    //      EVERYTHING IN ALL BUILD.GRADLE FILES!!!!!
+    // add documentation about which dependencies EACH MODULE forwards to the user
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
