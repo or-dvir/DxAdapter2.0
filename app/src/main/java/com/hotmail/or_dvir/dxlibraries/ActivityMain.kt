@@ -1,11 +1,13 @@
 package com.hotmail.or_dvir.dxlibraries
 
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityMain : AppCompatActivity() {
@@ -26,10 +28,19 @@ class ActivityMain : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        setLayoutManagerVertical()
+
+        mAdapter.items = List(100) { index -> MyItem("item $index") }
+
         activityMain_rv.apply {
             adapter = mAdapter
-            setLayoutManagerVertical()
-            mAdapter.items = (listOf(MyItem("one"), MyItem("two")))
+
+//            onScrollListener = DxScrollListener(1).apply {
+//                onScrollUp = { Log.i("aaaaa", "listener up") }
+//                onScrollDown = { Log.i("aaaaa", "listener down") }
+//                onScrollLeft = { Log.i("aaaaa", "listener left") }
+//                onScrollRight = { Log.i("aaaaa", "listener right") }
+//            }
 
 //            onItemsVisibilityListener = DxVisibilityListener().apply {
 //                onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }

@@ -47,6 +47,8 @@ class DxVisibilityListener {
     var onLastItemInvisible: EmptyListener? = null
 
     internal fun atLeastOneListenerSet() = atLeastOneListenerFirst() || atLeastOneListenerLast()
-    internal fun atLeastOneListenerFirst() = onFirstItemInvisible != null || onFirstItemVisible != null
+    internal fun atLeastOneListenerFirst() =
+        onFirstItemInvisible != null || onFirstItemVisible != null
+
     internal fun atLeastOneListenerLast() = onLastItemInvisible != null || onLastItemVisible != null
 }

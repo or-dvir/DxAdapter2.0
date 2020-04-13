@@ -1,14 +1,17 @@
 package com.hotmail.or_dvir.dxlibraries
 
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
+import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.EmptyListener
 import io.mockk.spyk
@@ -21,14 +24,25 @@ import org.junit.Rule
 import org.junit.Test
 
 class TestDxRecyclerView {
+    //visibility listeners
     private lateinit var mFirstVisible: EmptyListener
     private lateinit var mFirstInvisible: EmptyListener
 
     private lateinit var mLastVisible: EmptyListener
     private lateinit var mLastInvisible: EmptyListener
 
+    //scroll listeners
+    private lateinit var mOnScrollUp: EmptyListener
+    private lateinit var mOnScrollDown: EmptyListener
+    private lateinit var mOnScrollLeft: EmptyListener
+    private lateinit var mOnScrollRight: EmptyListener
+
+
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
+
+    private fun onActivity(task: (act: ActivityMain) -> Unit) =
+        activityScenario.scenario.onActivity { task.invoke(it) }
 
     @Before
     fun before() {
@@ -37,29 +51,11 @@ class TestDxRecyclerView {
             IdlingRegistry.getInstance().register(it.activityMain_rv.getIdlingResourceInstance())
         }
 
-        //setup individual visibility listeners
-        mFirstVisible = spyk({})
-        mFirstInvisible = spyk({})
-
-        mLastVisible = spyk({})
-        mLastInvisible = spyk({})
-
-        //set a fresh empty list and set the DxVisibilityListener using the individual listeners
-        //from above.
+        //set a fresh empty list.
         //IMPORTANT NOTE
         //this method should NOT be called from inside the activity (e.g. inside onActivity{} block)
         //or the test will get stuck!!!
         setListForActivity(0)
-
-        onActivity {
-            it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
-                onFirstItemVisible = mFirstVisible
-                onFirstItemInvisible = mFirstInvisible
-
-                onLastItemVisible = mLastVisible
-                onLastItemInvisible = mLastInvisible
-            }
-        }
     }
 
     @After
@@ -86,7 +82,7 @@ class TestDxRecyclerView {
 
     private fun setListForActivity(listSize: Int) {
         onActivity {
-            it.mAdapter.items = List(listSize) { index -> MyItem("items $index") }
+            it.mAdapter.items = List(listSize) { index -> MyItem("item $index") }
         }
 
         //since the listeners may be called after a small delay, we need to wait for
@@ -94,11 +90,28 @@ class TestDxRecyclerView {
         pauseTestUntilAsyncOperationDone()
     }
 
-    private fun onActivity(task: (act: ActivityMain) -> Unit) =
-        activityScenario.scenario.onActivity { task.invoke(it) }
+    private fun setupVisibilityListeners() {
+        mFirstVisible = spyk({})
+        mFirstInvisible = spyk({})
+
+        mLastVisible = spyk({})
+        mLastInvisible = spyk({})
+
+        onActivity {
+            it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
+                onFirstItemVisible = mFirstVisible
+                onFirstItemInvisible = mFirstInvisible
+
+                onLastItemVisible = mLastVisible
+                onLastItemInvisible = mLastInvisible
+            }
+        }
+    }
 
     @Test
-    fun visibilityListeners_shortListTest() {
+    fun visibilityListenersTest_shortList() {
+        setupVisibilityListeners()
+
         //creating a short list so both first and last fit on the screen
         setListForActivity(2)
 
@@ -112,7 +125,9 @@ class TestDxRecyclerView {
     }
 
     @Test
-    fun visibilityListeners_longListTest() {
+    fun visibilityListenersTest_longList() {
+        setupVisibilityListeners()
+
         //creating a long list that should not fit entirely on the screen
         val longListSize = 100
         setListForActivity(longListSize)
@@ -170,9 +185,87 @@ class TestDxRecyclerView {
         verify(exactly = 1) { mLastVisible.invoke() }
     }
 
-    //todo DxScrollListener
-    // no (inner) listeners are set - no listener is called (does that even make sense?)
-    // all listeners are set - only relevant ones are called (check class documentation)
-    // not all listeners are set - non-set listeners aren't called (does that even make sense?)
-    // how do i test the sensitivity???????
+    private fun setupScrollListeners() {
+        mOnScrollUp = spyk({})
+        mOnScrollDown = spyk({})
+        mOnScrollLeft = spyk({})
+        mOnScrollRight = spyk({})
+
+        //todo how to i test the sensitivity?!
+        onActivity {
+            it.activityMain_rv.onScrollListener = DxScrollListener(1).apply {
+                onScrollUp = mOnScrollUp
+                onScrollDown = mOnScrollDown
+                onScrollLeft = mOnScrollLeft
+                onScrollRight = mOnScrollRight
+            }
+        }
+    }
+
+    @Test
+    fun scrollListenerTest_vertical() {
+        setupScrollListeners()
+        val listSize = 100
+        setListForActivity(listSize)
+
+//        onActivity { it.setLayoutManagerVertical() }
+
+//        //verify no listeners have been invoked
+//        verify(exactly = 0) { mOnScrollUp.invoke() }
+//        verify(exactly = 0) { mOnScrollDown.invoke() }
+//        verify(exactly = 0) { mOnScrollLeft.invoke() }
+//        verify(exactly = 0) { mOnScrollRight.invoke() }
+//
+        //scroll to end of list
+        //todo why am i getting unresolved reference for this id?????
+//        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+            //NOTE: the position parameter must be within the recycler view bounds!
+            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize - 1)
+        )
+//
+//        //wait for the scroll to finish
+//        pauseTestUntilAsyncOperationDone()
+//
+//        //verify only mOnScrollDown invoked
+//        verify(exactly = 1) { mOnScrollDown.invoke() }
+//        verify(exactly = 0) { mOnScrollUp.invoke() }
+//        verify(exactly = 0) { mOnScrollLeft.invoke() }
+//        verify(exactly = 0) { mOnScrollRight.invoke() }
+//
+//        //scroll to top of list
+//        //todo why am i getting unresolved reference for this id?????
+////        onView(withId(R.id.activityMain_rv)).perform(
+//        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+//            //NOTE: the position parameter must be within the recycler view bounds!
+//            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0)
+//        )
+//
+//        //wait for the scroll to finish
+//        pauseTestUntilAsyncOperationDone()
+//
+//        //verify only mOnScrollUp invoked.
+//        //NOTE: there is no way to reset the "call count" of mockk.verify{},
+//        //so we most account for previous invocations
+//        verify(exactly = 1) { mOnScrollUp.invoke() }
+//        verify(exactly = 1) { mOnScrollDown.invoke() }
+//        verify(exactly = 0) { mOnScrollLeft.invoke() }
+//        verify(exactly = 0) { mOnScrollRight.invoke() }
+//
+//        //todo can i test sensitivity?????
+    }
+
+    @Test
+    fun scrollListenerTest_horizontal() {
+        setupScrollListeners()
+        setListForActivity(100)
+
+        //todo
+        // set layout manager to horizontal
+        // no listeners have been called at first.
+        // scroll right - only scroll right triggered
+        // scroll left - only scroll left triggered
+
+        //todo can i test sensitivity?????
+    }
 }

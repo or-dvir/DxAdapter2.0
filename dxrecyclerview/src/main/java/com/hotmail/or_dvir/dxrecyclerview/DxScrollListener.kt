@@ -52,15 +52,6 @@ class DxScrollListener(
      */
     var onScrollRight: EmptyListener? = null
 
-    /////////////////////////////////////////
-    /////////////////////////////////////////
-    /////////////////////////////////////////
-    /////////////////////////////////////////
-
-    enum class ScrollDirection {
-        UP,
-        DOWN,
-        LEFT,
-        RIGHT
-    }
+    internal fun atLeastOneListenerSet() =
+        onScrollUp != null || onScrollDown != null || onScrollLeft != null || onScrollRight != null
 }

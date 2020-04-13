@@ -2,16 +2,16 @@ package com.hotmail.or_dvir.dxrecyclerview
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxidlingresource.DxCountingIdlingResource
-import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener.ScrollDirection
 import org.jetbrains.annotations.TestOnly
 import kotlin.math.abs
 
 /**
  * a wrapper for RecyclerView with built-in listeners
- * @see [onItemsVisibilityListener]
+ * @see onItemsVisibilityListener
  * @see onScrollListener
  */
 class DxRecyclerView @JvmOverloads constructor(
@@ -73,7 +73,6 @@ class DxRecyclerView @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-
         addOnScrollListener(
             object : OnScrollListener() {
 
@@ -89,38 +88,43 @@ class DxRecyclerView @JvmOverloads constructor(
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    onScrollListener?.apply {
-                        when {
-                            dx > 0 -> invokeScrollListener(dx, ScrollDirection.RIGHT)
-                            dx < 0 -> invokeScrollListener(dx, ScrollDirection.LEFT)
 
-                            dy > 0 -> invokeScrollListener(dy, ScrollDirection.DOWN)
-                            dy < 0 -> invokeScrollListener(dy, ScrollDirection.UP)
-                        }
-                    }
-
+                    when testing dx and dy are 0!!!! so listener not trigerred
+                    invokeScrollListener(dx, dy)
                     invokeVisibilityListeners()
                 }
             })
     }
 
-    private fun invokeScrollListener(scrollValue: Int, direction: ScrollDirection) {
-        val absVal = abs(scrollValue)
+    private fun invokeScrollListener(dx: Int, dy: Int) {
+        if (onScrollListener == null || !onScrollListener!!.atLeastOneListenerSet()) {
+            return
+        }
 
-        onScrollListener?.apply {
-            when (direction) {
-                ScrollDirection.UP -> if (absVal > sensitivityUp) onScrollUp?.invoke()
-                ScrollDirection.DOWN -> if (absVal > sensitivityDown) onScrollDown?.invoke()
-                ScrollDirection.LEFT -> if (absVal > sensitivityLeft) onScrollLeft?.invoke()
-                ScrollDirection.RIGHT -> if (absVal > sensitivityRight) onScrollRight?.invoke()
+        onScrollListener!!.apply {
+            when {
+                //up
+                dy < 0 -> {
+                    if (abs(dy) > sensitivityUp) onScrollUp?.invoke()
+                }
+                //down
+                dy > 0 -> {
+                    if (abs(dy) > sensitivityDown) onScrollDown?.invoke()
+                }
+                //left
+                dx < 0 -> {
+                    if (abs(dx) > sensitivityLeft) onScrollLeft?.invoke()
+                }
+                //right
+                dx > 0 -> {
+                    if (abs(dx) > sensitivityRight) onScrollRight?.invoke()
+                }
             }
         }
     }
 
     private fun invokeVisibilityListeners() {
-        if (onItemsVisibilityListener == null ||
-            !onItemsVisibilityListener!!.atLeastOneListenerSet()
-        ) {
+        if (onItemsVisibilityListener == null || !onItemsVisibilityListener!!.atLeastOneListenerSet()) {
             return
         }
 
