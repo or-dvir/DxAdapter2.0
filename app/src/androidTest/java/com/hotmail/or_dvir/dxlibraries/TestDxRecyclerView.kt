@@ -252,20 +252,63 @@ class TestDxRecyclerView {
         verify(exactly = 0) { mOnScrollLeft.invoke() }
         verify(exactly = 0) { mOnScrollRight.invoke() }
 
-        //todo can i test sensitivity?????
+        //todo can i test sensitivity????? (when swiping you should be able to control
+        // if the scrolling is done fast or slow)
     }
 
     @Test
     fun scrollListenerTest_horizontal() {
         setupScrollListeners()
-        setListForActivity(100)
+        val listSize = 100
+        setListForActivity(listSize)
 
-        //todo
-        // set layout manager to horizontal
-        // no listeners have been called at first.
-        // scroll right - only scroll right triggered
-        // scroll left - only scroll left triggered
+        onActivity { it.setLayoutManagerHorizontal() }
 
-        //todo can i test sensitivity?????
+        //verify no listeners have been invoked
+        verify(exactly = 0) { mOnScrollUp.invoke() }
+        verify(exactly = 0) { mOnScrollDown.invoke() }
+        verify(exactly = 0) { mOnScrollLeft.invoke() }
+        verify(exactly = 0) { mOnScrollRight.invoke() }
+
+        //scroll to end of list.
+        //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
+        //does not trigger the scroll listener properly (dx and dy values are 0)
+        //todo why am i getting unresolved reference for this id?????
+//        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+            ViewActions.swipeLeft()
+        )
+
+        //wait for the scroll to finish
+        pauseTestUntilAsyncOperationDone()
+
+        //verify only mOnScrollRight invoked (will be invoked many times)
+        verify { mOnScrollRight.invoke() }
+        verify(exactly = 0) { mOnScrollUp.invoke() }
+        verify(exactly = 0) { mOnScrollDown.invoke() }
+        verify(exactly = 0) { mOnScrollLeft.invoke() }
+
+        //scroll to top of list
+        //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
+        //does not trigger the scroll listener properly (dx and dy values are 0)
+        //todo why am i getting unresolved reference for this id?????
+//        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+            ViewActions.swipeRight()
+        )
+
+        //wait for the scroll to finish
+        pauseTestUntilAsyncOperationDone()
+
+        //verify only mOnScrollLeft invoked (will be invoked many times).
+        //NOTE: there is no way to reset the "call count" of mockk.verify{},
+        //so we most account for previous invocations
+        verify { mOnScrollLeft.invoke() }
+        verify { mOnScrollRight.invoke() }
+        verify(exactly = 0) { mOnScrollUp.invoke() }
+        verify(exactly = 0) { mOnScrollDown.invoke() }
+
+        //todo can i test sensitivity????? (when swiping you should be able to control
+        // if the scrolling is done fast or slow)
     }
 }
