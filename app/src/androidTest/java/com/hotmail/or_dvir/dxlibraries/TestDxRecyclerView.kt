@@ -65,6 +65,9 @@ class TestDxRecyclerView {
         }
     }
 
+    //todo for some reason when i use this line in my tests i get "unresolved reference"
+    // onView(withId(R.id.activityMain_rv))
+
     /**
      * perform a dummy test that should always pass in order to make espresso
      * wait until all idling resources have finished
@@ -72,8 +75,6 @@ class TestDxRecyclerView {
     private fun pauseTestUntilAsyncOperationDone() {
         //the recycler view should always be visible, so this is a simple test
         //that should always pass
-        //todo why am i getting unresolved reference for this id?????
-//        onView(withId(R.id.activityMain_rv)).check(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).check(
             ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))
         )
@@ -141,8 +142,6 @@ class TestDxRecyclerView {
 
 
         //scroll to end of list
-        //todo why am i getting unresolved reference for this id?????
-//        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
             //NOTE: the position parameter must be within the recycler view bounds!
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(longListSize - 1)
@@ -162,8 +161,6 @@ class TestDxRecyclerView {
         verify(atMost = 1) { mLastInvisible.invoke() }
 
         //scroll to top of list
-        //todo why am i getting unresolved reference for this id?????
-//        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0)
         )
@@ -190,7 +187,6 @@ class TestDxRecyclerView {
         mOnScrollLeft = spyk({})
         mOnScrollRight = spyk({})
 
-        //todo how to i test the sensitivity?!
         onActivity {
             it.activityMain_rv.onScrollListener = DxScrollListener(sensitivity).apply {
                 onScrollUp = mOnScrollUp
@@ -234,8 +230,6 @@ class TestDxRecyclerView {
         //scroll down slow
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        //todo why am i getting unresolved reference for this id?????
-//        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
             swipeUpSlow()
         )
@@ -268,8 +262,6 @@ class TestDxRecyclerView {
         //scroll down fast
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        //todo why am i getting unresolved reference for this id?????
-//        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
             swipeUpFast()
         )
@@ -286,8 +278,6 @@ class TestDxRecyclerView {
         //scroll up fast
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        //todo why am i getting unresolved reference for this id?????
-//        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
             swipeDownFast()
         )
@@ -302,9 +292,6 @@ class TestDxRecyclerView {
         verify { mOnScrollDown.invoke() }
         verify(exactly = 0) { mOnScrollLeft.invoke() }
         verify(exactly = 0) { mOnScrollRight.invoke() }
-
-        //todo can i test sensitivity????? (when swiping you should be able to control
-        // if the scrolling is done fast or slow)
     }
 
     @Test
@@ -325,8 +312,6 @@ class TestDxRecyclerView {
         //scroll to end of list.
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        //todo why am i getting unresolved reference for this id?????
-//        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
             ViewActions.swipeLeft()
         )
@@ -343,8 +328,6 @@ class TestDxRecyclerView {
         //scroll to top of list
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        //todo why am i getting unresolved reference for this id?????
-//        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
             ViewActions.swipeRight()
         )
@@ -359,8 +342,5 @@ class TestDxRecyclerView {
         verify { mOnScrollRight.invoke() }
         verify(exactly = 0) { mOnScrollUp.invoke() }
         verify(exactly = 0) { mOnScrollDown.invoke() }
-
-        //todo can i test sensitivity????? (when swiping you should be able to control
-        // if the scrolling is done fast or slow)
     }
 }
