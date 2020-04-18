@@ -1,3 +1,7 @@
 package com.hotmail.or_dvir.dxlibraries
 
-class MyItem(val text: String)
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
+
+class MyItem(val text: String) : IDxBaseItem {
+    override fun getViewType() = R.id.MyItemId
+}

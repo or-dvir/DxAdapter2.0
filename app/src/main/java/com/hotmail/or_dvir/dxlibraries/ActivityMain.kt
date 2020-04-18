@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hotmail.or_dvir.dxadapterclicklisteners.DxClickListeners
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
+import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityMain : AppCompatActivity() {
@@ -23,6 +25,7 @@ class ActivityMain : AppCompatActivity() {
     // add documentation about which dependencies EACH MODULE forwards to the user
     // make sure to have proper documentation for all classes in ALL MODULES
     // add readme file to all modules
+    // delete all example test files from all modules
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,29 +35,53 @@ class ActivityMain : AppCompatActivity() {
 
         mAdapter.items = List(100) { index -> MyItem("item $index") }
 
-        activityMain_rv.apply {
-            adapter = mAdapter
+//        setScrollListeners()
+//        setVisibilityListeners()
+//        setAdapterClickListeners()
 
-//            onScrollListener = DxScrollListener(1).apply {
-//                onScrollUp = { Log.i("aaaaa", "scroll up") }
-//                onScrollDown = { Log.i("aaaaa", "scroll down") }
-//                onScrollLeft = { Log.i("aaaaa", "scroll left") }
-//                onScrollRight = { Log.i("aaaaa", "scroll right") }
-//            }
+        activityMain_rv.adapter = mAdapter
+    }
 
-//            onItemsVisibilityListener = DxVisibilityListener().apply {
-//                onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
-//                onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
-//            }
-//
-//            postDelayed({
-//                onItemsVisibilityListener = DxVisibilityListener().apply {
-//                    onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
-//                    onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
-//                }
-//
-//                mAdapter.items = (listOf(MyItem("3"), MyItem("4")))
-//            }, 3000)
+    fun setAdapter(adapter: MyAdapter) {
+        mAdapter = adapter
+//        activityMain_rv.adapter = mAdapter
+    }
+
+    private fun setAdapterClickListeners() {
+        val clickListeners = DxClickListeners().apply {
+
+            fun getItemAtPosition(position: Int) = mAdapter.items[position]
+
+            onItemClick = { view, adapterPosition ->
+                val item = getItemAtPosition(adapterPosition)
+                Log.i("aaaaa", "clicked ${item.text}")
+            }
+
+            onItemLongClick = { view, adapterPosition ->
+                val item = getItemAtPosition(adapterPosition)
+                Log.i("aaaaa", "long clicked ${item.text}")
+
+                true
+            }
+        }
+
+        mAdapter.addFunctionality(clickListeners)
+    }
+
+    private fun setVisibilityListeners() {
+        activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
+            onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
+            onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
+        }
+    }
+
+
+    private fun setScrollListeners() {
+        activityMain_rv.onScrollListener = DxScrollListener(1).apply {
+            onScrollUp = { Log.i("aaaaa", "scroll up") }
+            onScrollDown = { Log.i("aaaaa", "scroll down") }
+            onScrollLeft = { Log.i("aaaaa", "scroll left") }
+            onScrollRight = { Log.i("aaaaa", "scroll right") }
         }
     }
 
@@ -64,9 +91,11 @@ class ActivityMain : AppCompatActivity() {
             if (itemDecorationCount > 0) {
                 removeItemDecorationAt(0)
             }
+
             addItemDecoration(
                 DividerItemDecoration(this@ActivityMain, DividerItemDecoration.VERTICAL)
             )
+
             layoutManager = LinearLayoutManager(this@ActivityMain, RecyclerView.VERTICAL, false)
         }
     }
@@ -77,9 +106,11 @@ class ActivityMain : AppCompatActivity() {
             if (itemDecorationCount > 0) {
                 removeItemDecorationAt(0)
             }
+
             addItemDecoration(
                 DividerItemDecoration(this@ActivityMain, DividerItemDecoration.HORIZONTAL)
             )
+
             layoutManager = LinearLayoutManager(this@ActivityMain, RecyclerView.HORIZONTAL, false)
         }
     }

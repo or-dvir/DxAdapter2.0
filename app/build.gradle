@@ -48,4 +48,6 @@ dependencies {
     //other modules in this project
     implementation project(path: ':dxrecyclerview')
     implementation project(path: ':dxcountingidlingresource')
+    implementation project(path: ':dxadapter')
+    implementation project(path: ':dxadapterclicklisteners')
 }
