@@ -32,25 +32,25 @@ class DxScrollListener(
      * a listener to be invoked when the list is scrolled up,
      * if the amount of scroll exceeds [sensitivityUp]
      */
-    var onScrollUp: EmptyListener? = null
+    var onScrollUp: GenericListener? = null
 
     /**
      * a listener to be invoked when the list is scrolled down,
      * if the amount of scroll exceeds [sensitivityDown]
      */
-    var onScrollDown: EmptyListener? = null
+    var onScrollDown: GenericListener? = null
 
     /**
      * a listener to be invoked when the list is scrolled left,
      * if the amount of scroll exceeds [sensitivityLeft]
      */
-    var onScrollLeft: EmptyListener? = null
+    var onScrollLeft: GenericListener? = null
 
     /**
      * a listener to be invoked when the list is scrolled right,
      * if the amount of scroll exceeds [sensitivityRight]
      */
-    var onScrollRight: EmptyListener? = null
+    var onScrollRight: GenericListener? = null
 
     internal fun atLeastOneListenerSet() =
         onScrollUp != null || onScrollDown != null || onScrollLeft != null || onScrollRight != null

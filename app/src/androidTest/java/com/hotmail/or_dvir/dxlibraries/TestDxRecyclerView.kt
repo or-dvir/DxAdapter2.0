@@ -12,7 +12,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
-import com.hotmail.or_dvir.dxrecyclerview.EmptyListener
+import com.hotmail.or_dvir.dxrecyclerview.GenericListener
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_main.*
@@ -24,17 +24,17 @@ import org.junit.Test
 
 class TestDxRecyclerView {
     //visibility listeners
-    private lateinit var mFirstVisible: EmptyListener
-    private lateinit var mFirstInvisible: EmptyListener
+    private lateinit var mFirstVisible: GenericListener
+    private lateinit var mFirstInvisible: GenericListener
 
-    private lateinit var mLastVisible: EmptyListener
-    private lateinit var mLastInvisible: EmptyListener
+    private lateinit var mLastVisible: GenericListener
+    private lateinit var mLastInvisible: GenericListener
 
     //scroll listeners
-    private lateinit var mOnScrollUp: EmptyListener
-    private lateinit var mOnScrollDown: EmptyListener
-    private lateinit var mOnScrollLeft: EmptyListener
-    private lateinit var mOnScrollRight: EmptyListener
+    private lateinit var mOnScrollUp: GenericListener
+    private lateinit var mOnScrollDown: GenericListener
+    private lateinit var mOnScrollLeft: GenericListener
+    private lateinit var mOnScrollRight: GenericListener
 
 
     @get:Rule

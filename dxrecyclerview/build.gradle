@@ -31,7 +31,7 @@ dependencies {
 
     //todo should i use implementation or api?
     //recycler view
-    api 'androidx.recyclerview:recyclerview:1.1.0'
+    api "androidx.recyclerview:recyclerview:$version_recyclerView"
 
     //todo when dx-counting-idling-resource is exported to a library,
     //todo do i need to change this line to import the library instead of the project
