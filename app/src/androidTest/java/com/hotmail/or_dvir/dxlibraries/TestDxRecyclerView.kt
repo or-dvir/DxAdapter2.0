@@ -3,7 +3,7 @@ package com.hotmail.or_dvir.dxlibraries
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions
+import androidx.test.espresso.action.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
@@ -184,7 +184,7 @@ class TestDxRecyclerView {
         verify(exactly = 1) { mLastVisible.invoke() }
     }
 
-    private fun setupScrollListeners() {
+    private fun setupScrollListeners(sensitivity: Int) {
         mOnScrollUp = spyk({})
         mOnScrollDown = spyk({})
         mOnScrollLeft = spyk({})
@@ -192,7 +192,7 @@ class TestDxRecyclerView {
 
         //todo how to i test the sensitivity?!
         onActivity {
-            it.activityMain_rv.onScrollListener = DxScrollListener(1).apply {
+            it.activityMain_rv.onScrollListener = DxScrollListener(sensitivity).apply {
                 onScrollUp = mOnScrollUp
                 onScrollDown = mOnScrollDown
                 onScrollLeft = mOnScrollLeft
@@ -201,9 +201,59 @@ class TestDxRecyclerView {
         }
     }
 
+    private fun swipe(speed: Swipe, from: GeneralLocation, to: GeneralLocation) =
+        GeneralSwipeAction(speed, from, to, Press.FINGER)
+
+    private fun swipeUp(speed: Swipe) =
+        swipe(speed, GeneralLocation.BOTTOM_CENTER, GeneralLocation.TOP_CENTER)
+
+    private fun swipeDown(speed: Swipe) =
+        swipe(speed, GeneralLocation.TOP_CENTER, GeneralLocation.BOTTOM_CENTER)
+
+    private fun swipeUpFast() = swipeUp(Swipe.FAST)
+    private fun swipeUpSlow() = swipeUp(Swipe.SLOW)
+
+    private fun swipeDownFast() = swipeDown(Swipe.FAST)
+    private fun swipeDownSlow() = swipeDown(Swipe.SLOW)
+
+    @Test
+    fun scrollListenerTest_highSensitivity() {
+        //high sensitivity
+        setupScrollListeners(200)
+        val listSize = 100
+        setListForActivity(listSize)
+
+        onActivity { it.setLayoutManagerVertical() }
+
+        //NOTE:
+        //this function only tests that a slow scroll does not trigger listener with
+        //high sensitivity.
+        //all other scroll tests are performed in their own functions
+
+
+        //scroll down slow
+        //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
+        //does not trigger the scroll listener properly (dx and dy values are 0)
+        //todo why am i getting unresolved reference for this id?????
+//        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+            swipeUpSlow()
+        )
+
+        //wait for the scroll to finish
+        pauseTestUntilAsyncOperationDone()
+
+        //verify only mOnScrollDown invoked (will be invoked many times)
+        verify(exactly = 0) { mOnScrollDown.invoke() }
+        verify(exactly = 0) { mOnScrollUp.invoke() }
+        verify(exactly = 0) { mOnScrollLeft.invoke() }
+        verify(exactly = 0) { mOnScrollRight.invoke() }
+    }
+
     @Test
     fun scrollListenerTest_vertical() {
-        setupScrollListeners()
+        //low sensitivity to guarantee listeners will be called
+        setupScrollListeners(1)
         val listSize = 100
         setListForActivity(listSize)
 
@@ -215,14 +265,15 @@ class TestDxRecyclerView {
         verify(exactly = 0) { mOnScrollLeft.invoke() }
         verify(exactly = 0) { mOnScrollRight.invoke() }
 
-        //scroll to end of list.
+        //scroll down fast
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
         //todo why am i getting unresolved reference for this id?????
 //        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
-            ViewActions.swipeUp()
+            swipeUpFast()
         )
+
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()
 
@@ -232,13 +283,13 @@ class TestDxRecyclerView {
         verify(exactly = 0) { mOnScrollLeft.invoke() }
         verify(exactly = 0) { mOnScrollRight.invoke() }
 
-        //scroll to top of list
+        //scroll up fast
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
         //todo why am i getting unresolved reference for this id?????
 //        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
-            ViewActions.swipeDown()
+            swipeDownFast()
         )
 
         //wait for the scroll to finish
@@ -258,7 +309,8 @@ class TestDxRecyclerView {
 
     @Test
     fun scrollListenerTest_horizontal() {
-        setupScrollListeners()
+        //low sensitivity to guarantee listeners will be called
+        setupScrollListeners(1)
         val listSize = 100
         setListForActivity(listSize)
 
