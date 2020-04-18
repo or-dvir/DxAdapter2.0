@@ -2,7 +2,6 @@ package com.hotmail.or_dvir.dxrecyclerview
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxidlingresource.DxCountingIdlingResource
@@ -77,19 +76,32 @@ class DxRecyclerView @JvmOverloads constructor(
             object : OnScrollListener() {
 
                 override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    if (newState == SCROLL_STATE_IDLE) {
-                        //scrolling event finished - decrement idlingResource so UI tests can continue
-                        idlingResource.decrement("${TAG}.onScrollStateChanged()")
-                    } else {
+
+                    //IMPORTANT NOTE!!!
+                    //there are 2 states related to dragging and only 1 state related to
+                    //stopping the drag event, and its therefore possible for the
+                    //idling resource to be incremented twice but only decremented once,
+                    //which would lead to UI tests getting stuck.
+                    //in addition, SCROLL_STATE_SETTLING is not always called - for example if
+                    //the recycler view is perfectly still when the user lifts their finger off
+                    //the screen.
+                    //the SCROLL_STATE_DRAGGING however, is fired only once when the user
+                    //starts dragging, and is therefore the chosen state for incrementing
+                    //the idling resource.
+
+                    when (newState) {
                         //increment idlingResource until scroll event finished so UI tests don't fail
-                        idlingResource.increment("${TAG}.onScrollStateChanged()")
+                        SCROLL_STATE_DRAGGING ->
+                            idlingResource.increment("${TAG}.onScrollStateChanged()")
+                        //scrolling event finished - decrement idlingResource so UI tests can continue
+                        SCROLL_STATE_IDLE ->
+                            idlingResource.decrement("${TAG}.onScrollStateChanged()")
                     }
                 }
 
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
-                    when testing dx and dy are 0!!!! so listener not trigerred
                     invokeScrollListener(dx, dy)
                     invokeVisibilityListeners()
                 }

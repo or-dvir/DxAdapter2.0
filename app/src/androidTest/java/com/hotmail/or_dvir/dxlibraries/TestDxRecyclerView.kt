@@ -1,6 +1,5 @@
 package com.hotmail.or_dvir.dxlibraries
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
@@ -208,51 +207,52 @@ class TestDxRecyclerView {
         val listSize = 100
         setListForActivity(listSize)
 
-//        onActivity { it.setLayoutManagerVertical() }
+        onActivity { it.setLayoutManagerVertical() }
 
-//        //verify no listeners have been invoked
-//        verify(exactly = 0) { mOnScrollUp.invoke() }
-//        verify(exactly = 0) { mOnScrollDown.invoke() }
-//        verify(exactly = 0) { mOnScrollLeft.invoke() }
-//        verify(exactly = 0) { mOnScrollRight.invoke() }
-//
-        //scroll to end of list
+        //verify no listeners have been invoked
+        verify(exactly = 0) { mOnScrollUp.invoke() }
+        verify(exactly = 0) { mOnScrollDown.invoke() }
+        verify(exactly = 0) { mOnScrollLeft.invoke() }
+        verify(exactly = 0) { mOnScrollRight.invoke() }
+
+        //scroll to end of list.
+        //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
+        //does not trigger the scroll listener properly (dx and dy values are 0)
         //todo why am i getting unresolved reference for this id?????
 //        onView(withId(R.id.activityMain_rv)).perform(
         onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
-            //NOTE: the position parameter must be within the recycler view bounds!
-            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(listSize - 1)
+            ViewActions.swipeUp()
         )
-//
-//        //wait for the scroll to finish
-//        pauseTestUntilAsyncOperationDone()
-//
-//        //verify only mOnScrollDown invoked
-//        verify(exactly = 1) { mOnScrollDown.invoke() }
-//        verify(exactly = 0) { mOnScrollUp.invoke() }
-//        verify(exactly = 0) { mOnScrollLeft.invoke() }
-//        verify(exactly = 0) { mOnScrollRight.invoke() }
-//
-//        //scroll to top of list
-//        //todo why am i getting unresolved reference for this id?????
-////        onView(withId(R.id.activityMain_rv)).perform(
-//        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
-//            //NOTE: the position parameter must be within the recycler view bounds!
-//            RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0)
-//        )
-//
-//        //wait for the scroll to finish
-//        pauseTestUntilAsyncOperationDone()
-//
-//        //verify only mOnScrollUp invoked.
-//        //NOTE: there is no way to reset the "call count" of mockk.verify{},
-//        //so we most account for previous invocations
-//        verify(exactly = 1) { mOnScrollUp.invoke() }
-//        verify(exactly = 1) { mOnScrollDown.invoke() }
-//        verify(exactly = 0) { mOnScrollLeft.invoke() }
-//        verify(exactly = 0) { mOnScrollRight.invoke() }
-//
-//        //todo can i test sensitivity?????
+        //wait for the scroll to finish
+        pauseTestUntilAsyncOperationDone()
+
+        //verify only mOnScrollDown invoked (will be invoked many times)
+        verify { mOnScrollDown.invoke() }
+        verify(exactly = 0) { mOnScrollUp.invoke() }
+        verify(exactly = 0) { mOnScrollLeft.invoke() }
+        verify(exactly = 0) { mOnScrollRight.invoke() }
+
+        //scroll to top of list
+        //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
+        //does not trigger the scroll listener properly (dx and dy values are 0)
+        //todo why am i getting unresolved reference for this id?????
+//        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+            ViewActions.swipeDown()
+        )
+
+        //wait for the scroll to finish
+        pauseTestUntilAsyncOperationDone()
+
+        //verify only mOnScrollUp invoked (will be invoked many times).
+        //NOTE: there is no way to reset the "call count" of mockk.verify{},
+        //so we most account for previous invocations
+        verify { mOnScrollUp.invoke() }
+        verify { mOnScrollDown.invoke() }
+        verify(exactly = 0) { mOnScrollLeft.invoke() }
+        verify(exactly = 0) { mOnScrollRight.invoke() }
+
+        //todo can i test sensitivity?????
     }
 
     @Test

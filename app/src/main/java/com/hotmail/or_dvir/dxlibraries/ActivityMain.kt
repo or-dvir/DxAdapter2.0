@@ -36,10 +36,10 @@ class ActivityMain : AppCompatActivity() {
             adapter = mAdapter
 
 //            onScrollListener = DxScrollListener(1).apply {
-//                onScrollUp = { Log.i("aaaaa", "listener up") }
-//                onScrollDown = { Log.i("aaaaa", "listener down") }
-//                onScrollLeft = { Log.i("aaaaa", "listener left") }
-//                onScrollRight = { Log.i("aaaaa", "listener right") }
+//                onScrollUp = { Log.i("aaaaa", "scroll up") }
+//                onScrollDown = { Log.i("aaaaa", "scroll down") }
+//                onScrollLeft = { Log.i("aaaaa", "scroll left") }
+//                onScrollRight = { Log.i("aaaaa", "scroll right") }
 //            }
 
 //            onItemsVisibilityListener = DxVisibilityListener().apply {
