@@ -13,7 +13,7 @@ import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityMain : AppCompatActivity() {
-    var mAdapter = MyAdapter()
+    lateinit var mAdapter: MyAdapter
 
     //todo
     // export each module as its own library!!!
@@ -33,24 +33,24 @@ class ActivityMain : AppCompatActivity() {
 
         setLayoutManagerVertical()
 
-        mAdapter.items = List(100) { index -> MyItem("item $index") }
+        val adapter = MyAdapter(List(100) { index -> MyItem("item $index") })
 
 //        setScrollListeners()
 //        setVisibilityListeners()
 //        setAdapterClickListeners()
 
-        activityMain_rv.adapter = mAdapter
+        setAdapter(adapter)
     }
 
     fun setAdapter(adapter: MyAdapter) {
         mAdapter = adapter
-//        activityMain_rv.adapter = mAdapter
+        activityMain_rv.adapter = mAdapter
     }
 
     private fun setAdapterClickListeners() {
         val clickListeners = DxClickListeners().apply {
 
-            fun getItemAtPosition(position: Int) = mAdapter.items[position]
+            fun getItemAtPosition(position: Int) = mAdapter.getItems()[position]
 
             onItemClick = { view, adapterPosition ->
                 val item = getItemAtPosition(adapterPosition)
@@ -70,8 +70,8 @@ class ActivityMain : AppCompatActivity() {
 
     private fun setVisibilityListeners() {
         activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
-            onFirstItemVisible = { Log.i("aaaaa", mAdapter.items[0].text) }
-            onLastItemVisible = { Log.i("aaaaa", mAdapter.items[1].text) }
+            onFirstItemVisible = { Log.i("aaaaa", mAdapter.getItems()[0].text) }
+            onLastItemVisible = { Log.i("aaaaa", mAdapter.getItems()[1].text) }
         }
     }
 

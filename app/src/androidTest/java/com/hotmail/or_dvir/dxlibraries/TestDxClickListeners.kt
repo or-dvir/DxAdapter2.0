@@ -1,6 +1,5 @@
 package com.hotmail.or_dvir.dxlibraries
 
-import android.util.Log
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -14,9 +13,7 @@ import com.hotmail.or_dvir.dxadapterclicklisteners.onItemLongClickListener
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import io.mockk.spyk
 import io.mockk.verify
-import kotlinx.android.synthetic.main.activity_main.*
 import org.hamcrest.CoreMatchers.containsString
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
@@ -28,26 +25,18 @@ class TestDxClickListeners {
     private fun onActivity(task: (act: ActivityMain) -> Unit) =
         activityScenario.scenario.onActivity { task.invoke(it) }
 
-    @Before
-    fun before() {
-        setListForActivity(2)
-    }
-
     //todo for some reason when i use this line in my tests i get "unresolved reference"
     // onView(withId(R.id.activityMain_rv))
 
-    private fun setListForActivity(listSize: Int) {
-        onActivity {
-            it.mAdapter.items = List(listSize) { index -> MyItem("item $index") }
-        }
-    }
-
     @Test
     fun clickListenersTest() {
-        val clickListener: onItemClickListener = spyk({ _, _ ->
 
-            Log.i("aaaaa", "click")
-        })
+        //IMPORTANT NOTE!!!
+        //the click listeners rely on the function onCreateViewHolder,
+        //which in this test case should only be called once.
+        //therefore we must first create the adapter, and only then add it to the activity.
+
+        val clickListener: onItemClickListener = spyk({ _, _ -> })
         val longClickListener: onItemLongClickListener = spyk({ _, _ -> true })
 
         val clickFunctionality = DxClickListeners().apply {
@@ -55,19 +44,16 @@ class TestDxClickListeners {
             onItemLongClick = longClickListener
         }
 
-        problem
-        the adapter is created, and the functionality is only added after the views
-        have been created.
-            so when onCreateViewHolder is called, the list of functionalities is empty!!!
+        val items = List(2) { index -> MyItem("item $index") }
+        val testAdapter = MyAdapter(items).apply {
+            addFunctionality(clickFunctionality)
+        }
 
         onActivity {
             it.apply {
-                mAdapter.addFunctionality(clickFunctionality)
+                setAdapter(testAdapter)
             }
         }
-
-        Log.i("aaaaa", "new list from test")
-        setListForActivity(10)
 
         var clickedPosition = 0
 
@@ -88,11 +74,11 @@ class TestDxClickListeners {
             actionOnItemAtPosition<ViewHolder>(clickedPosition, longClick())
         )
 
-        //only long click listener should be called
-        //NOTE:
-        //its impossible to reset the mockk.verify counter, so we must consider
-        //previous invocations
+        //long click listener should be called
         verify(exactly = 1) { longClickListener.invoke(any(), clickedPosition) }
-        verify(exactly = 1) { clickListener.invoke(any(), clickedPosition) }
+
+        //its impossible to reset the mockk.verify counter, so we must consider
+        //previous invocations. also, we don't care about the function parameters
+        verify(exactly = 1) { clickListener.invoke(any(), any()) }
     }
 }

@@ -82,7 +82,7 @@ class TestDxRecyclerView {
 
     private fun setListForActivity(listSize: Int) {
         onActivity {
-            it.mAdapter.items = List(listSize) { index -> MyItem("item $index") }
+            it.mAdapter.setItems(List(listSize) { index -> MyItem("item $index") })
         }
 
         //since the listeners may be called after a small delay, we need to wait for
