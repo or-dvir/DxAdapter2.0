@@ -41,7 +41,7 @@ class TestDxFeatureClickListeners {
         //which in this test case should only be called once.
         //therefore we must first create the adapter, and only then add it to the activity.
 
-        //todo add test for non clickable item
+        add test for non clickable item
 
         val clickFunctionality = DxFeatureClickListeners().apply {
             onItemClick = mClickListener
