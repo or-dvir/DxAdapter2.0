@@ -18,14 +18,14 @@ class DxFeatureClickListeners : IDxBaseFeature {
     ) {
         itemView.setOnClickListener { view ->
             val item = adapter.getDxAdapterItem<IDxBaseItem>(holder.adapterPosition)
-            if (item is IDxClickable) {
+            if (item is IDxItemClickable) {
                 onItemClick?.invoke(view, holder.adapterPosition)
             }
         }
 
         itemView.setOnLongClickListener { view ->
             val item = adapter.getDxAdapterItem<IDxBaseItem>(holder.adapterPosition)
-            if (item is IDxClickable) {
+            if (item is IDxItemClickable) {
                 onItemLongClick?.invoke(view, holder.adapterPosition) ?: true
             } else {
                 //if the item is not clickable, we do not consume the event
