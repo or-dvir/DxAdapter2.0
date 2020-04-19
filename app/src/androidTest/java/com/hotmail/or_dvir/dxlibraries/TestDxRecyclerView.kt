@@ -9,6 +9,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.AdapterClickable
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ItemClickable
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
@@ -45,16 +47,25 @@ class TestDxRecyclerView {
 
     @Before
     fun before() {
-        //register idling resource
+
+        //set a fresh empty list.
+        val testAdapter = AdapterClickable(listOf())
+
         onActivity {
-            IdlingRegistry.getInstance().register(it.activityMain_rv.getIdlingResourceInstance())
+            it.apply {
+                //register idling resource
+                IdlingRegistry.getInstance()
+                    .register(activityMain_rv.getIdlingResourceInstance())
+
+                setAdapter(testAdapter)
+            }
         }
 
         //set a fresh empty list.
         //IMPORTANT NOTE
         //this method should NOT be called from inside the activity (e.g. inside onActivity{} block)
         //or the test will get stuck!!!
-        setListForActivity(0)
+//        setListForActivity(0)
     }
 
     @After
@@ -82,7 +93,9 @@ class TestDxRecyclerView {
 
     private fun setListForActivity(listSize: Int) {
         onActivity {
-            it.mAdapter.setItems(List(listSize) { index -> MyItem("item $index") })
+            it.apply {
+                mAdapter.setItems(List(listSize) { index -> ItemClickable("item $index") })
+            }
         }
 
         //since the listeners may be called after a small delay, we need to wait for

@@ -7,13 +7,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
+import com.hotmail.or_dvir.dxlibraries.adapters.BaseSampleAdapter
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.AdapterClickable
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ItemClickable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
+import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityMain : AppCompatActivity() {
-    lateinit var mAdapter: MyAdapter
+    lateinit var mAdapter: BaseSampleAdapter<*>
 
     //todo
     // export each module as its own library!!!
@@ -33,16 +36,23 @@ class ActivityMain : AppCompatActivity() {
 
         setLayoutManagerVertical()
 
-        val adapter = MyAdapter(List(100) { index -> MyItem("item $index") })
+        val adapter =
+            AdapterClickable(List(100) { index ->
+                ItemClickable("item $index")
+            })
 
 //        setScrollListeners()
 //        setVisibilityListeners()
 //        setClickListeners()
 
         setAdapter(adapter)
+
+        activityMain_btn.setOnClickListener {
+            mAdapter.setItems(List(5) { index -> ItemClickable("item $index") })
+        }
     }
 
-    fun setAdapter(adapter: MyAdapter) {
+    fun setAdapter(adapter: BaseSampleAdapter<*>) {
         mAdapter = adapter
         activityMain_rv.adapter = mAdapter
     }
@@ -50,7 +60,8 @@ class ActivityMain : AppCompatActivity() {
     private fun setClickListeners() {
         val clickListeners = DxFeatureClickListeners().apply {
 
-            fun getItemAtPosition(position: Int) = mAdapter.getAdapterItem<MyItem>(position)
+            fun getItemAtPosition(position: Int) =
+                mAdapter.getDxAdapterItem<ItemClickable>(position)
 
             onItemClick = { view, adapterPosition ->
                 val item = getItemAtPosition(adapterPosition)
@@ -70,11 +81,14 @@ class ActivityMain : AppCompatActivity() {
 
     private fun setVisibilityListeners() {
         activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
-            onFirstItemVisible = { Log.i("aaaaa", mAdapter.getItems()[0].text) }
-            onLastItemVisible = { Log.i("aaaaa", mAdapter.getItems()[1].text) }
+
+            fun getItemAtPosition(position: Int) =
+                mAdapter.getDxAdapterItem<ItemClickable>(position)
+
+            onFirstItemVisible = { Log.i("aaaaa", getItemAtPosition(0).text) }
+            onLastItemVisible = { Log.i("aaaaa", getItemAtPosition(1).text) }
         }
     }
-
 
     private fun setScrollListeners() {
         activityMain_rv.onScrollListener = DxScrollListener(1).apply {

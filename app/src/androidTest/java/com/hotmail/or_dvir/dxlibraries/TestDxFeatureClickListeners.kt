@@ -7,10 +7,12 @@ import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.AdapterClickable
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ItemClickable
+import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import com.hotmail.or_dvir.featureclicklisteners.onItemClickListener
 import com.hotmail.or_dvir.featureclicklisteners.onItemLongClickListener
-import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import io.mockk.spyk
 import io.mockk.verify
 import org.hamcrest.CoreMatchers.containsString
@@ -19,8 +21,8 @@ import org.junit.Test
 
 class TestDxFeatureClickListeners {
 
-    val mClickListener: onItemClickListener = spyk({ _, _ -> })
-    val mLongClickListener: onItemLongClickListener = spyk({ _, _ -> true })
+    private val mClickListener: onItemClickListener = spyk({ _, _ -> })
+    private val mLongClickListener: onItemLongClickListener = spyk({ _, _ -> true })
 
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
@@ -46,16 +48,11 @@ class TestDxFeatureClickListeners {
             onItemLongClick = mLongClickListener
         }
 
-        val items = List(2) { index -> MyItem("item $index") }
-        val testAdapter = MyAdapter(items).apply {
-            addFunctionality(clickFunctionality)
-        }
+        val items = List(2) { index -> ItemClickable("item $index") }
+        val testAdapter =
+            AdapterClickable(items).apply { addFunctionality(clickFunctionality) }
 
-        onActivity {
-            it.apply {
-                setAdapter(testAdapter)
-            }
-        }
+        onActivity { it.apply { setAdapter(testAdapter) } }
 
         var clickedPosition = 0
 
@@ -64,8 +61,8 @@ class TestDxFeatureClickListeners {
         )
 
         //only regular click listener should be called
-        verify(exactly = 1) { clickListener.invoke(any(), clickedPosition) }
-        verify(exactly = 0) { longClickListener.invoke(any(), clickedPosition) }
+        verify(exactly = 1) { mClickListener.invoke(any(), clickedPosition) }
+        verify(exactly = 0) { mLongClickListener.invoke(any(), clickedPosition) }
 
 
         //testing long click
@@ -77,10 +74,10 @@ class TestDxFeatureClickListeners {
         )
 
         //long click listener should be called
-        verify(exactly = 1) { longClickListener.invoke(any(), clickedPosition) }
+        verify(exactly = 1) { mLongClickListener.invoke(any(), clickedPosition) }
 
         //its impossible to reset the mockk.verify counter, so we must consider
         //previous invocations. also, we don't care about the function parameters
-        verify(exactly = 1) { clickListener.invoke(any(), any()) }
+        verify(exactly = 1) { mClickListener.invoke(any(), any()) }
     }
 }

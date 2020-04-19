@@ -17,14 +17,14 @@ class DxFeatureClickListeners : IDxBaseFeature {
         holder: RecyclerView.ViewHolder
     ) {
         itemView.setOnClickListener { view ->
-            val item = adapter.getAdapterItem<IDxBaseItem>(holder.adapterPosition)
+            val item = adapter.getDxAdapterItem<IDxBaseItem>(holder.adapterPosition)
             if (item is IDxClickable) {
                 onItemClick?.invoke(view, holder.adapterPosition)
             }
         }
 
         itemView.setOnLongClickListener { view ->
-            val item = adapter.getAdapterItem<IDxBaseItem>(holder.adapterPosition)
+            val item = adapter.getDxAdapterItem<IDxBaseItem>(holder.adapterPosition)
             if (item is IDxClickable) {
                 onItemLongClick?.invoke(view, holder.adapterPosition) ?: true
             } else {

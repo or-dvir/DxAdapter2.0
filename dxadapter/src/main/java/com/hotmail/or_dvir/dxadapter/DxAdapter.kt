@@ -57,7 +57,7 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
     override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
 
     //todo should i check the cast? i would only throw an exception anyways...
-    fun <T> getAdapterItem(position: Int) = getDxAdapterItems()[position] as T
+    fun <T> getDxAdapterItem(position: Int) = getDxAdapterItems()[position] as T
 
     //
     // abstract functions
