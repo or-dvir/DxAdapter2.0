@@ -7,9 +7,9 @@ import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.hotmail.or_dvir.dxadapterclicklisteners.DxClickListeners
-import com.hotmail.or_dvir.dxadapterclicklisteners.onItemClickListener
-import com.hotmail.or_dvir.dxadapterclicklisteners.onItemLongClickListener
+import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
+import com.hotmail.or_dvir.featureclicklisteners.onItemClickListener
+import com.hotmail.or_dvir.featureclicklisteners.onItemLongClickListener
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import io.mockk.spyk
 import io.mockk.verify
@@ -17,7 +17,7 @@ import org.hamcrest.CoreMatchers.containsString
 import org.junit.Rule
 import org.junit.Test
 
-class TestDxClickListeners {
+class TestDxFeatureClickListeners {
 
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
@@ -39,7 +39,7 @@ class TestDxClickListeners {
         val clickListener: onItemClickListener = spyk({ _, _ -> })
         val longClickListener: onItemLongClickListener = spyk({ _, _ -> true })
 
-        val clickFunctionality = DxClickListeners().apply {
+        val clickFunctionality = DxFeatureClickListeners().apply {
             onItemClick = clickListener
             onItemLongClick = longClickListener
         }

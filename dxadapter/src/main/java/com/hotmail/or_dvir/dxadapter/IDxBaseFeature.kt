@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * a base interface for all functionalities (click listeners, swipe, etc.) to share
  */
-interface IDxBaseFunctionality {
+interface IDxBaseFeature {
 
     fun onCreateViewHolder(itemView: View, holder: RecyclerView.ViewHolder)
 }

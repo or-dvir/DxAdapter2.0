@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxadapterclicklisteners
+package com.hotmail.or_dvir.featureclicklisteners
 
 import android.view.View
 

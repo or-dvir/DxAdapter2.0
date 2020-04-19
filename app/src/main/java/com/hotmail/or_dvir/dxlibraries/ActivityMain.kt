@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxadapterclicklisteners.DxClickListeners
+import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import kotlinx.android.synthetic.main.activity_main.*
@@ -48,7 +48,7 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun setAdapterClickListeners() {
-        val clickListeners = DxClickListeners().apply {
+        val clickListeners = DxFeatureClickListeners().apply {
 
             fun getItemAtPosition(position: Int) = mAdapter.getItems()[position]
 

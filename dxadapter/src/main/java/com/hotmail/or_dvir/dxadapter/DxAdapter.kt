@@ -1,6 +1,5 @@
 package com.hotmail.or_dvir.dxadapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
     //todo does this needs to be "out"?
-    private val allFunctionalities: MutableList</*out*/ IDxBaseFunctionality> = mutableListOf()
+    private val allFeatures: MutableList</*out*/ IDxBaseFeature> = mutableListOf()
 
-    fun addFunctionality(functionality: IDxBaseFunctionality) {
-        allFunctionalities.add(functionality)
+    fun addFunctionality(feature: IDxBaseFeature) {
+        allFeatures.add(feature)
     }
 
     @CallSuper
@@ -25,7 +24,7 @@ abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
 
         val holder = createAdapterViewHolder(itemView, parent, viewType)
 
-        allFunctionalities.forEach {
+        allFeatures.forEach {
             it.onCreateViewHolder(itemView, holder)
         }
 
