@@ -4,6 +4,7 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
 class DxFeatureClickListeners : IDxBaseFeature {
 
@@ -11,17 +12,25 @@ class DxFeatureClickListeners : IDxBaseFeature {
     var onItemLongClick: onItemLongClickListener? = null
 
     override fun onCreateViewHolder(
+        adapter: DxAdapter<*>,
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
         itemView.setOnClickListener { view ->
-            if(item is IDxClickable) {
+            val item = adapter.getAdapterItem<IDxBaseItem>(holder.adapterPosition)
+            if (item is IDxClickable) {
                 onItemClick?.invoke(view, holder.adapterPosition)
             }
         }
 
         itemView.setOnLongClickListener { view ->
-            onItemLongClick?.invoke(view, holder.adapterPosition) ?: true
+            val item = adapter.getAdapterItem<IDxBaseItem>(holder.adapterPosition)
+            if (item is IDxClickable) {
+                onItemLongClick?.invoke(view, holder.adapterPosition) ?: true
+            } else {
+                //if the item is not clickable, we do not consume the event
+                false
+            }
         }
     }
 }

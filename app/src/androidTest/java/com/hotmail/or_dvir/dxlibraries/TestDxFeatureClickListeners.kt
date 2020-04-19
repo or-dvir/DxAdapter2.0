@@ -19,6 +19,9 @@ import org.junit.Test
 
 class TestDxFeatureClickListeners {
 
+    val mClickListener: onItemClickListener = spyk({ _, _ -> })
+    val mLongClickListener: onItemLongClickListener = spyk({ _, _ -> true })
+
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 
@@ -36,12 +39,11 @@ class TestDxFeatureClickListeners {
         //which in this test case should only be called once.
         //therefore we must first create the adapter, and only then add it to the activity.
 
-        val clickListener: onItemClickListener = spyk({ _, _ -> })
-        val longClickListener: onItemLongClickListener = spyk({ _, _ -> true })
+        //todo add test for non clickable item
 
         val clickFunctionality = DxFeatureClickListeners().apply {
-            onItemClick = clickListener
-            onItemLongClick = longClickListener
+            onItemClick = mClickListener
+            onItemLongClick = mLongClickListener
         }
 
         val items = List(2) { index -> MyItem("item $index") }

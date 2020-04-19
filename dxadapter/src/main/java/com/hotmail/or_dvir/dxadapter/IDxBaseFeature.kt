@@ -8,5 +8,5 @@ import androidx.recyclerview.widget.RecyclerView
  */
 interface IDxBaseFeature {
 
-    fun onCreateViewHolder(itemView: View, holder: RecyclerView.ViewHolder)
+    fun onCreateViewHolder(adapter: DxAdapter<*>, itemView: View, holder: RecyclerView.ViewHolder)
 }

@@ -37,7 +37,7 @@ class ActivityMain : AppCompatActivity() {
 
 //        setScrollListeners()
 //        setVisibilityListeners()
-//        setAdapterClickListeners()
+//        setClickListeners()
 
         setAdapter(adapter)
     }
@@ -47,10 +47,10 @@ class ActivityMain : AppCompatActivity() {
         activityMain_rv.adapter = mAdapter
     }
 
-    private fun setAdapterClickListeners() {
+    private fun setClickListeners() {
         val clickListeners = DxFeatureClickListeners().apply {
 
-            fun getItemAtPosition(position: Int) = mAdapter.getItems()[position]
+            fun getItemAtPosition(position: Int) = mAdapter.getAdapterItem<MyItem>(position)
 
             onItemClick = { view, adapterPosition ->
                 val item = getItemAtPosition(adapterPosition)

@@ -8,9 +8,8 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
-abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
-    //todo does this needs to be "out"?
-    private val allFeatures: MutableList</*out*/ IDxBaseFeature> = mutableListOf()
+abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
+    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
 
     fun addFunctionality(feature: IDxBaseFeature) {
         allFeatures.add(feature)
@@ -25,7 +24,7 @@ abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
         val holder = createAdapterViewHolder(itemView, parent, viewType)
 
         allFeatures.forEach {
-            it.onCreateViewHolder(itemView, holder)
+            it.onCreateViewHolder(this, itemView, holder)
         }
 
         return holder
@@ -57,6 +56,8 @@ abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
     override fun getItemCount() = getDxAdapterItems().size
     override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
 
+    //todo should i check the cast? i would only throw an exception anyways...
+    fun <T> getAdapterItem(position: Int) = getDxAdapterItems()[position] as T
 
     //
     // abstract functions
@@ -73,11 +74,7 @@ abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
      * [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder] directly
      * @param itemView the inflated view returned from [getItemLayoutRes]
      */
-    abstract fun createAdapterViewHolder(
-        itemView: View,
-        parent: ViewGroup,
-        viewType: Int
-    ): VH
+    abstract fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int): VH
 
     /**
      * returns the layout resource id for the view to to inflate in [createAdapterViewHolder]
