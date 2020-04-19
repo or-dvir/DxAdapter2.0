@@ -9,8 +9,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.AdapterClickable
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ItemClickable
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ClickableAdapter
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ClickableItem
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
@@ -49,7 +49,7 @@ class TestDxRecyclerView {
     fun before() {
 
         //set a fresh empty list.
-        val testAdapter = AdapterClickable(listOf())
+        val testAdapter = ClickableAdapter(listOf())
 
         onActivity {
             it.apply {
@@ -94,7 +94,7 @@ class TestDxRecyclerView {
     private fun setListForActivity(listSize: Int) {
         onActivity {
             it.apply {
-                mAdapter.setItems(List(listSize) { index -> ItemClickable("item $index") })
+                mAdapter.setItems(List(listSize) { index -> ClickableItem("item $index") })
             }
         }
 

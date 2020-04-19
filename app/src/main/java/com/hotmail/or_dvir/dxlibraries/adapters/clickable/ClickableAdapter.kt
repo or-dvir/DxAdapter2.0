@@ -1,16 +1,15 @@
 package com.hotmail.or_dvir.dxlibraries.adapters.clickable
 
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxlibraries.R
 import com.hotmail.or_dvir.dxlibraries.adapters.BaseSampleAdapter
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.AdapterClickable.*
+import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ClickableAdapter.*
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class AdapterClickable(mItems: List<ItemClickable>) :
+class ClickableAdapter(mItems: List<ClickableItem>) :
     BaseSampleAdapter<ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
@@ -20,7 +19,7 @@ class AdapterClickable(mItems: List<ItemClickable>) :
         R.layout.list_item
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getDxAdapterItem<ItemClickable>(position)
+        val item = getDxAdapterItem<ClickableItem>(position)
         holder.tv.text = item.text
     }
 
