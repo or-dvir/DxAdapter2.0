@@ -25,7 +25,6 @@ abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
 
         val holder = createAdapterViewHolder(itemView, parent, viewType)
 
-        Log.i("aaaaa", "num functionalities: ${allFunctionalities.size}")
         allFunctionalities.forEach {
             it.onCreateViewHolder(itemView, holder)
         }
