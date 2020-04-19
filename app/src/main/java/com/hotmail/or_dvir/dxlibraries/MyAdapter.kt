@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class MyAdapter(private var mItems: List<MyItem>) : DxAdapter<MyAdapter.ViewHolder>() {
+class MyAdapter(private var mItems: List<MyItem>) : DxAdapter<MyItem, MyAdapter.ViewHolder>() {
     override fun getDxAdapterItems() = mItems
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =

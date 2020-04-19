@@ -1,27 +1,25 @@
 package com.hotmail.or_dvir.featureclicklisteners
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
-class DxFeatureClickListeners : IDxBaseFeature {
+class DxFeatureClickListeners<ITEM : IDxBaseItem> : IDxBaseFeature<ITEM> {
 
-    var onItemClick: onItemClickListener? = null
-    var onItemLongClick: onItemLongClickListener? = null
+    var onItemClick: onItemClickListener<ITEM>? = null
+    var onItemLongClick: onItemLongClickListener<ITEM>? = null
 
-    override fun onCreateViewHolder(
-        itemView: View,
-        holder: RecyclerView.ViewHolder
-    ) {
+    override fun onCreateViewHolder(itemView: View, adapterPosition: Int, item: ITEM) {
+        if (item !is IDxItemClickable) {
+            return
+        }
+
         itemView.setOnClickListener { view ->
-            if(item is IDxClickable) {
-                onItemClick?.invoke(view, holder.adapterPosition)
-            }
+            onItemClick?.invoke(view, adapterPosition, item)
         }
 
         itemView.setOnLongClickListener { view ->
-            onItemLongClick?.invoke(view, holder.adapterPosition) ?: true
+            onItemLongClick?.invoke(view, adapterPosition, item) ?: true
         }
     }
 }

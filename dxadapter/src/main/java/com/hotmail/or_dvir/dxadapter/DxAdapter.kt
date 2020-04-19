@@ -8,9 +8,9 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
-abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
+abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
     //todo does this needs to be "out"?
-    private val allFeatures: MutableList</*out*/ IDxBaseFeature> = mutableListOf()
+    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
 
     fun addFunctionality(feature: IDxBaseFeature) {
         allFeatures.add(feature)
@@ -25,7 +25,8 @@ abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
         val holder = createAdapterViewHolder(itemView, parent, viewType)
 
         allFeatures.forEach {
-            it.onCreateViewHolder(itemView, holder)
+            val position = holder.adapterPosition
+            it.onCreateViewHolder(itemView, position, getDxAdapterItems()[position])
         }
 
         return holder
@@ -55,15 +56,29 @@ abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
 //    }
 
     override fun getItemCount() = getDxAdapterItems().size
-    override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
+    override fun getItemViewType(position: Int) {
+        val item = getDxAdapterItems()[position]
 
+        if (item !is IDxBaseItem) {
+            throw ClassCastException(
+                "item of type ${ITEM::class.java.canonicalName} must implement" +
+                        "the IDxBaseItem interface or one of its descendants"
+            )
+        }
+
+        return getDxAdapterItems()[position].getViewType()
+    }
+
+    fun <ITEM> getItemAtPosition(position: Int): ITEM {
+        val t = getDxAdapterItems()[position]
+        return t
+    }
 
     //
     // abstract functions
     //
 
     abstract fun getDxAdapterItems(): List<IDxBaseItem>
-//    abstract fun getItems(): List<ITEM>
 
     /**
      * wrapper for [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder]
@@ -73,11 +88,7 @@ abstract class DxAdapter<VH: ViewHolder> : RecyclerView.Adapter<VH>() {
      * [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder] directly
      * @param itemView the inflated view returned from [getItemLayoutRes]
      */
-    abstract fun createAdapterViewHolder(
-        itemView: View,
-        parent: ViewGroup,
-        viewType: Int
-    ): VH
+    abstract fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int): VH
 
     /**
      * returns the layout resource id for the view to to inflate in [createAdapterViewHolder]

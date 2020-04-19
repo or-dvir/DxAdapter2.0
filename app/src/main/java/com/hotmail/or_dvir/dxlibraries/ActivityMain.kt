@@ -7,9 +7,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
+import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityMain : AppCompatActivity() {
@@ -48,19 +48,16 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun setAdapterClickListeners() {
-        val clickListeners = DxFeatureClickListeners().apply {
+        val clickListeners = DxFeatureClickListeners<MyItem>().apply {
 
             fun getItemAtPosition(position: Int) = mAdapter.getItems()[position]
 
-            onItemClick = { view, adapterPosition ->
-                val item = getItemAtPosition(adapterPosition)
+            onItemClick = { view, adapterPosition, item ->
                 Log.i("aaaaa", "clicked ${item.text}")
             }
 
-            onItemLongClick = { view, adapterPosition ->
-                val item = getItemAtPosition(adapterPosition)
+            onItemLongClick = { view, adapterPosition, item ->
                 Log.i("aaaaa", "long clicked ${item.text}")
-
                 true
             }
         }
@@ -74,7 +71,6 @@ class ActivityMain : AppCompatActivity() {
             onLastItemVisible = { Log.i("aaaaa", mAdapter.getItems()[1].text) }
         }
     }
-
 
     private fun setScrollListeners() {
         activityMain_rv.onScrollListener = DxScrollListener(1).apply {
