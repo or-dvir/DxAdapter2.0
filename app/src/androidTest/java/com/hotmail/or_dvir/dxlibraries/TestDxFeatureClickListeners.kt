@@ -53,7 +53,7 @@ class TestDxFeatureClickListeners {
 
         val items = List(2) { index -> ItemNonClickable("item $index") }
         val testAdapter =
-            AdapterNonClickable(items).apply { addFunctionality(mClickFunctionality) }
+            AdapterNonClickable(items).apply { addFeature(mClickFunctionality) }
 
         onActivity { it.apply { setAdapter(testAdapter) } }
 
@@ -86,7 +86,7 @@ class TestDxFeatureClickListeners {
 
         val items = List(2) { index -> ItemClickable("item $index") }
         val testAdapter =
-            AdapterClickable(items).apply { addFunctionality(mClickFunctionality) }
+            AdapterClickable(items).apply { addFeature(mClickFunctionality) }
 
         onActivity { it.apply { setAdapter(testAdapter) } }
 

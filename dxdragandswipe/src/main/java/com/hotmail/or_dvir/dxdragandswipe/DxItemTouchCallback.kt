@@ -15,18 +15,17 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     //todo add all features from dx adapter
     // make sure all methods are implemented the same
 
-    //region drag
-    var isDragEnabled = false
-    private var dragOnLongClick = false
-    private var onInteractionStartDrag: onItemDragSwipeInteractionListener? = null
-    private var onInterActionEndDrag: onItemDragSwipeInteractionListener? = null
-    private var onItemMoved: onItemMovedListener? = null
-    private var flagIsDragging = false
-    //endregion
-    //todo dragging
-    // set drag handle
+    //todo write tests
+    var dragFeature: DxFeatureDrag? = null
+        set(value) {
+            field = value
+            value?.apply {
+                mAdapter.addFeature(value)
+            }
+        }
 
 
+    copy behaviour of drag
     //region swipe
 //    var onInteractionStartSwipe: onItemDragSwipeInteractionListener? = null
 //    var onInteractionEndSwipe: onItemDragSwipeInteractionListener? = null
@@ -34,24 +33,16 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 //    private var flagIsSwiped = false
     //endregion
     //todo swiping
+    // add a single function to enable all swiping options
     // only swipe items that are swipeable
     // add global flag to enable/disable swipe
-    // add a single function to enable all swiping options
+    // write tests
 
-    fun enableDrag(
-        dragOnLongClick: Boolean,
-        onStartDrag: onItemDragSwipeInteractionListener,
-        onEndDrag: onItemDragSwipeInteractionListener,
-        onItemMoved: onItemMovedListener
-    ) {
-        isDragEnabled = true
-        this.dragOnLongClick = dragOnLongClick
-        this.onInteractionStartDrag = onStartDrag
-        this.onInterActionEndDrag = onEndDrag
-        this.onItemMoved = onItemMoved
+    override fun isLongPressDragEnabled(): Boolean {
+        return dragFeature?.let {
+            it.dragOnLongClick && it.isDragEnabled
+        } ?: false
     }
-
-    override fun isLongPressDragEnabled() = dragOnLongClick && isDragEnabled
 
     override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
@@ -66,8 +57,10 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
         when (actionState) {
             ItemTouchHelper.ACTION_STATE_DRAG -> {
-                flagIsDragging = true
-                onInteractionStartDrag?.invoke(itemView, position)
+                dragFeature?.apply {
+                    flagIsDragging = true
+                    onInteractionStartDrag.invoke(itemView, position)
+                }
             }
 
 //            ItemTouchHelper.ACTION_STATE_SWIPE -> {
@@ -83,9 +76,11 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         val itemView = viewHolder.itemView
         val position = viewHolder.adapterPosition
 
-        if (flagIsDragging) {
-            flagIsDragging = false
-            onInterActionEndDrag?.invoke(itemView, position)
+        dragFeature?.apply {
+            if (flagIsDragging) {
+                flagIsDragging = false
+                onInterActionEndDrag.invoke(itemView, position)
+            }
         }
 
 //        if (flagIsSwiped) {
@@ -97,6 +92,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     override fun getMovementFlags(recycler: RecyclerView, holder: ViewHolder): Int {
         val item = mAdapter.getDxAdapterItems()[holder.adapterPosition]
 
+        val isDragEnabled = dragFeature?.isDragEnabled ?: false
         val dragFlags =
             if (item !is IDxItemDraggable || !isDragEnabled) {
                 0
@@ -136,7 +132,12 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             }
 
             //todo when documenting, note that this is called AFTER the item has been moved
-            onItemMoved?.invoke(draggedView, draggedPosition, targetView, targetPosition)
+            dragFeature?.onItemMoved?.invoke(
+                draggedView,
+                draggedPosition,
+                targetView,
+                targetPosition
+            )
             notifyItemMoved(draggedPosition, targetPosition)
         }
 

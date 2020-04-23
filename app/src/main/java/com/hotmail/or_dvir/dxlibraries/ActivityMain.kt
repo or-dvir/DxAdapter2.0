@@ -75,7 +75,7 @@ class ActivityMain : AppCompatActivity() {
             }
         }
 
-        mAdapter.addFunctionality(clickListeners)
+        mAdapter.addFeature(clickListeners)
     }
 
     private fun setVisibilityListeners() {

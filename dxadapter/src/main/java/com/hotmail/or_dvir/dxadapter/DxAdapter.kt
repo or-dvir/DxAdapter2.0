@@ -9,9 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
+
     private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
 
-    fun addFunctionality(feature: IDxBaseFeature) {
+    fun addFeature(feature: IDxBaseFeature) {
+        //todo make sure not to add duplicates!
+        // the order of the data structure doesnt necessarily matter,
+        // but the order of calling each feature does! make sure that all listeners
+        // are always called in the same order so the user can rely on this
         allFeatures.add(feature)
     }
 
