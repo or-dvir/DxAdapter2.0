@@ -1,15 +1,15 @@
-package com.hotmail.or_dvir.dxlibraries.adapters.clickable
+package com.hotmail.or_dvir.dxlibraries.clickable
 
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxlibraries.R
-import com.hotmail.or_dvir.dxlibraries.adapters.BaseSampleAdapter
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.NonClickableAdapter.ViewHolder
+import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable.ViewHolder
 import kotlinx.android.synthetic.main.list_item.view.*
 
-class NonClickableAdapter(mItems: List<NonClickableItem>) :
+class AdapterNonClickable(mItems: List<ItemNonClickable>) :
     BaseSampleAdapter<ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
@@ -19,7 +19,7 @@ class NonClickableAdapter(mItems: List<NonClickableItem>) :
         R.layout.list_item
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getDxAdapterItem<NonClickableItem>(position)
+        val item = getDxAdapterItem<ItemNonClickable>(position)
         holder.tv.text = item.text
     }
 

@@ -12,6 +12,9 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         private const val TAG = "DxItemTouchCallback"
     }
 
+    //todo add global flag isDragEnabled and isSwipeEnabled
+    // there might be situations where the user wants to temporarily disable drag (like selection mode)
+
     //todo add all features from dx adapter
 
     enable swiping and dragging independently

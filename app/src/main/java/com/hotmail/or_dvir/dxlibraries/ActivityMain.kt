@@ -7,9 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxlibraries.adapters.BaseSampleAdapter
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ClickableAdapter
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ClickableItem
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
@@ -37,8 +36,8 @@ class ActivityMain : AppCompatActivity() {
         setLayoutManagerVertical()
 
         val adapter =
-            ClickableAdapter(List(100) { index ->
-                ClickableItem("item $index")
+            AdapterClickable(List(100) { index ->
+                ItemClickable("item $index")
             })
 
 //        setScrollListeners()
@@ -48,7 +47,7 @@ class ActivityMain : AppCompatActivity() {
         setAdapter(adapter)
 
         activityMain_btn.setOnClickListener {
-            mAdapter.setItems(List(5) { index -> ClickableItem("item $index") })
+            mAdapter.setItems(List(5) { index -> ItemClickable("item $index") })
         }
     }
 
@@ -61,7 +60,7 @@ class ActivityMain : AppCompatActivity() {
         val clickListeners = DxFeatureClickListeners().apply {
 
             fun getItemAtPosition(position: Int) =
-                mAdapter.getDxAdapterItem<ClickableItem>(position)
+                mAdapter.getDxAdapterItem<ItemClickable>(position)
 
             onItemClick = { view, adapterPosition ->
                 val item = getItemAtPosition(adapterPosition)
@@ -83,7 +82,7 @@ class ActivityMain : AppCompatActivity() {
         activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
 
             fun getItemAtPosition(position: Int) =
-                mAdapter.getDxAdapterItem<ClickableItem>(position)
+                mAdapter.getDxAdapterItem<ItemClickable>(position)
 
             onFirstItemVisible = { Log.i("aaaaa", getItemAtPosition(0).text) }
             onLastItemVisible = { Log.i("aaaaa", getItemAtPosition(1).text) }

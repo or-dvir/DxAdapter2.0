@@ -7,10 +7,10 @@ import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ClickableAdapter
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.NonClickableAdapter
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.ClickableItem
-import com.hotmail.or_dvir.dxlibraries.adapters.clickable.NonClickableItem
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.ItemNonClickable
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import com.hotmail.or_dvir.featureclicklisteners.onItemClickListener
@@ -51,9 +51,9 @@ class TestDxFeatureClickListeners {
     @Test
     fun clickListenersTest_nonClickableItem() {
 
-        val items = List(2) { index -> NonClickableItem("item $index") }
+        val items = List(2) { index -> ItemNonClickable("item $index") }
         val testAdapter =
-            NonClickableAdapter(items).apply { addFunctionality(mClickFunctionality) }
+            AdapterNonClickable(items).apply { addFunctionality(mClickFunctionality) }
 
         onActivity { it.apply { setAdapter(testAdapter) } }
 
@@ -84,9 +84,9 @@ class TestDxFeatureClickListeners {
     @Test
     fun clickListenersTest_clickableItem() {
 
-        val items = List(2) { index -> ClickableItem("item $index") }
+        val items = List(2) { index -> ItemClickable("item $index") }
         val testAdapter =
-            ClickableAdapter(items).apply { addFunctionality(mClickFunctionality) }
+            AdapterClickable(items).apply { addFunctionality(mClickFunctionality) }
 
         onActivity { it.apply { setAdapter(testAdapter) } }
 
