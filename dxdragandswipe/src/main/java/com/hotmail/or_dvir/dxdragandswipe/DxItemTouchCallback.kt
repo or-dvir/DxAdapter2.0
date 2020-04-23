@@ -12,35 +12,52 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         private const val TAG = "DxItemTouchCallback"
     }
 
-    //todo add global flag isDragEnabled and isSwipeEnabled
-    // there might be situations where the user wants to temporarily disable drag (like selection mode)
-
-    //todo only swipe items that are swipeable
-
     //todo add all features from dx adapter
+    // make sure all methods are implemented the same
 
-    enable swiping and dragging independently
-    only drag items which are draggable
+    //region drag
+    var isDragEnabled = false
+    private var dragOnLongClick = false
+    private var onInteractionStartDrag: onItemDragSwipeInteractionListener? = null
+    private var onInterActionEndDrag: onItemDragSwipeInteractionListener? = null
+    private var onItemMoved: onItemMovedListener? = null
+    private var flagIsDragging = false
+    //endregion
+    //todo dragging
+    // set drag handle
 
-    var dragOnLongClick = false
-    var onInteractionStartDrag: onItemDragSwipeInteractionListener? = null
-    var onInterActionEndDrag: onItemDragSwipeInteractionListener? = null
-    var onItemMoved: onItemMovedListener? = null
 
-    var onInteractionStartSwipe: onItemDragSwipeInteractionListener? = null
-    var onInteractionEndSwipe: onItemDragSwipeInteractionListener? = null
-    var onItemSwiped: onItemSwipedListener? = null
+    //region swipe
+//    var onInteractionStartSwipe: onItemDragSwipeInteractionListener? = null
+//    var onInteractionEndSwipe: onItemDragSwipeInteractionListener? = null
+//    var onItemSwiped: onItemSwipedListener? = null
+//    private var flagIsSwiped = false
+    //endregion
+    //todo swiping
+    // only swipe items that are swipeable
+    // add global flag to enable/disable swipe
+    // add a single function to enable all swiping options
 
-    private var flagIsDragged = false
-    private var flagIsSwiped = false
+    fun enableDrag(
+        dragOnLongClick: Boolean,
+        onStartDrag: onItemDragSwipeInteractionListener,
+        onEndDrag: onItemDragSwipeInteractionListener,
+        onItemMoved: onItemMovedListener
+    ) {
+        isDragEnabled = true
+        this.dragOnLongClick = dragOnLongClick
+        this.onInteractionStartDrag = onStartDrag
+        this.onInterActionEndDrag = onEndDrag
+        this.onItemMoved = onItemMoved
+    }
 
-    override fun isLongPressDragEnabled() = dragOnLongClick
+    override fun isLongPressDragEnabled() = dragOnLongClick && isDragEnabled
 
     override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
         super.onSelectedChanged(viewHolder, actionState)
 
         if (viewHolder == null) {
-            Log.e(TAG, "viewHolder is null. cannot call drag and swipe listeners")
+            Log.e(TAG, "viewHolder is null. cannot invoke drag and swipe listeners")
             return
         }
 
@@ -49,14 +66,14 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
         when (actionState) {
             ItemTouchHelper.ACTION_STATE_DRAG -> {
-                flagIsDragged = true
+                flagIsDragging = true
                 onInteractionStartDrag?.invoke(itemView, position)
             }
 
-            ItemTouchHelper.ACTION_STATE_SWIPE -> {
-                flagIsSwiped = true
-                onInteractionStartSwipe?.invoke(itemView, position)
-            }
+//            ItemTouchHelper.ACTION_STATE_SWIPE -> {
+//                flagIsSwiped = true
+//                onInteractionStartSwipe?.invoke(itemView, position)
+//            }
         }
     }
 
@@ -66,19 +83,37 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         val itemView = viewHolder.itemView
         val position = viewHolder.adapterPosition
 
-        if (flagIsDragged) {
-            flagIsDragged = false
+        if (flagIsDragging) {
+            flagIsDragging = false
             onInterActionEndDrag?.invoke(itemView, position)
         }
 
-        if (flagIsSwiped) {
-            flagIsSwiped = false
-            onInteractionEndSwipe?.invoke(itemView, position)
-        }
+//        if (flagIsSwiped) {
+//            flagIsSwiped = false
+//            onInteractionEndSwipe?.invoke(itemView, position)
+//        }
     }
 
-    override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: ViewHolder): Int {
-        TODO("not implemented")
+    override fun getMovementFlags(recycler: RecyclerView, holder: ViewHolder): Int {
+        val item = mAdapter.getDxAdapterItems()[holder.adapterPosition]
+
+        val dragFlags =
+            if (item !is IDxItemDraggable || !isDragEnabled) {
+                0
+            } else {
+                //todo add support for left and right drag
+                ItemTouchHelper.UP or ItemTouchHelper.DOWN
+            }
+
+//        val swipeFlags =
+//            if (item !is IDxItemSwipeable || onItemSwiped == null) {
+//                0
+//            } else {
+//                //for sure onItemSwiped is not null because of the "if" above
+//                onItemSwiped!!.first
+//            }
+
+        return makeMovementFlags(dragFlags, swipeFlags)
     }
 
     override fun onMove(
@@ -94,13 +129,14 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
         mAdapter.apply {
             getDxAdapterItems().apply {
+                //must reference the item before removing it
+                val itemBackup = get(draggedPosition)
                 removeAt(draggedPosition)
-                add(targetPosition, getDxAdapterItem(draggedPosition))
+                add(targetPosition, itemBackup)
             }
 
             //todo when documenting, note that this is called AFTER the item has been moved
             onItemMoved?.invoke(draggedView, draggedPosition, targetView, targetPosition)
-
             notifyItemMoved(draggedPosition, targetPosition)
         }
 
@@ -110,6 +146,6 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         val itemView = viewHolder.itemView
         val position = viewHolder.adapterPosition
-        onItemSwiped?.invoke(itemView, position, direction)
+//        onItemSwiped?.invoke(itemView, position, direction)
     }
 }
