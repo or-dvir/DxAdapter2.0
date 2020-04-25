@@ -44,44 +44,42 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         } ?: false
     }
 
-    override fun onSelectedChanged(viewHolder: ViewHolder?, actionState: Int) {
-        super.onSelectedChanged(viewHolder, actionState)
+    override fun onSelectedChanged(holder: ViewHolder?, actionState: Int) {
+        super.onSelectedChanged(holder, actionState)
 
-        if (viewHolder == null) {
+        if (holder == null) {
             Log.e(TAG, "viewHolder is null. cannot invoke drag and swipe listeners")
             return
         }
 
-        val itemView = viewHolder.itemView
-        val position = viewHolder.adapterPosition
+        val itemView = holder.itemView
 
         when (actionState) {
             ItemTouchHelper.ACTION_STATE_DRAG -> {
-                dragFeature?.signalDragStart(itemView, position)
+                dragFeature?.signalDragStart(itemView, holder)
             }
 
 //            ItemTouchHelper.ACTION_STATE_SWIPE -> {
 //                flagIsSwiped = true
-//                onInteractionStartSwipe?.invoke(itemView, position)
+//                onInteractionStartSwipe?.invoke(itemView, holder)
 //            }
         }
     }
 
-    override fun clearView(recyclerView: RecyclerView, viewHolder: ViewHolder) {
-        super.clearView(recyclerView, viewHolder)
+    override fun clearView(recyclerView: RecyclerView, holder: ViewHolder) {
+        super.clearView(recyclerView, holder)
 
-        val itemView = viewHolder.itemView
-        val position = viewHolder.adapterPosition
+        val itemView = holder.itemView
 
         dragFeature?.apply {
             if (flagIsDragging) {
-                signalDragEnd(itemView, position)
+                signalDragEnd(itemView, holder)
             }
         }
 
 //        if (flagIsSwiped) {
 //            flagIsSwiped = false
-//            onInteractionEndSwipe?.invoke(itemView, position)
+//            onInteractionEndSwipe?.invoke(itemView, holder)
 //        }
     }
 

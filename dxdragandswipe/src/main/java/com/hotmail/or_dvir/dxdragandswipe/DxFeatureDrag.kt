@@ -9,8 +9,9 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 
 class DxFeatureDrag(
-    val onDragStart: onItemDragSwipeInteractionListener,
-    val onDragEnd: onItemDragSwipeInteractionListener,
+    private val itemTouchHelper: ItemTouchHelper,
+    private val onDragStart: onItemDragSwipeInteractionListener,
+    private val onDragEnd: onItemDragSwipeInteractionListener,
     val onItemMoved: onItemMovedListener,
     val dragOnLongClick: Boolean = false,
     @IdRes val dragHandleId: Int? = null
@@ -33,13 +34,10 @@ class DxFeatureDrag(
             return
         }
 
-        not actually enough. need to start drag event using ItemTouchHelper????
-        check DxAdapter
-                
         itemView.findViewById<View>(dragHandleId).setOnTouchListener { view, motionEvent ->
             when (motionEvent.actionMasked) {
-                MotionEvent.ACTION_DOWN -> signalDragStart(itemView, holder.adapterPosition)
-                MotionEvent.ACTION_UP -> signalDragEnd(itemView, holder.adapterPosition)
+                MotionEvent.ACTION_DOWN -> signalDragStart(itemView, holder)
+                MotionEvent.ACTION_UP -> signalDragEnd(itemView, holder)
             }
 
             //allow normal processing to continue
@@ -47,13 +45,14 @@ class DxFeatureDrag(
         }
     }
 
-    internal fun signalDragStart(itemView: View, position: Int) {
+    internal fun signalDragStart(itemView: View, holder: RecyclerView.ViewHolder) {
         flagIsDragging = true
-        onDragStart.invoke(itemView, position)
+        onDragStart.invoke(itemView, holder.adapterPosition)
+        itemTouchHelper.startDrag(holder)
     }
 
-    internal fun signalDragEnd(itemView: View, position: Int) {
+    internal fun signalDragEnd(itemView: View, holder: RecyclerView.ViewHolder) {
         flagIsDragging = false
-        onDragEnd.invoke(itemView, position)
+        onDragEnd.invoke(itemView, holder.adapterPosition)
     }
 }
