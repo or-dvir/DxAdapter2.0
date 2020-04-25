@@ -9,10 +9,8 @@ abstract class BaseSampleAdapter<VH : RecyclerView.ViewHolder>(var mItems: List<
 
     override fun getDxAdapterItems(): List<IDxBaseItem> = mItems
 
-    fun setItems(items: List<IDxBaseItem>) {
+    fun setItems(items: MutableList<IDxBaseItem>) {
         mItems = items
         notifyDataSetChanged()
     }
-
-    fun getItems() = mItems
 }

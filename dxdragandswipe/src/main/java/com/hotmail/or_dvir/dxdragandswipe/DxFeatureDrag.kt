@@ -9,17 +9,14 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 
 class DxFeatureDrag(
-    private val itemTouchHelper: ItemTouchHelper,
     private val onDragStart: onItemDragSwipeInteractionListener,
     private val onDragEnd: onItemDragSwipeInteractionListener,
     val onItemMoved: onItemMovedListener,
-    val dragOnLongClick: Boolean = false,
-    @IdRes val dragHandleId: Int? = null
+    val dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 
-    //todo dragging
-    // set drag handle
-    // write tests
+    @IdRes internal var dragHandleId: Int? = null
+    internal var itemTouchHelper: ItemTouchHelper? = null
 
     var isDragEnabled = true
     internal var flagIsDragging = false
@@ -34,9 +31,14 @@ class DxFeatureDrag(
             return
         }
 
-        itemView.findViewById<View>(dragHandleId).setOnTouchListener { view, motionEvent ->
+        itemView.findViewById<View>(dragHandleId!!).setOnTouchListener { view, motionEvent ->
             when (motionEvent.actionMasked) {
-                MotionEvent.ACTION_DOWN -> signalDragStart(itemView, holder)
+                MotionEvent.ACTION_DOWN -> {
+                    signalDragStart(itemView, holder)
+                    //signalDragStart is also called from DxItemTouchCallback but
+                    //we only want to manually start the drag operation from here
+                    itemTouchHelper?.startDrag(holder)
+                }
                 MotionEvent.ACTION_UP -> signalDragEnd(itemView, holder)
             }
 
@@ -48,7 +50,6 @@ class DxFeatureDrag(
     internal fun signalDragStart(itemView: View, holder: RecyclerView.ViewHolder) {
         flagIsDragging = true
         onDragStart.invoke(itemView, holder.adapterPosition)
-        itemTouchHelper.startDrag(holder)
     }
 
     internal fun signalDragEnd(itemView: View, holder: RecyclerView.ViewHolder) {

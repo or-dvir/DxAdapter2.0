@@ -68,7 +68,7 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
     // abstract functions
     //
 
-    abstract fun getDxAdapterItems(): MutableList<IDxBaseItem>
+    abstract fun getDxAdapterItems(): List<IDxBaseItem>
 //    abstract fun getItems(): List<ITEM>
 
     /**

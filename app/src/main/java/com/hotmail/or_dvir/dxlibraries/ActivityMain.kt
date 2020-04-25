@@ -2,14 +2,17 @@ package com.hotmail.or_dvir.dxlibraries
 
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.IdRes
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxdragandswipe.DxFeatureDrag
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
+import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
@@ -18,7 +21,6 @@ import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import kotlinx.android.synthetic.main.activity_main.*
 
 class ActivityMain : AppCompatActivity() {
-    lateinit var mAdapter: BaseSampleAdapter<*>
 
     //todo
     // export each module as its own library!!!
@@ -38,46 +40,64 @@ class ActivityMain : AppCompatActivity() {
 
         setLayoutManagerVertical()
 
-        val adapter =
-            AdapterDraggable(List(100) { index ->
-                ItemDraggable("item $index")
-            })
+        activityMain_btn.setOnClickListener {
+//            mAdapter.setItems(List(5) { index -> ItemDraggable("item $index") })
+        }
 
 //        setScrollListeners()
 //        setVisibilityListeners()
 //        setClickListeners()
-        setDragListeners()
-
-        setAdapter(adapter)
-
-        activityMain_btn.setOnClickListener {
-//            mAdapter.setItems(List(5) { index -> ItemDraggable("item $index") })
-        }
+        setDragListeners(true, null)
+//        setDragListeners(false, some id)
     }
 
-    fun setAdapter(adapter: BaseSampleAdapter<*>) {
-        mAdapter = adapter
-        activityMain_rv.adapter = mAdapter
-    }
+    private fun setDragListeners(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {
+        val adapter = AdapterDraggable(List(100) { index -> ItemDraggable("item $index") })
+        activityMain_rv.adapter = adapter
 
-    private fun setDragListeners() {
         //todo
         // set item touch callback
         // set item touch helper (with above callback)
         // attach to recycler view
+        // NO NEED to add feature - its done inside DxItemTouchCallback
 
-        val touchCallBack = DxItemTouchCallback(mAdapter).apply {
-            dragFeature = DxFeatureDrag()
+        val touchCallBack = DxItemTouchCallback(adapter).apply {
+            fun getItemAtPosition(position: Int) =
+                adapter.getDxAdapterItem<ItemDraggable>(position)
+
+            dragFeature = DxFeatureDrag(
+                onDragStart = { view, adapterPosition ->
+                    val item = getItemAtPosition(adapterPosition)
+                    Log.i("aaaaa", "drag start for ${item.text}")
+                },
+                onDragEnd = { view, adapterPosition ->
+                    val item = getItemAtPosition(adapterPosition)
+                    Log.i("aaaaa", "drag end for ${item.text}")
+                },
+                onItemMoved = { draggedView, draggedPosition, targetView, targetPosition ->
+                    val dragged = getItemAtPosition(draggedPosition)
+                    val target = getItemAtPosition(targetPosition)
+                    Log.i("aaaaa", "replaced ${dragged.text} with ${target.text}")
+                },
+                dragOnLongClick = dragOnLongClick
+            )
         }
 
-        ItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
+        when has new view holder, do manual test first then write automated tests
+        DxItemTouchHelper(touchCallBack).apply {
+            setDragHandleId(some id)
+            attachToRecyclerView(activityMain_rv)
+        }
     }
 
     private fun setClickListeners() {
+        val adapter = AdapterClickable(List(100) { index -> ItemClickable("item $index") })
+        activityMain_rv.adapter = adapter
+
         val clickListeners = DxFeatureClickListeners().apply {
 
             fun getItemAtPosition(position: Int) =
-                mAdapter.getDxAdapterItem<ItemDraggable>(position)
+                adapter.getDxAdapterItem<ItemClickable>(position)
 
             onItemClick = { view, adapterPosition ->
                 val item = getItemAtPosition(adapterPosition)
@@ -92,14 +112,17 @@ class ActivityMain : AppCompatActivity() {
             }
         }
 
-        mAdapter.addFeature(clickListeners)
+        adapter.addFeature(clickListeners)
     }
 
     private fun setVisibilityListeners() {
+        //in this case it doesn't matter which adapter is used
+        val adapter = AdapterClickable(List(100) { index -> ItemClickable("item $index") })
+
         activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
 
             fun getItemAtPosition(position: Int) =
-                mAdapter.getDxAdapterItem<ItemDraggable>(position)
+                adapter.getDxAdapterItem<ItemClickable>(position)
 
             onFirstItemVisible = { Log.i("aaaaa", getItemAtPosition(0).text) }
             onLastItemVisible = { Log.i("aaaaa", getItemAtPosition(1).text) }
@@ -107,6 +130,9 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun setScrollListeners() {
+        //in this case it doesn't matter which adapter is used
+        val adapter = AdapterClickable(List(100) { index -> ItemClickable("item $index") })
+
         activityMain_rv.onScrollListener = DxScrollListener(1).apply {
             onScrollUp = { Log.i("aaaaa", "scroll up") }
             onScrollDown = { Log.i("aaaaa", "scroll down") }

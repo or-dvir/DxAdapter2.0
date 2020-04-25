@@ -2,7 +2,6 @@ package com.hotmail.or_dvir.dxrecyclerview
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxidlingresource.DxCountingIdlingResource
@@ -118,7 +117,9 @@ class DxRecyclerView @JvmOverloads constructor(
             when {
                 //up
                 dy < 0 -> {
-                    if (abs(dy) > sensitivityUp) {onScrollUp?.invoke()}
+                    if (abs(dy) > sensitivityUp) {
+                        onScrollUp?.invoke()
+                    }
                 }
                 //down
                 dy > 0 -> {

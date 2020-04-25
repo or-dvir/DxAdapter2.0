@@ -8,7 +8,7 @@ import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
 
 class AdapterNonDraggable(mItems: List<ItemNonDraggable>) :
-    BaseSampleAdapter<BaseItem.ViewHolder>(mItems) {
+    BaseSampleAdapter<ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
         ViewHolder(itemView)
