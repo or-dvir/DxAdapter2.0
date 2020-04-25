@@ -25,7 +25,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         }
 
 
-    copy behaviour of drag
+    //todo copy behaviour of drag
     //region swipe
 //    var onInteractionStartSwipe: onItemDragSwipeInteractionListener? = null
 //    var onInteractionEndSwipe: onItemDragSwipeInteractionListener? = null
@@ -57,10 +57,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
         when (actionState) {
             ItemTouchHelper.ACTION_STATE_DRAG -> {
-                dragFeature?.apply {
-                    flagIsDragging = true
-                    onInteractionStartDrag.invoke(itemView, position)
-                }
+                dragFeature?.signalDragStart(itemView, position)
             }
 
 //            ItemTouchHelper.ACTION_STATE_SWIPE -> {
@@ -78,8 +75,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
         dragFeature?.apply {
             if (flagIsDragging) {
-                flagIsDragging = false
-                onInterActionEndDrag.invoke(itemView, position)
+                signalDragEnd(itemView, position)
             }
         }
 
@@ -109,7 +105,8 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 //                onItemSwiped!!.first
 //            }
 
-        return makeMovementFlags(dragFlags, swipeFlags)
+        //todo add swipe flags when done testing drag!!!!!!!!!!
+        return makeMovementFlags(dragFlags, 0)
     }
 
     override fun onMove(
