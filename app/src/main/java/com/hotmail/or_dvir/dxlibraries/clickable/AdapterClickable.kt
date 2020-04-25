@@ -2,14 +2,12 @@ package com.hotmail.or_dvir.dxlibraries.clickable
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxlibraries.R
+import com.hotmail.or_dvir.dxlibraries.BaseItem.ViewHolder
 import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
-import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable.*
-import kotlinx.android.synthetic.main.list_item.view.*
+import com.hotmail.or_dvir.dxlibraries.R
+import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 
-class AdapterClickable(mItems: List<ItemClickable>) :
+class AdapterClickable(mItems: List<ItemDraggable>) :
     BaseSampleAdapter<ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
@@ -19,16 +17,7 @@ class AdapterClickable(mItems: List<ItemClickable>) :
         R.layout.list_item
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getDxAdapterItem<ItemClickable>(position)
+        val item = getDxAdapterItem<ItemDraggable>(position)
         holder.tv.text = item.text
-    }
-
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-    //////////////////////////////////////////
-
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tv: TextView = itemView.listItem_tv
     }
 }

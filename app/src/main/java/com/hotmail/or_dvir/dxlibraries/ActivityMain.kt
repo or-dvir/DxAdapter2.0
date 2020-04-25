@@ -5,10 +5,13 @@ import android.util.Log
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
-import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
+import com.hotmail.or_dvir.dxdragandswipe.DxFeatureDrag
+import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
+import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
+import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
@@ -36,18 +39,19 @@ class ActivityMain : AppCompatActivity() {
         setLayoutManagerVertical()
 
         val adapter =
-            AdapterClickable(List(100) { index ->
-                ItemClickable("item $index")
+            AdapterDraggable(List(100) { index ->
+                ItemDraggable("item $index")
             })
 
 //        setScrollListeners()
 //        setVisibilityListeners()
 //        setClickListeners()
+        setDragListeners()
 
         setAdapter(adapter)
 
         activityMain_btn.setOnClickListener {
-            mAdapter.setItems(List(5) { index -> ItemClickable("item $index") })
+//            mAdapter.setItems(List(5) { index -> ItemDraggable("item $index") })
         }
     }
 
@@ -56,11 +60,24 @@ class ActivityMain : AppCompatActivity() {
         activityMain_rv.adapter = mAdapter
     }
 
+    private fun setDragListeners() {
+        //todo
+        // set item touch callback
+        // set item touch helper (with above callback)
+        // attach to recycler view
+
+        val touchCallBack = DxItemTouchCallback(mAdapter).apply {
+            dragFeature = DxFeatureDrag()
+        }
+
+        ItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
+    }
+
     private fun setClickListeners() {
         val clickListeners = DxFeatureClickListeners().apply {
 
             fun getItemAtPosition(position: Int) =
-                mAdapter.getDxAdapterItem<ItemClickable>(position)
+                mAdapter.getDxAdapterItem<ItemDraggable>(position)
 
             onItemClick = { view, adapterPosition ->
                 val item = getItemAtPosition(adapterPosition)
@@ -82,7 +99,7 @@ class ActivityMain : AppCompatActivity() {
         activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
 
             fun getItemAtPosition(position: Int) =
-                mAdapter.getDxAdapterItem<ItemClickable>(position)
+                mAdapter.getDxAdapterItem<ItemDraggable>(position)
 
             onFirstItemVisible = { Log.i("aaaaa", getItemAtPosition(0).text) }
             onLastItemVisible = { Log.i("aaaaa", getItemAtPosition(1).text) }

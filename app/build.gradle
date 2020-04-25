@@ -50,4 +50,5 @@ dependencies {
     implementation project(path: ':dxcountingidlingresource')
     implementation project(path: ':dxadapter')
     implementation project(path: ':featureclicklisteners')
+    implementation project(path: ':dxdragandswipe')
 }

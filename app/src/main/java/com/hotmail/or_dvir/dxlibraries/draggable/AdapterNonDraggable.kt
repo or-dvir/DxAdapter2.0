@@ -1,14 +1,14 @@
-package com.hotmail.or_dvir.dxlibraries.clickable
+package com.hotmail.or_dvir.dxlibraries.draggable
 
 import android.view.View
 import android.view.ViewGroup
+import com.hotmail.or_dvir.dxlibraries.BaseItem
 import com.hotmail.or_dvir.dxlibraries.BaseItem.ViewHolder
 import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
 
-class AdapterNonClickable(mItems: List<ItemNonDraggable>) :
-    BaseSampleAdapter<ViewHolder>(mItems) {
+class AdapterNonDraggable(mItems: List<ItemNonDraggable>) :
+    BaseSampleAdapter<BaseItem.ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
         ViewHolder(itemView)
