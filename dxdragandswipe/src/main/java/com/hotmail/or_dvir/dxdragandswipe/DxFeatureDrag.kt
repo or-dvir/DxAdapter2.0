@@ -11,11 +11,13 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 class DxFeatureDrag(
     private val onDragStart: onItemDragSwipeInteractionListener,
     private val onDragEnd: onItemDragSwipeInteractionListener,
-    val onItemMoved: onItemMovedListener,
-    val dragOnLongClick: Boolean = false
+    internal val onItemMoved: onItemMovedListener,
+    internal val dragDirections: Int,
+    internal val dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 
-    @IdRes internal var dragHandleId: Int? = null
+    @IdRes
+    internal var dragHandleId: Int? = null
     internal var itemTouchHelper: ItemTouchHelper? = null
 
     var isDragEnabled = true
@@ -26,8 +28,9 @@ class DxFeatureDrag(
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
-        val item = adapter.getDxAdapterItems()[holder.adapterPosition]
-        if (item !is IDxItemDraggable || !isDragEnabled || dragHandleId == null) {
+        //NOTE:
+        //at this point holder.adapterPosition is -1 so we cannot check if the item is IDxItemDraggable
+        if (!isDragEnabled || dragHandleId == null) {
             return
         }
 

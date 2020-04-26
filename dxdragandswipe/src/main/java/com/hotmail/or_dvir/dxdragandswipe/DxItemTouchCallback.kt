@@ -1,13 +1,11 @@
 package com.hotmail.or_dvir.dxdragandswipe
 
-import android.graphics.Insets.add
 import android.util.Log
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.hotmail.or_dvir.dxadapter.DxAdapter
-import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
 class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.Callback() {
 
@@ -18,7 +16,6 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     //todo add all features from dx adapter
     // make sure all methods are implemented the same
 
-    //todo write tests
     var dragFeature: DxFeatureDrag? = null
         set(value) {
             field = value
@@ -27,7 +24,6 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             }
         }
 
-    //todo copy behaviour of drag
     //region swipe
 //    var onInteractionStartSwipe: onItemDragSwipeInteractionListener? = null
 //    var onInteractionEndSwipe: onItemDragSwipeInteractionListener? = null
@@ -35,6 +31,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 //    private var flagIsSwiped = false
     //endregion
     //todo swiping
+    // copy the way drag is implemented
     // add a single function to enable all swiping options
     // only swipe items that are swipeable
     // add global flag to enable/disable swipe
@@ -97,11 +94,10 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
         val isDragEnabled = dragFeature?.isDragEnabled ?: false
         val dragFlags =
-            if (item !is IDxItemDraggable || !isDragEnabled) {
+            if (item !is IDxItemDraggable || !isDragEnabled || dragFeature == null) {
                 0
             } else {
-                //todo add support for left and right drag
-                ItemTouchHelper.UP or ItemTouchHelper.DOWN
+                dragFeature!!.dragDirections
             }
 
 //        val swipeFlags =
@@ -128,23 +124,22 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         val targetPosition = target.adapterPosition
 
         mAdapter.apply {
-            //must reference the item before removing it
-            val itemBackup = getDxAdapterItem<IDxBaseItem>(draggedPosition)
 
-            getDxAdapterItems().apply {
-//                cannot have the list as mutable because then we start with the kotlin generics hell
-//                where the adapters would say "incompatible types"
-                removeAt(draggedPosition)
-                add(targetPosition, itemBackup)
-            }
-
-            //todo when documenting, note that this is called AFTER the item has been moved
+            //NOTE:
+            //should call this BEFORE actually moving the items. otherwise draggedPosition
+            //and targetPosition would ve reversed (because they have been switched...)
+            //todo add this note to documentation
             dragFeature?.onItemMoved?.invoke(
                 draggedView,
                 draggedPosition,
                 targetView,
                 targetPosition
             )
+
+            getDxAdapterItems().apply {
+                val itemBackup = removeAt(draggedPosition)
+                add(targetPosition, itemBackup)
+            }
 
             notifyItemMoved(draggedPosition, targetPosition)
         }

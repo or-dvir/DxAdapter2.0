@@ -7,8 +7,9 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import kotlinx.android.synthetic.main.list_item_standard.view.*
 
-abstract class BaseSampleAdapter<VH : RecyclerView.ViewHolder>(var mItems: List<IDxBaseItem>) :
-    DxAdapter<VH>() {
+abstract class BaseSampleAdapter<VH : RecyclerView.ViewHolder>(
+    var mItems: MutableList<IDxBaseItem>
+) : DxAdapter<VH>() {
 
     override fun getDxAdapterItems() = mItems
 

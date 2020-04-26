@@ -6,6 +6,7 @@ import androidx.annotation.IdRes
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxdragandswipe.DxFeatureDrag
@@ -47,12 +48,17 @@ class ActivityMain : AppCompatActivity() {
 //        setScrollListeners()
 //        setVisibilityListeners()
 //        setClickListeners()
-        setDragListeners(true, null)
-//        setDragListeners(false, some id)
+//        setDragListeners(true, null)
+        setDragListeners(false, R.id.listItem_dragHandle)
+
+        write automated tests for dragging
+        dont forget edge cases (dragging fast, dragging slow, dragging out of bounds...)
     }
 
     private fun setDragListeners(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {
-        val adapter = AdapterDraggable(MutableList(100) { index -> ItemDraggable("item $index") })
+        val adapter = AdapterDraggable(
+            MutableList(100) { index -> ItemDraggable("item $index") }
+        )
         activityMain_rv.adapter = adapter
 
         //todo
@@ -77,8 +83,12 @@ class ActivityMain : AppCompatActivity() {
                 onItemMoved = { draggedView, draggedPosition, targetView, targetPosition ->
                     val dragged = getItemAtPosition(draggedPosition)
                     val target = getItemAtPosition(targetPosition)
-                    Log.i("aaaaa", "replaced ${dragged.text} with ${target.text}")
+                    Log.i(
+                        "aaaaa",
+                        "replaced ${dragged.text}($draggedPosition) with ${target.text}($targetPosition)"
+                    )
                 },
+                dragDirections = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
                 dragOnLongClick = dragOnLongClick
             )
         }
@@ -87,7 +97,7 @@ class ActivityMain : AppCompatActivity() {
         // test drag on long click
         // test drag handle
         DxItemTouchHelper(touchCallBack).apply {
-//            setDragHandleId(R.id.listItem_dragHandle)
+            dragHandleId?.apply { setDragHandleId(this) }
             attachToRecyclerView(activityMain_rv)
         }
     }
