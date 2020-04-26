@@ -6,7 +6,7 @@ import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 
-class AdapterClickable(mItems: List<ItemClickable>) :
+class AdapterClickable(mItems: MutableList<ItemClickable>) :
     BaseSampleAdapter<BaseSampleAdapter.ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =

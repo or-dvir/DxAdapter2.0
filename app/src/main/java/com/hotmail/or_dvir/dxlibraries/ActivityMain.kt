@@ -52,7 +52,7 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun setDragListeners(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {
-        val adapter = AdapterDraggable(List(100) { index -> ItemDraggable("item $index") })
+        val adapter = AdapterDraggable(MutableList(100) { index -> ItemDraggable("item $index") })
         activityMain_rv.adapter = adapter
 
         //todo
@@ -93,7 +93,7 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun setClickListeners() {
-        val adapter = AdapterClickable(List(100) { index -> ItemClickable("item $index") })
+        val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
         activityMain_rv.adapter = adapter
 
         val clickListeners = DxFeatureClickListeners().apply {
@@ -119,7 +119,7 @@ class ActivityMain : AppCompatActivity() {
 
     private fun setVisibilityListeners() {
         //in this case it doesn't matter which adapter is used
-        val adapter = AdapterClickable(List(100) { index -> ItemClickable("item $index") })
+        val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
 
         activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
 
@@ -133,7 +133,7 @@ class ActivityMain : AppCompatActivity() {
 
     private fun setScrollListeners() {
         //in this case it doesn't matter which adapter is used
-        val adapter = AdapterClickable(List(100) { index -> ItemClickable("item $index") })
+        val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
 
         activityMain_rv.onScrollListener = DxScrollListener(1).apply {
             onScrollUp = { Log.i("aaaaa", "scroll up") }

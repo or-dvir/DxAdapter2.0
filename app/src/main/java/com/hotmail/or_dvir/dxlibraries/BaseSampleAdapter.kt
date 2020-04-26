@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.list_item_standard.view.*
 abstract class BaseSampleAdapter<VH : RecyclerView.ViewHolder>(var mItems: List<IDxBaseItem>) :
     DxAdapter<VH>() {
 
-    override fun getDxAdapterItems(): List<IDxBaseItem> = mItems
+    override fun getDxAdapterItems() = mItems
 
     fun setItems(items: MutableList<IDxBaseItem>) {
         mItems = items

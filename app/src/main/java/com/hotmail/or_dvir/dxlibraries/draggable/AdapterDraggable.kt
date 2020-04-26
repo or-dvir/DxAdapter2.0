@@ -9,7 +9,7 @@ import com.hotmail.or_dvir.dxlibraries.R
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable.ViewHolder
 import kotlinx.android.synthetic.main.list_item_standard.view.*
 
-class AdapterDraggable(mItems: List<ItemDraggable>) : BaseSampleAdapter<ViewHolder>(mItems) {
+class AdapterDraggable(mItems: MutableList<ItemDraggable>) : BaseSampleAdapter<ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
         ViewHolder(itemView)
