@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxdragandswipe
 
+import android.graphics.Insets.add
 import android.util.Log
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -133,8 +134,8 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             getDxAdapterItems().apply {
 //                cannot have the list as mutable because then we start with the kotlin generics hell
 //                where the adapters would say "incompatible types"
-//                removeAt(draggedPosition)
-//                add(targetPosition, itemBackup)
+                removeAt(draggedPosition)
+                add(targetPosition, itemBackup)
             }
 
             //todo when documenting, note that this is called AFTER the item has been moved
