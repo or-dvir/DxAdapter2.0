@@ -133,7 +133,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
                 cannot have the list as mutable because then we start with the kotlin generics hell
                 where the adapters would say "incompatible types"
-
+                
                 removeAt(draggedPosition)
                 add(targetPosition, itemBackup)
             }
@@ -145,6 +145,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
                 targetView,
                 targetPosition
             )
+
             notifyItemMoved(draggedPosition, targetPosition)
         }
 

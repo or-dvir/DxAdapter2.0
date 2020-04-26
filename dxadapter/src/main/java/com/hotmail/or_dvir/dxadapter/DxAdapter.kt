@@ -64,10 +64,6 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
     //todo should i check the cast? i would only throw an exception anyways...
     fun <T> getDxAdapterItem(position: Int) = getDxAdapterItems()[position] as T
 
-    //
-    // abstract functions
-    //
-
     abstract fun getDxAdapterItems(): List<IDxBaseItem>
 //    abstract fun getItems(): List<ITEM>
 

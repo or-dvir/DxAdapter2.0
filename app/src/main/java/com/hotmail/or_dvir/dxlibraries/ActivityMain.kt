@@ -83,9 +83,11 @@ class ActivityMain : AppCompatActivity() {
             )
         }
 
-        when has new view holder, do manual test first then write automated tests
+        //todo
+        // test drag on long click
+        // test drag handle
         DxItemTouchHelper(touchCallBack).apply {
-            setDragHandleId(some id)
+//            setDragHandleId(R.id.listItem_dragHandle)
             attachToRecyclerView(activityMain_rv)
         }
     }
