@@ -7,10 +7,10 @@ import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
-import com.hotmail.or_dvir.dxlibraries.draggable.AdapterNonDraggable
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.ItemNonClickable
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import com.hotmail.or_dvir.featureclicklisteners.onItemClickListener
@@ -50,12 +50,10 @@ class TestDxFeatureClickListeners {
 
     @Test
     fun clickListenersTest_nonClickableItem() {
+        val items = MutableList(2) { index -> ItemNonClickable("item $index") }
+        val adapter = AdapterNonClickable(items).apply { addFeature(mClickFunctionality) }
 
-        val items = List(2) { index -> ItemNonDraggable("item $index") }
-        val testAdapter =
-            AdapterNonDraggable(items).apply { addFeature(mClickFunctionality) }
-
-        onActivity { it.apply { setAdapter(testAdapter) } }
+        onActivity { it.apply { setAdapter(adapter) } }
 
         var clickedPosition = 0
 
@@ -84,11 +82,10 @@ class TestDxFeatureClickListeners {
     @Test
     fun clickListenersTest_clickableItem() {
 
-        val items = List(2) { index -> ItemDraggable("item $index") }
-        val testAdapter =
-            AdapterDraggable(items).apply { addFeature(mClickFunctionality) }
+        val items = MutableList(2) { index -> ItemClickable("item $index") }
+        val adapter = AdapterClickable(items).apply { addFeature(mClickFunctionality) }
 
-        onActivity { it.apply { setAdapter(testAdapter) } }
+        onActivity { it.apply { setAdapter(adapter) } }
 
         var clickedPosition = 0
 

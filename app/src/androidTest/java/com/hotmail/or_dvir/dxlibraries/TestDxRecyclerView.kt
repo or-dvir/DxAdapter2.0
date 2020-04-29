@@ -49,7 +49,7 @@ class TestDxRecyclerView {
     fun before() {
 
         //set a fresh empty list.
-        val testAdapter = AdapterDraggable(listOf())
+        val testAdapter = AdapterDraggable(mutableListOf())
 
         onActivity {
             it.apply {
@@ -94,7 +94,7 @@ class TestDxRecyclerView {
     private fun setListForActivity(listSize: Int) {
         onActivity {
             it.apply {
-                mAdapter.setItems(List(listSize) { index -> ItemDraggable("item $index") })
+                setAdapterItems((MutableList(listSize) { index -> ItemDraggable("item $index") }))
             }
         }
 

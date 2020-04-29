@@ -9,6 +9,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.hotmail.or_dvir.dxadapter.DxAdapter
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import com.hotmail.or_dvir.dxdragandswipe.DxFeatureDrag
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
@@ -20,6 +22,7 @@ import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.annotations.TestOnly
 
 class ActivityMain : AppCompatActivity() {
 
@@ -51,15 +54,16 @@ class ActivityMain : AppCompatActivity() {
 //        setDragListeners(true, null)
         setDragListeners(false, R.id.listItem_dragHandle)
 
-        write automated tests for dragging
-        dont forget edge cases (dragging fast, dragging slow, dragging out of bounds...)
+//        write automated tests for dragging
+//        dont forget edge cases (dragging fast, dragging slow, dragging out of bounds...)
     }
 
     private fun setDragListeners(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {
         val adapter = AdapterDraggable(
             MutableList(100) { index -> ItemDraggable("item $index") }
         )
-        activityMain_rv.adapter = adapter
+        setAdapter(adapter)
+
 
         //todo
         // set item touch callback
@@ -104,7 +108,7 @@ class ActivityMain : AppCompatActivity() {
 
     private fun setClickListeners() {
         val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
-        activityMain_rv.adapter = adapter
+        setAdapter(adapter)
 
         val clickListeners = DxFeatureClickListeners().apply {
 
@@ -130,6 +134,7 @@ class ActivityMain : AppCompatActivity() {
     private fun setVisibilityListeners() {
         //in this case it doesn't matter which adapter is used
         val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
+        setAdapter(adapter)
 
         activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
 
@@ -144,6 +149,7 @@ class ActivityMain : AppCompatActivity() {
     private fun setScrollListeners() {
         //in this case it doesn't matter which adapter is used
         val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
+        setAdapter(adapter)
 
         activityMain_rv.onScrollListener = DxScrollListener(1).apply {
             onScrollUp = { Log.i("aaaaa", "scroll up") }
@@ -151,6 +157,16 @@ class ActivityMain : AppCompatActivity() {
             onScrollLeft = { Log.i("aaaaa", "scroll left") }
             onScrollRight = { Log.i("aaaaa", "scroll right") }
         }
+    }
+
+    @VisibleForTesting
+    fun setAdapter(adapter: DxAdapter<*>) {
+        activityMain_rv.adapter = adapter
+    }
+
+    @TestOnly
+    fun setAdapterItems(items: MutableList<IDxBaseItem>) {
+        (activityMain_rv.adapter as BaseSampleAdapter<*>).setItems(items)
     }
 
     @VisibleForTesting
