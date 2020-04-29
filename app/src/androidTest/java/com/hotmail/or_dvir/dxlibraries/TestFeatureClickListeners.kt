@@ -22,11 +22,11 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
-class TestDxFeatureClickListeners {
+class TestFeatureClickListeners {
 
     private lateinit var mClickListener: onItemClickListener
     private lateinit var mLongClickListener: onItemLongClickListener
-    private lateinit var mClickFunctionality: DxFeatureClickListeners
+    private lateinit var mClickFeature: DxFeatureClickListeners
 
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
@@ -36,7 +36,7 @@ class TestDxFeatureClickListeners {
         mClickListener = spyk({ _, _ -> })
         mLongClickListener = spyk({ _, _ -> true })
 
-        mClickFunctionality = DxFeatureClickListeners().apply {
+        mClickFeature = DxFeatureClickListeners().apply {
             onItemClick = mClickListener
             onItemLongClick = mLongClickListener
         }
@@ -51,7 +51,7 @@ class TestDxFeatureClickListeners {
     @Test
     fun clickListenersTest_nonClickableItem() {
         val items = MutableList(2) { index -> ItemNonClickable("item $index") }
-        val adapter = AdapterNonClickable(items).apply { addFeature(mClickFunctionality) }
+        val adapter = AdapterNonClickable(items).apply { addFeature(mClickFeature) }
 
         onActivity { it.apply { setAdapter(adapter) } }
 
@@ -81,9 +81,8 @@ class TestDxFeatureClickListeners {
 
     @Test
     fun clickListenersTest_clickableItem() {
-
         val items = MutableList(2) { index -> ItemClickable("item $index") }
-        val adapter = AdapterClickable(items).apply { addFeature(mClickFunctionality) }
+        val adapter = AdapterClickable(items).apply { addFeature(mClickFeature) }
 
         onActivity { it.apply { setAdapter(adapter) } }
 

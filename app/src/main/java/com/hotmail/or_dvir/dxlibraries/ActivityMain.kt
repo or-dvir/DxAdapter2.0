@@ -53,9 +53,6 @@ class ActivityMain : AppCompatActivity() {
 //        setClickListeners()
 //        setDragListeners(true, null)
         setDragListeners(false, R.id.listItem_dragHandle)
-
-//        write automated tests for dragging
-//        dont forget edge cases (dragging fast, dragging slow, dragging out of bounds...)
     }
 
     private fun setDragListeners(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {

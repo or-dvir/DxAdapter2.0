@@ -7,13 +7,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
+import org.jetbrains.annotations.TestOnly
 
 class DxFeatureDrag(
-    private val onDragStart: onItemDragSwipeInteractionListener,
-    private val onDragEnd: onItemDragSwipeInteractionListener,
+    private val onDragStart: onDragEventListener,
+    private val onDragEnd: onDragEventListener,
     internal val onItemMoved: onItemMovedListener,
-    internal val dragDirections: Int,
-    internal val dragOnLongClick: Boolean = false
+    internal var dragDirections: Int,
+    internal var dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 
     @IdRes
@@ -22,6 +23,16 @@ class DxFeatureDrag(
 
     var isDragEnabled = true
     internal var flagIsDragging = false
+
+    @TestOnly
+    fun setDragDirection(directions: Int) {
+        dragDirections = directions
+    }
+
+    @TestOnly
+    fun setDragDirection(dragOnLongClick: Boolean) {
+        this.dragOnLongClick = dragOnLongClick
+    }
 
     override fun onCreateViewHolder(
         adapter: DxAdapter<*>,
