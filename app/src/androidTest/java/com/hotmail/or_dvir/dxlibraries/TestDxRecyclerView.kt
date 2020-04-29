@@ -38,7 +38,6 @@ class TestDxRecyclerView {
     private lateinit var mOnScrollLeft: GenericListener
     private lateinit var mOnScrollRight: GenericListener
 
-
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 

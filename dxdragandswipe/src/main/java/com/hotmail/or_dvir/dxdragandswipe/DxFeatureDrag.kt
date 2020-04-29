@@ -30,7 +30,7 @@ class DxFeatureDrag(
     }
 
     @TestOnly
-    fun setDragDirection(dragOnLongClick: Boolean) {
+    fun setDragOnLongClick(dragOnLongClick: Boolean) {
         this.dragOnLongClick = dragOnLongClick
     }
 
