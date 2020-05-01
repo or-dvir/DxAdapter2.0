@@ -12,8 +12,12 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
 
     private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
 
+    fun removeFeature(feature: IDxBaseFeature) {
+        allFeatures.remove(feature)
+    }
+
     fun addFeature(feature: IDxBaseFeature) {
-        //todo make sure not to add duplicates!
+        //todo make sure not to add duplicates! (can be done with a map of internal id's)
         // the order of the data structure doesnt necessarily matter,
         // but the order of calling each feature does! make sure that all listeners
         // are always called in the same order so the user can rely on this

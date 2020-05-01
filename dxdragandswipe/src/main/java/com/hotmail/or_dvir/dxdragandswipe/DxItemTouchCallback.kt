@@ -16,26 +16,25 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     //todo add all features from dx adapter
     // make sure all methods are implemented the same
 
+    //todo when documenting note that there is no need to add the feature to the adapter
     var dragFeature: DxFeatureDrag? = null
         set(value) {
             field = value
             value?.apply {
                 mAdapter.addFeature(value)
             }
+            //todo if value is null, remove from the adapter (use internal id)
         }
 
-    //region swipe
-//    var onInteractionStartSwipe: onItemDragSwipeInteractionListener? = null
-//    var onInteractionEndSwipe: onItemDragSwipeInteractionListener? = null
-//    var onItemSwiped: onItemSwipedListener? = null
-//    private var flagIsSwiped = false
-    //endregion
-    //todo swiping
-    // copy the way drag is implemented
-    // add a single function to enable all swiping options
-    // only swipe items that are swipeable
-    // add global flag to enable/disable swipe
-    // write tests
+    //todo when documenting note that there is no need to add the feature to the adapter
+    var swipeFeature: DxFeatureSwipe? = null
+        set(value) {
+            field = value
+            value?.apply {
+                mAdapter.addFeature(value)
+            }
+            //todo if value is null, remove from the adapter (use internal id)
+        }
 
     internal fun setUpDragWithHandle(@IdRes handleId: Int, touchHelper: ItemTouchHelper) {
         dragFeature?.apply {
@@ -61,14 +60,8 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         val itemView = holder.itemView
 
         when (actionState) {
-            ItemTouchHelper.ACTION_STATE_DRAG -> {
-                dragFeature?.signalDragStart(itemView, holder)
-            }
-
-//            ItemTouchHelper.ACTION_STATE_SWIPE -> {
-//                flagIsSwiped = true
-//                onInteractionStartSwipe?.invoke(itemView, holder)
-//            }
+            ItemTouchHelper.ACTION_STATE_DRAG -> dragFeature?.signalDragStart(itemView, holder)
+            ItemTouchHelper.ACTION_STATE_SWIPE -> swipeFeature?.signalSwipeStart(itemView, holder)
         }
     }
 
@@ -83,10 +76,11 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             }
         }
 
-//        if (flagIsSwiped) {
-//            flagIsSwiped = false
-//            onInteractionEndSwipe?.invoke(itemView, holder)
-//        }
+        swipeFeature?.apply {
+            if (flagIsSwiping) {
+                signalSwipeEnd(itemView, holder)
+            }
+        }
     }
 
     override fun getMovementFlags(recycler: RecyclerView, holder: ViewHolder): Int {
@@ -100,16 +94,15 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
                 dragFeature!!.dragDirections
             }
 
-//        val swipeFlags =
-//            if (item !is IDxItemSwipeable || onItemSwiped == null) {
-//                0
-//            } else {
-//                //for sure onItemSwiped is not null because of the "if" above
-//                onItemSwiped!!.first
-//            }
+        val isSwipeEnabled = swipeFeature?.isSwipeEnabled ?: false
+        val swipeFlags =
+            if (item !is IDxItemSwipeable || !isSwipeEnabled || swipeFeature == null) {
+                0
+            } else {
+                swipeFeature!!.swipeDirections
+            }
 
-        //todo add swipe flags when done testing drag!!!!!!!!!!
-        return makeMovementFlags(dragFlags, 0)
+        return makeMovementFlags(dragFlags, swipeFlags)
     }
 
     override fun onMove(
@@ -148,8 +141,19 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     }
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
-        val itemView = viewHolder.itemView
-        val position = viewHolder.adapterPosition
-//        onItemSwiped?.invoke(itemView, position, direction)
+        viewHolder.apply {
+            swipeFeature?.onItemSwiped?.invoke(itemView, adapterPosition, direction)
+        }
     }
+
+    override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
+        return swipeFeature?.let { feature ->
+            feature.swipeEscapeVelocityMultiplier?.let {
+                it * defaultValue
+            } ?: feature.swipeEscapeVelocity
+        } ?: super.getSwipeEscapeVelocity(defaultValue)
+    }
+
+    override fun getSwipeThreshold(viewHolder: ViewHolder) =
+        swipeFeature?.swipeThreshold ?: super.getSwipeThreshold(viewHolder)
 }
