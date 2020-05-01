@@ -57,7 +57,8 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
     override fun getItemCount() = getDxAdapterItems().size
     override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
 
-    //todo should i check the cast? i would only throw an exception anyways...
+    //no point in checking the cast, i would only throw an exception anyway...
+    @Suppress("UNCHECKED_CAST")
     fun <T> getDxAdapterItem(position: Int) = getDxAdapterItems()[position] as T
 
     abstract fun getDxAdapterItems(): MutableList<IDxBaseItem>
