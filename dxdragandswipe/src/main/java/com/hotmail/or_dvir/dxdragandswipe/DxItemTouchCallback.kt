@@ -20,9 +20,9 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             val prevField = field
             field = value
 
-            if(value != null) {
+            if (value != null) {
                 mAdapter.addFeature(value)
-            } else if(prevField != null) {
+            } else if (prevField != null) {
                 mAdapter.removeFeature(prevField)
             }
         }
@@ -33,9 +33,9 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             val prevField = field
             field = value
 
-            if(value != null) {
+            if (value != null) {
                 mAdapter.addFeature(value)
-            } else if(prevField != null) {
+            } else if (prevField != null) {
                 mAdapter.removeFeature(prevField)
             }
         }
@@ -65,7 +65,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
         when (actionState) {
             ItemTouchHelper.ACTION_STATE_DRAG -> dragFeature?.signalDragStart(itemView, holder)
-        //todo if onChildDraw() works with the listernes, this line is not needed
+            //todo if onChildDraw() works with the listernes, this line is not needed
 //            ItemTouchHelper.ACTION_STATE_SWIPE -> swipeFeature?.signalSwipeStart(itemView, holder)
         }
     }
@@ -81,7 +81,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             }
         }
 
-        swipeFeature?.signalSwipeEnd(itemView, holder)
+        swipeFeature?.notifySwipeEnd(holder)
     }
 
     override fun getMovementFlags(recycler: RecyclerView, holder: ViewHolder): Int {
@@ -100,7 +100,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             if (item !is IDxItemSwipeable || !isSwipeEnabled || swipeFeature == null) {
                 0
             } else {
-                swipeFeature!!.swipeDirections
+                swipeFeature!!.swipeDirections.itemTouchHelperInt
             }
 
         return makeMovementFlags(dragFlags, swipeFlags)
@@ -143,7 +143,14 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
     override fun onSwiped(viewHolder: ViewHolder, direction: Int) {
         viewHolder.apply {
-            swipeFeature?.onItemSwiped?.invoke(itemView, adapterPosition, direction)
+            val dxDirection =
+                if (direction == ItemTouchHelper.LEFT) {
+                    DxDirection.LEFT
+                } else {
+                    DxDirection.RIGHT
+                }
+
+            swipeFeature?.onItemSwiped?.invoke(itemView, adapterPosition, dxDirection)
         }
     }
 
@@ -161,19 +168,34 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     override fun onChildDraw(
         c: Canvas,
         recyclerView: RecyclerView,
-        viewHolder: ViewHolder,
-        dX: Float,
-        dY: Float,
+        holder: ViewHolder,
+        dx: Float,
+        dy: Float,
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
+        super.onChildDraw(c, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
+
+        //dx will be 0 when not swiping, or swiping but item is exactly in the middle.
+        //adapter position will be -1 if the item is being removed from the adapter.
+        if (actionState != ItemTouchHelper.ACTION_STATE_SWIPE ||
+            dx == 0f ||
+            holder.adapterPosition == -1
+        ) {
+            return
+        }
+
+        if (dx < 0) {
+            swipeFeature?.notifySwipingLeft(holder)
+        } else {
+            swipeFeature?.notifySwipingRight(holder)
+        }
 
         //todo isCurrentlyActive will be false if user let go and item is animating back!
+        // is it also triggered when letting go and the item is swiped????
+        // can be used for triggering end swipe listener.
 
         //todo when documenting note that this only supports left and right swipes
-        // add support for up/down swipe
-
-
-        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        //todo add support for up/down swipe
     }
 }

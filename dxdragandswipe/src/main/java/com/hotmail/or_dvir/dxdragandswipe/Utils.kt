@@ -12,8 +12,9 @@ typealias onItemMovedListener =
 //region swipe
 //NOTE: even though its the same signature as onItemSwipedListener, keep them separate!
 // this will help prevent future bugs
-typealias onSwipeEventListener = (view: View, adapterPosition: Int, direction: Int) -> Unit
+typealias onSwipeStartListener = (view: View, adapterPosition: Int, direction: DxDirection) -> Unit
+typealias onSwipeEndListener = (view: View, adapterPosition: Int) -> Unit
 //typealias onSwipeEventListener = onDragEventListener //NOT A MISTAKE! same signature
 
-typealias onItemSwipedListener = (view: View, adapterPosition: Int, direction: Int) -> Unit
+typealias onItemSwipedListener = (view: View, adapterPosition: Int, direction: DxDirection) -> Unit
 //endregion

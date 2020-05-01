@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
-import com.hotmail.or_dvir.dxdragandswipe.DxFeatureDrag
-import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
-import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
+import com.hotmail.or_dvir.dxdragandswipe.*
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
+import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterSwipeable
+import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
@@ -52,7 +52,40 @@ class ActivityMain : AppCompatActivity() {
 //        setVisibilityListeners()
 //        setClickListeners()
 //        setDragListeners(true, null)
-        setDragListeners(false, R.id.listItem_dragHandle)
+//        setDragListeners(false, R.id.listItem_dragHandle)
+        setSwipeListeners()
+    }
+
+    private fun setSwipeListeners() {
+        val adapter = AdapterSwipeable(
+            MutableList(10) { index -> ItemSwipeable("item $index") }
+        )
+        setAdapter(adapter)
+
+        val touchCallBack = DxItemTouchCallback(adapter).apply {
+            fun getItemAtPosition(position: Int) =
+                adapter.getDxAdapterItem<ItemSwipeable>(position)
+
+            check all callbacks!!! got bugs!!!
+
+            swipeFeature = DxFeatureSwipe(
+                onSwipeStart = { view, adapterPosition, direction ->
+                    val item = getItemAtPosition(adapterPosition)
+                    Log.i("aaaaa", "swipe start for ${item.text} $direction")
+                },
+                onSwipeEnd = { view, adapterPosition ->
+                    val item = getItemAtPosition(adapterPosition)
+                    Log.i("aaaaa", "swipe end for ${item.text}")
+                },
+                onItemSwiped = { view, adapterPosition, direction ->
+                    val item = getItemAtPosition(adapterPosition)
+                    Log.i("aaaaa", "${item.text} swiped $direction")
+                },
+                swipeDirections = DxDirection.LEFT_RIGHT
+            )
+        }
+
+        ItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
     }
 
     private fun setDragListeners(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {

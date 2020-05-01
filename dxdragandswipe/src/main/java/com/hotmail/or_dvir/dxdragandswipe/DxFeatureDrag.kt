@@ -63,11 +63,13 @@ class DxFeatureDrag(
 
     override fun getFeatureId() = R.id.feature_drag
 
+    //todo only need the holder here!!!
     internal fun signalDragStart(itemView: View, holder: RecyclerView.ViewHolder) {
         flagIsDragging = true
         onDragStart.invoke(itemView, holder.adapterPosition)
     }
 
+    //todo only need the holder here!!!
     internal fun signalDragEnd(itemView: View, holder: RecyclerView.ViewHolder) {
         flagIsDragging = false
         onDragEnd.invoke(itemView, holder.adapterPosition)

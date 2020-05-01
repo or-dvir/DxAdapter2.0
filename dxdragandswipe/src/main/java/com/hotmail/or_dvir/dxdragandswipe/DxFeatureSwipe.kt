@@ -9,11 +9,16 @@ import org.jetbrains.annotations.TestOnly
 
 class DxFeatureSwipe(
     //todo change the name of this to include direction?
-    private val onSwipeStart: onSwipeEventListener,
-    private val onSwipeEnd: onSwipeEventListener,
+    private val onSwipeStart: onSwipeStartListener,
+    private val onSwipeEnd: onSwipeEndListener,
     internal val onItemSwiped: onItemSwipedListener,
-    internal var swipeDirections: Int
+    //todo how to make sure this list is not empty?
+    internal var swipeDirections: DxDirection
 ) : IDxBaseFeature {
+
+    //todo when documenting, tell the user to only
+
+    //todo change dragging to use DxDirection!!!!!
 
     //todo
     // background
@@ -55,11 +60,11 @@ class DxFeatureSwipe(
 
     var isSwipeEnabled = true
     private var flagIsSwiping = false
-    internal var flagIsSwipingRight = false
-    internal var flagIsSwipingLeft = false
+    internal var flagNotifiedSwipingRight = false
+    internal var flagNotifiedSwipingLeft = false
 
     @TestOnly
-    fun setSwipeDirection(directions: Int) {
+    fun setSwipeDirections(directions: DxDirection) {
         swipeDirections = directions
     }
 
@@ -77,35 +82,34 @@ class DxFeatureSwipe(
 //        flagIsSwiping = true
 //        onSwipeStart.invoke(itemView, holder.adapterPosition)
 //    }
-    internal fun signalSwipeStartRight(
-        itemView: View,
-        holder: RecyclerView.ViewHolder,
-        direction: Int
-    ) {
-        if(flagIsSwipingRight) {
-            flagIsSwipingLeft = false
-            flagIsSwipingRight = true
-            onSwipeStart.invoke(itemView, holder.adapterPosition, direction)
+    internal fun notifySwipingRight(holder: RecyclerView.ViewHolder) {
+        //todo could probably be moved into the if.
+        // is it even still needed?
+        flagIsSwiping = true
+
+        if (!flagNotifiedSwipingRight) {
+            flagNotifiedSwipingLeft = false
+            flagNotifiedSwipingRight = true
+            onSwipeStart.invoke(holder.itemView, holder.adapterPosition, DxDirection.RIGHT)
         }
-
-        flagIsSwipingLeft = false
-        flagIsSwipingRight = true
-        onSwipeStart.invoke(itemView, holder.adapterPosition, direction)
     }
 
-    internal fun signalSwipeStartLeft(
-        itemView: View, holder: RecyclerView.ViewHolder, direction: Int
-    ) {
-        flagIsSwipingLeft = true
-        flagIsSwipingRight = false
-        onSwipeStart.invoke(itemView, holder.adapterPosition, direction)
+    internal fun notifySwipingLeft(holder: RecyclerView.ViewHolder) {
+        //todo could probably be moved into the if.
+        // is it even still needed?
+        flagIsSwiping = true
+
+        if (!flagNotifiedSwipingLeft) {
+            flagNotifiedSwipingLeft = true
+            flagNotifiedSwipingRight = false
+            onSwipeStart.invoke(holder.itemView, holder.adapterPosition, DxDirection.LEFT)
+        }
     }
 
-    internal fun signalSwipeEnd(itemView: View, holder: RecyclerView.ViewHolder) {
-        if(flagIsSwiping){
-            i stopped here
+    internal fun notifySwipeEnd(holder: RecyclerView.ViewHolder) {
+        if (flagIsSwiping) {
             flagIsSwiping = false
-            onSwipeEnd.invoke(itemView, holder.adapterPosition)
+            onSwipeEnd.invoke(holder.itemView, holder.adapterPosition)
         }
     }
 }
