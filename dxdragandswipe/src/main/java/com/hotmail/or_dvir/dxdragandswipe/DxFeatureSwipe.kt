@@ -8,6 +8,7 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import org.jetbrains.annotations.TestOnly
 
 class DxFeatureSwipe(
+    //todo change the name of this to include direction?
     private val onSwipeStart: onSwipeEventListener,
     private val onSwipeEnd: onSwipeEventListener,
     internal val onItemSwiped: onItemSwipedListener,
@@ -53,7 +54,9 @@ class DxFeatureSwipe(
 
 
     var isSwipeEnabled = true
-    internal var flagIsSwiping = false
+    private var flagIsSwiping = false
+    internal var flagIsSwipingRight = false
+    internal var flagIsSwipingLeft = false
 
     @TestOnly
     fun setSwipeDirection(directions: Int) {
@@ -70,13 +73,39 @@ class DxFeatureSwipe(
 
     override fun getFeatureId() = R.id.feature_swipe
 
-    internal fun signalSwipeStart(itemView: View, holder: RecyclerView.ViewHolder) {
-        flagIsSwiping = true
-        onSwipeStart.invoke(itemView, holder.adapterPosition)
+    //    internal fun signalSwipeStart(itemView: View, holder: RecyclerView.ViewHolder) {
+//        flagIsSwiping = true
+//        onSwipeStart.invoke(itemView, holder.adapterPosition)
+//    }
+    internal fun signalSwipeStartRight(
+        itemView: View,
+        holder: RecyclerView.ViewHolder,
+        direction: Int
+    ) {
+        if(flagIsSwipingRight) {
+            flagIsSwipingLeft = false
+            flagIsSwipingRight = true
+            onSwipeStart.invoke(itemView, holder.adapterPosition, direction)
+        }
+
+        flagIsSwipingLeft = false
+        flagIsSwipingRight = true
+        onSwipeStart.invoke(itemView, holder.adapterPosition, direction)
+    }
+
+    internal fun signalSwipeStartLeft(
+        itemView: View, holder: RecyclerView.ViewHolder, direction: Int
+    ) {
+        flagIsSwipingLeft = true
+        flagIsSwipingRight = false
+        onSwipeStart.invoke(itemView, holder.adapterPosition, direction)
     }
 
     internal fun signalSwipeEnd(itemView: View, holder: RecyclerView.ViewHolder) {
-        flagIsSwiping = false
-        onSwipeEnd.invoke(itemView, holder.adapterPosition)
+        if(flagIsSwiping){
+            i stopped here
+            flagIsSwiping = false
+            onSwipeEnd.invoke(itemView, holder.adapterPosition)
+        }
     }
 }

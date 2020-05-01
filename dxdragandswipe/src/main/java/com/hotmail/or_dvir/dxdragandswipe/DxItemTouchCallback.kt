@@ -65,7 +65,8 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
         when (actionState) {
             ItemTouchHelper.ACTION_STATE_DRAG -> dragFeature?.signalDragStart(itemView, holder)
-            ItemTouchHelper.ACTION_STATE_SWIPE -> swipeFeature?.signalSwipeStart(itemView, holder)
+        //todo if onChildDraw() works with the listernes, this line is not needed
+//            ItemTouchHelper.ACTION_STATE_SWIPE -> swipeFeature?.signalSwipeStart(itemView, holder)
         }
     }
 
@@ -80,11 +81,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             }
         }
 
-        swipeFeature?.apply {
-            if (flagIsSwiping) {
-                signalSwipeEnd(itemView, holder)
-            }
-        }
+        swipeFeature?.signalSwipeEnd(itemView, holder)
     }
 
     override fun getMovementFlags(recycler: RecyclerView, holder: ViewHolder): Int {
