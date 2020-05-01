@@ -10,19 +10,11 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
 
-    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
+//    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
+    private val allFeatures: LinkedHashMap<Int, IDxBaseFeature> = LinkedHashMap()
 
-    fun removeFeature(feature: IDxBaseFeature) {
-        allFeatures.remove(feature)
-    }
-
-    fun addFeature(feature: IDxBaseFeature) {
-        //todo make sure not to add duplicates! (can be done with a map of internal id's)
-        // the order of the data structure doesnt necessarily matter,
-        // but the order of calling each feature does! make sure that all listeners
-        // are always called in the same order so the user can rely on this
-        allFeatures.add(feature)
-    }
+    fun addFeature(feature: IDxBaseFeature) = allFeatures.put(feature.getFeatureId(), feature)
+    fun removeFeature(feature: IDxBaseFeature) = allFeatures.remove(feature.getFeatureId())
 
     @CallSuper
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -32,7 +24,7 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
 
         val holder = createAdapterViewHolder(itemView, parent, viewType)
 
-        allFeatures.forEach {
+        allFeatures.values.forEach {
             it.onCreateViewHolder(this, itemView, holder)
         }
 

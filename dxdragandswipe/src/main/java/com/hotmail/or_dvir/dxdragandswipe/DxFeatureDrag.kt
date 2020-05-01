@@ -61,6 +61,8 @@ class DxFeatureDrag(
         }
     }
 
+    override fun getFeatureId() = R.id.feature_drag
+
     internal fun signalDragStart(itemView: View, holder: RecyclerView.ViewHolder) {
         flagIsDragging = true
         onDragStart.invoke(itemView, holder.adapterPosition)

@@ -33,4 +33,6 @@ class DxFeatureClickListeners : IDxBaseFeature {
             }
         }
     }
+
+    override fun getFeatureId() = R.id.feature_clickListener
 }

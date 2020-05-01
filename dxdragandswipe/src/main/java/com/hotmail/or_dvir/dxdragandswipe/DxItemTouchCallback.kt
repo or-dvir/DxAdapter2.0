@@ -13,27 +13,30 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         private const val TAG = "DxItemTouchCallback"
     }
 
-    //todo add all features from dx adapter
-    // make sure all methods are implemented the same
-
     //todo when documenting note that there is no need to add the feature to the adapter
     var dragFeature: DxFeatureDrag? = null
         set(value) {
+            val prevField = field
             field = value
-            value?.apply {
+
+            if(value != null) {
                 mAdapter.addFeature(value)
+            } else if(prevField != null) {
+                mAdapter.removeFeature(prevField)
             }
-            //todo if value is null, remove from the adapter (use internal id)
         }
 
     //todo when documenting note that there is no need to add the feature to the adapter
     var swipeFeature: DxFeatureSwipe? = null
         set(value) {
+            val prevField = field
             field = value
-            value?.apply {
+
+            if(value != null) {
                 mAdapter.addFeature(value)
+            } else if(prevField != null) {
+                mAdapter.removeFeature(prevField)
             }
-            //todo if value is null, remove from the adapter (use internal id)
         }
 
     internal fun setUpDragWithHandle(@IdRes handleId: Int, touchHelper: ItemTouchHelper) {

@@ -40,7 +40,6 @@ class DxFeatureSwipe(
     var swipeEscapeVelocityMultiplier: Float? = null
 
 
-
     var isSwipeEnabled = true
     internal var flagIsSwiping = false
 
@@ -54,28 +53,10 @@ class DxFeatureSwipe(
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
-        //NOTE:
-        //at this point holder.adapterPosition is -1 so we cannot check if the item is IDxItemSwipeable
-        if (!isSwipeEnabled) {
-            return
-        }
-
-        //todo what do i need to do here?
-//        itemView.findViewById<View>(SwipeHandleId!!).setOnTouchListener { view, motionEvent ->
-//            when (motionEvent.actionMasked) {
-//                MotionEvent.ACTION_DOWN -> {
-//                    signalSwipeStart(itemView, holder)
-//                    //signalSwipeStart is also called from DxItemTouchCallback but
-//                    //we only want to manually start the Swipe operation from here
-//                    itemTouchHelper?.startSwipe(holder)
-//                }
-//                MotionEvent.ACTION_UP -> signalSwipeEnd(itemView, holder)
-//            }
-//
-//            //allow normal processing to continue
-//            false
-//        }
+        //do nothing
     }
+
+    override fun getFeatureId() = R.id.feature_swipe
 
     internal fun signalSwipeStart(itemView: View, holder: RecyclerView.ViewHolder) {
         flagIsSwiping = true
