@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxdragandswipe
 
+import android.graphics.Canvas
 import android.util.Log
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -159,4 +160,23 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
     override fun getSwipeThreshold(viewHolder: ViewHolder) =
         swipeFeature?.swipeThreshold ?: super.getSwipeThreshold(viewHolder)
+
+    override fun onChildDraw(
+        c: Canvas,
+        recyclerView: RecyclerView,
+        viewHolder: ViewHolder,
+        dX: Float,
+        dY: Float,
+        actionState: Int,
+        isCurrentlyActive: Boolean
+    ) {
+
+        //todo isCurrentlyActive will be false if user let go and item is animating back!
+
+        //todo when documenting note that this only supports left and right swipes
+        // add support for up/down swipe
+
+
+        super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+    }
 }

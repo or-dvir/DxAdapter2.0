@@ -16,6 +16,18 @@ class DxFeatureSwipe(
 
     //todo
     // background
+    // add direction to swipe listener
+    // add listener for when swipe direction changes (only after passing the zero!!! otherwise ui will look weird)
+    // check what happens if the user lifts his finger mid-swipe (should be fine because onSwipeEnd is supposed to be called when the animation ends)
+    // post answer to this question:
+    // https://stackoverflow.com/questions/57334276/how-do-i-add-two-different-backgrounds-for-swiping-left-and-right-respectively
+
+    //todo how to do background!
+    // for static background
+    //      set desired layout in ui and do nothing in listeners
+    // for dynamic background which depends on item state
+    //      set as many backgrounds as needed and set them to invisible
+    //      change visibility according to item state in proper listener
 
     /**
      * see [ItemTouchHelper.Callback.getSwipeThreshold] for details
