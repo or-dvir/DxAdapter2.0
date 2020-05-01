@@ -1,15 +1,11 @@
 package com.hotmail.or_dvir.dxlibraries
 
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.*
-import androidx.test.espresso.Espresso
-import androidx.test.espresso.Espresso.*
+import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions
-import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.contrib.RecyclerViewActions.*
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
+import androidx.test.espresso.matcher.ViewMatchers.withClassName
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxdragandswipe.DxFeatureDrag
 import com.hotmail.or_dvir.dxdragandswipe.onDragEventListener
@@ -18,8 +14,7 @@ import com.hotmail.or_dvir.dxlibraries.draggable.AdapterNonDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
 import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import io.mockk.spyk
-import org.hamcrest.CoreMatchers
-import org.hamcrest.CoreMatchers.*
+import org.hamcrest.CoreMatchers.containsString
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
