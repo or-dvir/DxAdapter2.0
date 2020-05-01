@@ -74,6 +74,5 @@ enum class CustomGeneralLocation : CoordinatesProvider {
                 screenLocation[1] - view.height * 0.5f
             )
         }
-
     }
 }

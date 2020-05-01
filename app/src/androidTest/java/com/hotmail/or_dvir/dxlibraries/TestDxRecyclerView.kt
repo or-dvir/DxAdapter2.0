@@ -7,18 +7,16 @@ import androidx.test.espresso.action.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
-import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.GenericListener
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_main.*
-import org.hamcrest.CoreMatchers.containsString
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -75,9 +73,6 @@ class TestDxRecyclerView {
         }
     }
 
-    //todo for some reason when i use this line in my tests i get "unresolved reference"
-    // onView(withId(R.id.activityMain_rv))
-
     /**
      * perform a dummy test that should always pass in order to make espresso
      * wait until all idling resources have finished
@@ -85,7 +80,7 @@ class TestDxRecyclerView {
     private fun pauseTestUntilAsyncOperationDone() {
         //the recycler view should always be visible, so this is a simple test
         //that should always pass
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).check(
+        onView(withId(R.id.activityMain_rv)).check(
             ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))
         )
     }
@@ -154,7 +149,7 @@ class TestDxRecyclerView {
 
 
         //scroll to end of list
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+        onView(withId(R.id.activityMain_rv)).perform(
             //NOTE: the position parameter must be within the recycler view bounds!
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(longListSize - 1)
         )
@@ -173,7 +168,7 @@ class TestDxRecyclerView {
         verify(atMost = 1) { mLastInvisible.invoke() }
 
         //scroll to top of list
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+        onView(withId(R.id.activityMain_rv)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0)
         )
 
@@ -242,7 +237,7 @@ class TestDxRecyclerView {
         //scroll down slow
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+        onView(withId(R.id.activityMain_rv)).perform(
             swipeUpSlow()
         )
 
@@ -274,9 +269,7 @@ class TestDxRecyclerView {
         //scroll down fast
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
-            swipeUpFast()
-        )
+        onView(withId(R.id.activityMain_rv)).perform(swipeUpFast())
 
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()
@@ -290,9 +283,7 @@ class TestDxRecyclerView {
         //scroll up fast
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
-            swipeDownFast()
-        )
+        onView(withId(R.id.activityMain_rv)).perform(swipeDownFast())
 
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()
@@ -324,9 +315,7 @@ class TestDxRecyclerView {
         //scroll to end of list.
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
-            ViewActions.swipeLeft()
-        )
+        onView(withId(R.id.activityMain_rv)).perform(ViewActions.swipeLeft())
 
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()
@@ -340,9 +329,7 @@ class TestDxRecyclerView {
         //scroll to top of list
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
-            ViewActions.swipeRight()
-        )
+        onView(withId(R.id.activityMain_rv)).perform(ViewActions.swipeRight())
 
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()

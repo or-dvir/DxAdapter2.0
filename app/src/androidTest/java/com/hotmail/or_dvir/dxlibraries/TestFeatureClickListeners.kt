@@ -5,19 +5,17 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers.withClassName
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemNonClickable
-import com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
 import com.hotmail.or_dvir.featureclicklisteners.onItemClickListener
 import com.hotmail.or_dvir.featureclicklisteners.onItemLongClickListener
 import io.mockk.spyk
 import io.mockk.verify
-import org.hamcrest.CoreMatchers.containsString
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -45,9 +43,6 @@ class TestFeatureClickListeners {
     private fun onActivity(task: (act: ActivityMain) -> Unit) =
         activityScenario.scenario.onActivity { task.invoke(it) }
 
-    //todo for some reason when i use this line in my tests i get "unresolved reference"
-    // onView(withId(R.id.activityMain_rv))
-
     @Test
     fun clickListenersTest_nonClickableItem() {
         val items = MutableList(2) { index -> ItemNonClickable("item $index") }
@@ -57,7 +52,7 @@ class TestFeatureClickListeners {
 
         var clickedPosition = 0
 
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+        onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, click())
         )
 
@@ -70,7 +65,7 @@ class TestFeatureClickListeners {
 
         clickedPosition = 1
 
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+        onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, longClick())
         )
 
@@ -88,7 +83,7 @@ class TestFeatureClickListeners {
 
         var clickedPosition = 0
 
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+        onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, click())
         )
 
@@ -101,7 +96,7 @@ class TestFeatureClickListeners {
 
         clickedPosition = 1
 
-        onView(withClassName(containsString(DxRecyclerView::class.java.simpleName))).perform(
+        onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, longClick())
         )
 
