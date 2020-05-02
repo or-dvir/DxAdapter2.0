@@ -11,15 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
-import com.hotmail.or_dvir.dxdragandswipe.*
+import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
+import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
 import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
-import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterSwipeable
 import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
+import com.hotmail.or_dvir.dxlibraries.swipeable.MySwipeFeature
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
@@ -72,7 +73,8 @@ class ActivityMain : AppCompatActivity() {
             fun getItemAtPosition(position: Int) =
                 adapter.getDxAdapterItem<ItemSwipeable>(position)
 
-            swipeFeature = DxFeatureSwipe(
+            swipeFeature = MySwipeFeature(
+                context = this@ActivityMain,
                 onSwipeStart = { view, adapterPosition ->
                     val item = getItemAtPosition(adapterPosition)
                     Log.i("aaaaa", "swipe start for ${item.text}")
