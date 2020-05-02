@@ -14,24 +14,17 @@ class DxFeatureSwipe(
     internal var swipeDirections: Int,
     private val onSwipeStart: onSwipeEventListener,
     private val onSwipeEnd: onSwipeEventListener,
-    internal val onItemSwiped: onItemSwipedListener
-) : IDxBaseFeature {
-
-    //todo
-    // background
-
+    internal val onItemSwiped: onItemSwipedListener,
     /**
      * see [ItemTouchHelper.Callback.getSwipeThreshold] for details
      */
-    var swipeThreshold: Float? = null
-
+    var swipeThreshold: Float? = null,
     /**
      * see [ItemTouchHelper.Callback.getSwipeEscapeVelocity] for more details.
      *
      * this value is overridden by [swipeEscapeVelocityMultiplier] (if set).
      */
-    var swipeEscapeVelocity: Float? = null
-
+    var swipeEscapeVelocity: Float? = null,
     /**
      * sets a value for the swipe escape velocity as a multiplier
      * of the device's default value.
@@ -41,6 +34,11 @@ class DxFeatureSwipe(
      *  see [ItemTouchHelper.Callback.getSwipeEscapeVelocity] for more details.
      */
     var swipeEscapeVelocityMultiplier: Float? = null
+) : IDxBaseFeature {
+
+    //todo
+    // background
+
     var isSwipeEnabled = true
     private var flagIsSwiping = false
 

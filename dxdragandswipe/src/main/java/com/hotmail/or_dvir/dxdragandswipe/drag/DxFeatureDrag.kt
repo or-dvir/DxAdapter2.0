@@ -13,10 +13,10 @@ import com.hotmail.or_dvir.dxdragandswipe.onItemMovedListener
 import org.jetbrains.annotations.TestOnly
 
 class DxFeatureDrag(
+    internal var dragDirections: Int,
     private val onDragStart: onDragEventListener,
     private val onDragEnd: onDragEventListener,
     internal val onItemMoved: onItemMovedListener,
-    internal var dragDirections: Int,
     internal var dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 

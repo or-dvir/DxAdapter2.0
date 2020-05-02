@@ -9,9 +9,16 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
 import com.hotmail.or_dvir.dxdragandswipe.drag.IDxItemDraggable
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
+import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.IDxItemSwipeable
 
 class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.Callback() {
+
+    //region
+    //fields for onChildDraw() for better performance (onChildDraw() will be called many times)
+    private var mSwipeBackgroundForDrawing: DxSwipeBackground? = null
+
+    //endregion
 
     //todo when documenting note that there is no need to add the feature to the adapter
     var dragFeature: DxFeatureDrag? = null
