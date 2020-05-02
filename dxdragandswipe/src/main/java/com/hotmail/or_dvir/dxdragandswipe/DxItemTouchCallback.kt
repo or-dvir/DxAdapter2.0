@@ -23,6 +23,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         }
 
     //todo when documenting note that there is no need to add the feature to the adapter
+    // even though nothing will happen as the map in DxAdapter will override it
     var swipeFeature: DxFeatureSwipe? = null
         set(value) {
             val prevField = field

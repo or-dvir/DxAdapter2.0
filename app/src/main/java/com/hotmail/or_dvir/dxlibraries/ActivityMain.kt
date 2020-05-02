@@ -84,7 +84,7 @@ class ActivityMain : AppCompatActivity() {
                     //todo add this note in documentation
                     //this resets the item
                     adapter.notifyItemChanged(adapterPosition)
-                    Log.i("aaaaa", "${item.text} swiped $direction")
+                    Log.i("aaaaa", "${item.text} swiped")
                 },
                 swipeDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             )
