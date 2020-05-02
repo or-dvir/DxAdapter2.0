@@ -36,10 +36,10 @@ class TestFeatureDrag {
         mOnItemMoved = spyk({ draggedView, draggedPosition, targetView, targetPosition -> })
 
         mDragFeature = DxFeatureDrag(
+            ItemTouchHelper.UP or ItemTouchHelper.DOWN, //may be overridden later
             mDragEventStart,
             mDragEventEnd,
             mOnItemMoved,
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN, //may be overridden later
             true
         )
     }
@@ -69,7 +69,7 @@ class TestFeatureDrag {
 //            actionOnItemAtPosition<ViewHolder>(dragFrom, ViewActions.longClick())
 //        )
 
-        //todo try to combine something to make drag and drop...
+        try to combine something to make drag and drop...
 
         onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(dragFrom, LowLevelActions.pressAndHold())
