@@ -22,7 +22,7 @@ class DxFeatureDrag(
     internal var itemTouchHelper: ItemTouchHelper? = null
 
     var isDragEnabled = true
-    internal var flagIsDragging = false
+    private var flagIsDragging = false
 
     @TestOnly
     fun setDragDirection(directions: Int) {
@@ -48,12 +48,12 @@ class DxFeatureDrag(
         itemView.findViewById<View>(dragHandleId!!).setOnTouchListener { view, motionEvent ->
             when (motionEvent.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
-                    signalDragStart(itemView, holder)
+                    notifyDragStart(holder)
                     //signalDragStart is also called from DxItemTouchCallback but
                     //we only want to manually start the drag operation from here
                     itemTouchHelper?.startDrag(holder)
                 }
-                MotionEvent.ACTION_UP -> signalDragEnd(itemView, holder)
+                MotionEvent.ACTION_UP -> notifyDragEnd(holder)
             }
 
             //allow normal processing to continue
@@ -63,15 +63,15 @@ class DxFeatureDrag(
 
     override fun getFeatureId() = R.id.feature_drag
 
-    //todo only need the holder here!!!
-    internal fun signalDragStart(itemView: View, holder: RecyclerView.ViewHolder) {
+    internal fun notifyDragStart(holder: RecyclerView.ViewHolder) {
         flagIsDragging = true
-        onDragStart.invoke(itemView, holder.adapterPosition)
+        onDragStart.invoke(holder.itemView, holder.adapterPosition)
     }
 
-    //todo only need the holder here!!!
-    internal fun signalDragEnd(itemView: View, holder: RecyclerView.ViewHolder) {
-        flagIsDragging = false
-        onDragEnd.invoke(itemView, holder.adapterPosition)
+    internal fun notifyDragEnd(holder: RecyclerView.ViewHolder) {
+        if (flagIsDragging) {
+            flagIsDragging = false
+            onDragEnd.invoke(holder.itemView, holder.adapterPosition)
+        }
     }
 }

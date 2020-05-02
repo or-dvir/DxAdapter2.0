@@ -37,6 +37,7 @@ class ActivityMain : AppCompatActivity() {
     // make sure to have proper documentation for all classes in ALL MODULES
     // add readme file to all modules
     // delete all example test files from all modules
+    // make all classes open so they can be extended
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +68,9 @@ class ActivityMain : AppCompatActivity() {
                 adapter.getDxAdapterItem<ItemSwipeable>(position)
 
             swipeFeature = DxFeatureSwipe(
-                onSwipeStart = { view, adapterPosition, direction ->
+                onSwipeStart = { view, adapterPosition ->
                     val item = getItemAtPosition(adapterPosition)
-                    Log.i("aaaaa", "swipe start for ${item.text} $direction")
+                    Log.i("aaaaa", "swipe start for ${item.text}")
                 },
                 onSwipeEnd = { view, adapterPosition ->
                     val item = getItemAtPosition(adapterPosition)
@@ -81,10 +82,11 @@ class ActivityMain : AppCompatActivity() {
                     //do to the way ItemTouchCallback works, you MUST do something with the item!
                     //(e.g. remove, reset). if you don't, listeners will be called for wrong items
                     //todo add this note in documentation
+                    //this resets the item
                     adapter.notifyItemChanged(adapterPosition)
                     Log.i("aaaaa", "${item.text} swiped $direction")
                 },
-                swipeDirections = DxDirection.LEFT_RIGHT
+                swipeDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
             )
         }
 
