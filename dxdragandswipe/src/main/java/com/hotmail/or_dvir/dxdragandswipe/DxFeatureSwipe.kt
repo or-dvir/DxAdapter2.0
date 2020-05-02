@@ -8,12 +8,11 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import org.jetbrains.annotations.TestOnly
 
 class DxFeatureSwipe(
+    internal var swipeDirections: DxDirection,
     //todo change the name of this to include direction?
     private val onSwipeStart: onSwipeStartListener,
     private val onSwipeEnd: onSwipeEndListener,
-    internal val onItemSwiped: onItemSwipedListener,
-    //todo how to make sure this list is not empty?
-    internal var swipeDirections: DxDirection
+    internal val onItemSwiped: onItemSwipedListener
 ) : IDxBaseFeature {
 
     //todo when documenting, tell the user to only

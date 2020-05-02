@@ -73,11 +73,11 @@ class ActivityMain : AppCompatActivity() {
                 },
                 onSwipeEnd = { view, adapterPosition ->
                     val item = getItemAtPosition(adapterPosition)
-//                    Log.i("aaaaa", "swipe end for ${item.text}")
+                    Log.i("aaaaa", "swipe end for ${item.text}")
                 },
                 onItemSwiped = { view, adapterPosition, direction ->
                     val item = getItemAtPosition(adapterPosition)
-//                    Log.i("aaaaa", "${item.text} swiped $direction")
+                    Log.i("aaaaa", "${item.text} swiped $direction")
                 },
                 swipeDirections = DxDirection.LEFT_RIGHT
             )
