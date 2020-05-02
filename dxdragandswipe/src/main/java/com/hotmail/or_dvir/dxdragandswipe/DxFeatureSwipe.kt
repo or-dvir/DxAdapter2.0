@@ -18,8 +18,6 @@ class DxFeatureSwipe(
 
     //todo
     // background
-    // post answer to this question:
-    // https://stackoverflow.com/questions/57334276/how-do-i-add-two-different-backgrounds-for-swiping-left-and-right-respectively
 
     //todo how to do background!
     // for static background
