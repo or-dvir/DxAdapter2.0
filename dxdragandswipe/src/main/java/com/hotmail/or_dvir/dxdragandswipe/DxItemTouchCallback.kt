@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.hotmail.or_dvir.dxadapter.DxAdapter
-import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
 class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.Callback() {
 
@@ -55,7 +54,17 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     }
 
     override fun onSelectedChanged(holder: ViewHolder?, actionState: Int) {
-        super.onSelectedChanged(holder, actionState)
+        holder?.let {
+            if(it is IDxSwipeBackground) {
+                Log.i("aaaaa", "on selected changed")
+                getDefaultUIUtil().onSelected(it.getItemForeground())
+            } else {
+                super.onSelectedChanged(holder, actionState)
+            }
+        } ?: super.onSelectedChanged(holder, actionState)
+
+
+
 
         if (holder == null) {
             Log.e(TAG, "viewHolder is null. cannot invoke drag and swipe listeners")
@@ -72,7 +81,12 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     }
 
     override fun clearView(recyclerView: RecyclerView, holder: ViewHolder) {
-        super.clearView(recyclerView, holder)
+        if(holder is IDxSwipeBackground) {
+            Log.i("aaaaa", "clear view")
+            getDefaultUIUtil().clearView(holder.getItemForeground())
+        } else {
+            super.clearView(recyclerView, holder)
+        }
 
         val itemView = holder.itemView
 
@@ -181,7 +195,8 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         actionState: Int,
         isCurrentlyActive: Boolean
     ) {
-        super.onChildDraw(c, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
+//        super.onChildDraw(c, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
+
         //dx will be 0 when not swiping, or swiping but item is exactly in the middle.
         //adapter position will be -1 if the item is being removed from the adapter.
         if (actionState != ItemTouchHelper.ACTION_STATE_SWIPE ||
@@ -196,6 +211,18 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         } else {
             swipeFeature?.notifySwipeRight(holder)
         }
+
+        if (holder is IDxSwipeBackground) {
+            Log.i("aaaaa", "on draw")
+            getDefaultUIUtil().onDraw(
+                c, recyclerView, holder.getItemForeground(), dx, dy, actionState, isCurrentlyActive
+            )
+        } else {
+            super.onChildDraw(c, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
+        }
+
+        //todo should super call be first or lat?
+
 
         //todo when documenting note that this only supports left and right swipes
         //todo add support for up/down swipe

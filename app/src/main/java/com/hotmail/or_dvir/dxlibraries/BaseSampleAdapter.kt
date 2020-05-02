@@ -24,7 +24,7 @@ abstract class BaseSampleAdapter<VH : RecyclerView.ViewHolder>(
     /////////////////////////////////////
     /////////////////////////////////////
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tv: TextView = itemView.listItem_tv
     }
 }
