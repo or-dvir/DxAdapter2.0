@@ -14,6 +14,4 @@ typealias onItemMovedListener =
 typealias onSwipeEventListener = (view: View, adapterPosition: Int) -> Unit
 
 typealias onItemSwipedListener = (view: View, adapterPosition: Int, direction: Int) -> Unit
-
-typealias swipeBackgroundGetter = (itemView: View, adapterPosition: Int) -> DxSwipeBackground
 //endregion

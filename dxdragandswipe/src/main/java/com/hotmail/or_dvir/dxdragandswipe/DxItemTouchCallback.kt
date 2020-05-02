@@ -248,7 +248,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             mSwipeBackgroundForDrawing =
                 when {
                     mIsSwipingLeft -> {
-                        swipeBackgroundLeft?.invoke(itemView, holder.adapterPosition)?.apply {
+                        getSwipeBackgroundLeft(itemView, holder.adapterPosition)?.apply {
                             backgroundColorDrawable.setBounds(
                                 itemView.right + dx.roundToInt(),
                                 itemView.top,
@@ -259,7 +259,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
                     }
                     //swiping right
                     else -> {
-                        swipeBackgroundRight?.invoke(itemView, holder.adapterPosition)?.apply {
+                        getSwipeBackgroundRight(itemView, holder.adapterPosition)?.apply {
                             backgroundColorDrawable.setBounds(
                                 itemView.left,
                                 itemView.top,

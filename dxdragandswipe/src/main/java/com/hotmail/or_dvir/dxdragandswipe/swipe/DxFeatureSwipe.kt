@@ -8,24 +8,29 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxdragandswipe.R
 import com.hotmail.or_dvir.dxdragandswipe.onItemSwipedListener
 import com.hotmail.or_dvir.dxdragandswipe.onSwipeEventListener
-import com.hotmail.or_dvir.dxdragandswipe.swipeBackgroundGetter
 import org.jetbrains.annotations.TestOnly
 
-class DxFeatureSwipe(
+open class DxFeatureSwipe(
     internal var swipeDirections: Int,
     private val onSwipeStart: onSwipeEventListener,
     private val onSwipeEnd: onSwipeEventListener,
-    internal val onItemSwiped: onItemSwipedListener,
+    internal val onItemSwiped: onItemSwipedListener
+) : IDxBaseFeature {
+
+    //region
+    //optional user fields
     /**
      * see [ItemTouchHelper.Callback.getSwipeThreshold] for details
      */
-    var swipeThreshold: Float? = null,
+    open var swipeThreshold: Float? = null
+
     /**
      * see [ItemTouchHelper.Callback.getSwipeEscapeVelocity] for more details.
      *
      * this value is overridden by [swipeEscapeVelocityMultiplier] (if set).
      */
-    var swipeEscapeVelocity: Float? = null,
+    open var swipeEscapeVelocity: Float? = null
+
     /**
      * sets a value for the swipe escape velocity as a multiplier
      * of the device's default value.
@@ -34,12 +39,15 @@ class DxFeatureSwipe(
      *
      *  see [ItemTouchHelper.Callback.getSwipeEscapeVelocity] for more details.
      */
-    var swipeEscapeVelocityMultiplier: Float? = null,
-    var swipeBackgroundLeft: swipeBackgroundGetter? = null,
-    var swipeBackgroundRight: swipeBackgroundGetter? = null
-) : IDxBaseFeature {
+    open var swipeEscapeVelocityMultiplier: Float? = null
+
+    open fun getSwipeBackgroundLeft(itemView: View, adapterPosition: Int): DxSwipeBackground? = null
+    open fun getSwipeBackgroundRight(itemView: View, adapterPosition: Int): DxSwipeBackground? =
+        null
 
     var isSwipeEnabled = true
+    //endregion
+
     private var flagIsSwiping = false
 
     @TestOnly

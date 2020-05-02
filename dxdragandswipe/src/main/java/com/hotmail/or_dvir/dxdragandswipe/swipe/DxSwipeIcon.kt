@@ -21,8 +21,8 @@ import androidx.core.content.ContextCompat
  * DP from dimens.xml)
  */
 class DxSwipeIcon(
-    val context: Context,
     @DrawableRes val iconRes: Int,
+    private val context: Context,
     private val desiredHeightPx: Int
 ) {
     internal val mIconDrawable: Drawable
