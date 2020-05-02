@@ -67,11 +67,11 @@ class ActivityMain : AppCompatActivity() {
                 adapter.getDxAdapterItem<ItemSwipeable>(position)
 
             swipeFeature = DxFeatureSwipe(
-                onStartDirectionalSwipe = { view, adapterPosition, direction ->
+                onSwipeStart = { view, adapterPosition, direction ->
                     val item = getItemAtPosition(adapterPosition)
                     Log.i("aaaaa", "swipe start for ${item.text} $direction")
                 },
-                onEndSwipeInteraction = { view, adapterPosition ->
+                onSwipeEnd = { view, adapterPosition ->
                     val item = getItemAtPosition(adapterPosition)
                     Log.i("aaaaa", "swipe end for ${item.text}")
                 },
