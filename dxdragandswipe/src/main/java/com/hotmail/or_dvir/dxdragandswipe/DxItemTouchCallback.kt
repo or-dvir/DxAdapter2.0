@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.hotmail.or_dvir.dxadapter.DxAdapter
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
 class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.Callback() {
 
@@ -181,7 +182,6 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         isCurrentlyActive: Boolean
     ) {
         super.onChildDraw(c, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
-//        Log.i("aaaaa", "dx: $dx")
         //dx will be 0 when not swiping, or swiping but item is exactly in the middle.
         //adapter position will be -1 if the item is being removed from the adapter.
         if (actionState != ItemTouchHelper.ACTION_STATE_SWIPE ||
@@ -196,10 +196,6 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         } else {
             swipeFeature?.notifySwipeRight(holder)
         }
-
-        //todo isCurrentlyActive will be false if user let go and item is animating back!
-        // is it also triggered when letting go and the item is swiped????
-        // can be used for triggering end swipe listener.
 
         //todo when documenting note that this only supports left and right swipes
         //todo add support for up/down swipe

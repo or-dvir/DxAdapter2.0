@@ -77,6 +77,11 @@ class ActivityMain : AppCompatActivity() {
                 },
                 onItemSwiped = { view, adapterPosition, direction ->
                     val item = getItemAtPosition(adapterPosition)
+                    //IMPORTANT NOTE:
+                    //do to the way ItemTouchCallback works, you MUST do something with the item!
+                    //(e.g. remove, reset). if you don't, listeners will be called for wrong items
+                    //todo add this note in documentation
+                    adapter.notifyItemChanged(adapterPosition)
                     Log.i("aaaaa", "${item.text} swiped $direction")
                 },
                 swipeDirections = DxDirection.LEFT_RIGHT

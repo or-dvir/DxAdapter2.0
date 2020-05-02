@@ -9,21 +9,15 @@ import org.jetbrains.annotations.TestOnly
 
 class DxFeatureSwipe(
     internal var swipeDirections: DxDirection,
-    //todo change the name of this to include direction?
-    private val onSwipeStart: onSwipeStartListener,
-    private val onSwipeEnd: onSwipeEndListener,
+    private val onStartDirectionalSwipe: onSwipeStartListener,
+    private val onEndSwipeInteraction: onSwipeEndListener,
     internal val onItemSwiped: onItemSwipedListener
 ) : IDxBaseFeature {
-
-    //todo when documenting, tell the user to only
 
     //todo change dragging to use DxDirection!!!!!
 
     //todo
     // background
-    // add direction to swipe listener
-    // add listener for when swipe direction changes (only after passing the zero!!! otherwise ui will look weird)
-    // check what happens if the user lifts his finger mid-swipe (should be fine because onSwipeEnd is supposed to be called when the animation ends)
     // post answer to this question:
     // https://stackoverflow.com/questions/57334276/how-do-i-add-two-different-backgrounds-for-swiping-left-and-right-respectively
 
@@ -89,7 +83,7 @@ class DxFeatureSwipe(
         if (!flagNotifiedSwipingRight) {
             flagNotifiedSwipingLeft = false
             flagNotifiedSwipingRight = true
-            onSwipeStart.invoke(holder.itemView, holder.adapterPosition, DxDirection.RIGHT)
+            onStartDirectionalSwipe.invoke(holder.itemView, holder.adapterPosition, DxDirection.RIGHT)
         }
     }
 
@@ -101,7 +95,7 @@ class DxFeatureSwipe(
         if (!flagNotifiedSwipingLeft) {
             flagNotifiedSwipingLeft = true
             flagNotifiedSwipingRight = false
-            onSwipeStart.invoke(holder.itemView, holder.adapterPosition, DxDirection.LEFT)
+            onStartDirectionalSwipe.invoke(holder.itemView, holder.adapterPosition, DxDirection.LEFT)
         }
     }
 
@@ -114,7 +108,7 @@ class DxFeatureSwipe(
     internal fun notifySwipeEnd(holder: RecyclerView.ViewHolder) {
         if (flagIsSwiping) {
             resetSwipeFlags()
-            onSwipeEnd.invoke(holder.itemView, holder.adapterPosition)
+            onEndSwipeInteraction.invoke(holder.itemView, holder.adapterPosition)
         }
     }
 }
