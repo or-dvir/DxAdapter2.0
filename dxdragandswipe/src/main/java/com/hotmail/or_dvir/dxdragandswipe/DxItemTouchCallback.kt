@@ -1,6 +1,7 @@
 package com.hotmail.or_dvir.dxdragandswipe
 
 import android.graphics.Canvas
+import android.graphics.Rect
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -11,13 +12,22 @@ import com.hotmail.or_dvir.dxdragandswipe.drag.IDxItemDraggable
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.IDxItemSwipeable
+import kotlin.math.roundToInt
 
 class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.Callback() {
 
     //region
     //fields for onChildDraw() for better performance (onChildDraw() will be called many times)
     private var mSwipeBackgroundForDrawing: DxSwipeBackground? = null
-
+    private var mIsSwipingLeft = false
+    private var mDoesBackFit = false
+    private var mIconTop = 0
+    private var mIconBottom = 0
+    private var mIconLeft = 0
+    private var mIconRight = 0
+    private var mTextX = 0f
+    private var mTextY = 0f
+    private val mTextRect = Rect()
     //endregion
 
     //todo when documenting note that there is no need to add the feature to the adapter
@@ -153,8 +163,64 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     override fun getSwipeThreshold(viewHolder: ViewHolder) =
         swipeFeature?.swipeThreshold ?: super.getSwipeThreshold(viewHolder)
 
+    //NOTE:
+    //even though the parameter swipeBack might always refer to mSwipeBackgroundForDrawing,
+    //its safer to have it as a non-null parameter in case i make changes in the future
+    private fun calculateIconLeft(swipeBack: DxSwipeBackground, isSwipingLeft: Boolean): Int {
+        swipeBack.apply {
+            mDoesBackFit = doesBackgroundFitInSwipeArea()
+            var temp: Int
+
+            backgroundColorDrawable.bounds.let { bounds ->
+                return when {
+                    mDoesBackFit && isSwipingLeft -> {
+                        temp = bounds.right - iconWidthPx
+                        if (iconWidthPx > 0) {
+                            temp -= paddingPx
+                        }
+
+                        temp
+                    }
+
+                    //swiping right
+                    mDoesBackFit -> {
+                        temp = bounds.left
+                        if (iconWidthPx > 0) {
+                            temp += paddingPx
+                        }
+
+                        temp
+                    }
+
+                    //mDoesBackFit is FALSE
+                    isSwipingLeft -> {
+                        temp = bounds.left + paddingPx
+                        if (textWidthPx > 0) {
+                            temp += textWidthPx + paddingPx
+                        }
+
+                        temp
+                    }
+                    //swiping right
+                    else -> {
+                        temp = bounds.right - paddingPx - iconWidthPx
+                        //NOTE:
+                        //do NOT do "temp -= <expression>" here because the order of
+                        //operations is slightly different and with certain values it will
+                        //cause bugs
+                        if (textWidthPx > 0) {
+                            temp = temp - textWidthPx - paddingPx
+                        }
+
+                        temp
+                    }
+                }
+            }
+        }
+    }
+
     override fun onChildDraw(
-        c: Canvas,
+        canvas: Canvas,
         recyclerView: RecyclerView,
         holder: ViewHolder,
         dx: Float,
@@ -168,11 +234,76 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
             dx == 0f ||
             holder.adapterPosition == -1
         ) {
+            //we must still call the super method
+            super.onChildDraw(canvas, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
             return
         }
 
-        //todo do something
+        //unlike the others, this variable is here and not global because we shouldn't keep
+        //references to views
+        val itemView = holder.itemView
+        mIsSwipingLeft = dx < 0
 
-        super.onChildDraw(c, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
+        swipeFeature?.apply {
+            mSwipeBackgroundForDrawing =
+                when {
+                    mIsSwipingLeft -> {
+                        swipeBackgroundLeft?.invoke(itemView, holder.adapterPosition)?.apply {
+                            backgroundColorDrawable.setBounds(
+                                itemView.right + dx.roundToInt(),
+                                itemView.top,
+                                itemView.right,
+                                itemView.bottom
+                            )
+                        }
+                    }
+                    //swiping right
+                    else -> {
+                        swipeBackgroundRight?.invoke(itemView, holder.adapterPosition)?.apply {
+                            backgroundColorDrawable.setBounds(
+                                itemView.left,
+                                itemView.top,
+                                itemView.left + dx.roundToInt(),
+                                itemView.bottom
+                            )
+                        }
+                    }
+                }
+        }
+
+        mSwipeBackgroundForDrawing?.apply {
+            //NOTE:
+            //drawing background MUST come BEFORE drawing the mText
+            backgroundColorDrawable.let { backDraw ->
+                backDraw.draw(canvas)
+
+                mIconTop = backDraw.bounds.centerY() - mHalfIconHeight
+                mIconBottom = backDraw.bounds.centerY() + mHalfIconHeight
+                mIconLeft = calculateIconLeft(this, mIsSwipingLeft)
+                mIconRight = mIconLeft + iconWidthPx
+
+                dxIcon?.mIconDrawable?.apply {
+                    setBounds(mIconLeft, mIconTop, mIconRight, mIconBottom)
+                    draw(canvas)
+                }
+
+                dxText?.apply {
+                    mPaint.getTextBounds(text, 0, text.length, mTextRect)
+
+                    mTextY = backDraw.bounds.exactCenterY() + (mTextRect.height() / 4f)
+                    mTextX =
+                        if (mIsSwipingLeft) {
+                            mIconLeft.toFloat() - paddingPx - textWidthPx
+                        } else {
+                            //swiping right
+                            mIconRight.toFloat() + paddingPx
+                        }
+
+                    canvas.drawText(text, mTextX, mTextY, mPaint)
+                }
+            }
+        }
+
+        super.onChildDraw(canvas, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
     }
 }

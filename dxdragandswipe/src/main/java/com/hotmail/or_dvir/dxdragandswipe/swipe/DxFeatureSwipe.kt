@@ -8,6 +8,7 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxdragandswipe.R
 import com.hotmail.or_dvir.dxdragandswipe.onItemSwipedListener
 import com.hotmail.or_dvir.dxdragandswipe.onSwipeEventListener
+import com.hotmail.or_dvir.dxdragandswipe.swipeBackgroundGetter
 import org.jetbrains.annotations.TestOnly
 
 class DxFeatureSwipe(
@@ -33,11 +34,10 @@ class DxFeatureSwipe(
      *
      *  see [ItemTouchHelper.Callback.getSwipeEscapeVelocity] for more details.
      */
-    var swipeEscapeVelocityMultiplier: Float? = null
+    var swipeEscapeVelocityMultiplier: Float? = null,
+    var swipeBackgroundLeft: swipeBackgroundGetter? = null,
+    var swipeBackgroundRight: swipeBackgroundGetter? = null
 ) : IDxBaseFeature {
-
-    //todo
-    // background
 
     var isSwipeEnabled = true
     private var flagIsSwiping = false
