@@ -82,7 +82,7 @@ class DxFeatureSwipe(
 //        flagIsSwiping = true
 //        onSwipeStart.invoke(itemView, holder.adapterPosition)
 //    }
-    internal fun notifySwipingRight(holder: RecyclerView.ViewHolder) {
+    internal fun notifySwipeRight(holder: RecyclerView.ViewHolder) {
         //todo could probably be moved into the if.
         // is it even still needed?
         flagIsSwiping = true
@@ -94,7 +94,7 @@ class DxFeatureSwipe(
         }
     }
 
-    internal fun notifySwipingLeft(holder: RecyclerView.ViewHolder) {
+    internal fun notifySwipeLeft(holder: RecyclerView.ViewHolder) {
         //todo could probably be moved into the if.
         // is it even still needed?
         flagIsSwiping = true
@@ -106,9 +106,15 @@ class DxFeatureSwipe(
         }
     }
 
+    private fun resetSwipeFlags() {
+        flagIsSwiping = false
+        flagNotifiedSwipingLeft = false
+        flagNotifiedSwipingRight = false
+    }
+
     internal fun notifySwipeEnd(holder: RecyclerView.ViewHolder) {
         if (flagIsSwiping) {
-            flagIsSwiping = false
+            resetSwipeFlags()
             onSwipeEnd.invoke(holder.itemView, holder.adapterPosition)
         }
     }

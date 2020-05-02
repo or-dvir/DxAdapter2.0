@@ -175,7 +175,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         isCurrentlyActive: Boolean
     ) {
         super.onChildDraw(c, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
-
+        Log.i("aaaaa", "dx: $dx")
         //dx will be 0 when not swiping, or swiping but item is exactly in the middle.
         //adapter position will be -1 if the item is being removed from the adapter.
         if (actionState != ItemTouchHelper.ACTION_STATE_SWIPE ||
@@ -186,9 +186,9 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
         }
 
         if (dx < 0) {
-            swipeFeature?.notifySwipingLeft(holder)
+            swipeFeature?.notifySwipeLeft(holder)
         } else {
-            swipeFeature?.notifySwipingRight(holder)
+            swipeFeature?.notifySwipeRight(holder)
         }
 
         //todo isCurrentlyActive will be false if user let go and item is animating back!
