@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxdragandswipe
+package com.hotmail.or_dvir.dxdragandswipe.swipe
 
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 

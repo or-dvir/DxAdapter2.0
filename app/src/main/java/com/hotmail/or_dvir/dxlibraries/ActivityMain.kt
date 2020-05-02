@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import com.hotmail.or_dvir.dxdragandswipe.*
+import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
+import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
@@ -67,27 +69,28 @@ class ActivityMain : AppCompatActivity() {
             fun getItemAtPosition(position: Int) =
                 adapter.getDxAdapterItem<ItemSwipeable>(position)
 
-            swipeFeature = DxFeatureSwipe(
-                onSwipeStart = { view, adapterPosition ->
-                    val item = getItemAtPosition(adapterPosition)
-                    Log.i("aaaaa", "swipe start for ${item.text}")
-                },
-                onSwipeEnd = { view, adapterPosition ->
-                    val item = getItemAtPosition(adapterPosition)
-                    Log.i("aaaaa", "swipe end for ${item.text}")
-                },
-                onItemSwiped = { view, adapterPosition, direction ->
-                    val item = getItemAtPosition(adapterPosition)
-                    //IMPORTANT NOTE:
-                    //do to the way ItemTouchCallback works, you MUST do something with the item!
-                    //(e.g. remove, reset). if you don't, listeners will be called for wrong items
-                    //todo add this note in documentation
-                    //this resets the item
-                    adapter.notifyItemChanged(adapterPosition)
-                    Log.i("aaaaa", "${item.text} swiped")
-                },
-                swipeDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-            )
+            swipeFeature =
+                DxFeatureSwipe(
+                    onSwipeStart = { view, adapterPosition ->
+                        val item = getItemAtPosition(adapterPosition)
+                        Log.i("aaaaa", "swipe start for ${item.text}")
+                    },
+                    onSwipeEnd = { view, adapterPosition ->
+                        val item = getItemAtPosition(adapterPosition)
+                        Log.i("aaaaa", "swipe end for ${item.text}")
+                    },
+                    onItemSwiped = { view, adapterPosition, direction ->
+                        val item = getItemAtPosition(adapterPosition)
+                        //IMPORTANT NOTE:
+                        //do to the way ItemTouchCallback works, you MUST do something with the item!
+                        //(e.g. remove, reset). if you don't, listeners will be called for wrong items
+                        //todo add this note in documentation
+                        //this resets the item
+                        adapter.notifyItemChanged(adapterPosition)
+                        Log.i("aaaaa", "${item.text} swiped")
+                    },
+                    swipeDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+                )
         }
 
         ItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)

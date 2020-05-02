@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxdragandswipe
+package com.hotmail.or_dvir.dxdragandswipe.drag
 
 import android.view.MotionEvent
 import android.view.View
@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
+import com.hotmail.or_dvir.dxdragandswipe.R
+import com.hotmail.or_dvir.dxdragandswipe.onDragEventListener
+import com.hotmail.or_dvir.dxdragandswipe.onItemMovedListener
 import org.jetbrains.annotations.TestOnly
 
 class DxFeatureDrag(
@@ -61,7 +64,8 @@ class DxFeatureDrag(
         }
     }
 
-    override fun getFeatureId() = R.id.feature_drag
+    override fun getFeatureId() =
+        R.id.feature_drag
 
     internal fun notifyDragStart(holder: RecyclerView.ViewHolder) {
         flagIsDragging = true

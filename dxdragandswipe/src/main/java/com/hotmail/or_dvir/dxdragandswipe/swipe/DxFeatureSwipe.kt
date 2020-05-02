@@ -1,10 +1,13 @@
-package com.hotmail.or_dvir.dxdragandswipe
+package com.hotmail.or_dvir.dxdragandswipe.swipe
 
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
+import com.hotmail.or_dvir.dxdragandswipe.R
+import com.hotmail.or_dvir.dxdragandswipe.onItemSwipedListener
+import com.hotmail.or_dvir.dxdragandswipe.onSwipeEventListener
 import org.jetbrains.annotations.TestOnly
 
 class DxFeatureSwipe(
@@ -54,7 +57,8 @@ class DxFeatureSwipe(
         //do nothing
     }
 
-    override fun getFeatureId() = R.id.feature_swipe
+    override fun getFeatureId() =
+        R.id.feature_swipe
 
     internal fun notifySwipeStart(holder: RecyclerView.ViewHolder) {
         flagIsSwiping = true

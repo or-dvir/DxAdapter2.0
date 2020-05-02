@@ -2,15 +2,13 @@ package com.hotmail.or_dvir.dxlibraries
 
 import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.*
-import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.contrib.RecyclerViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.hotmail.or_dvir.dxdragandswipe.DxFeatureDrag
+import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
 import com.hotmail.or_dvir.dxdragandswipe.onDragEventListener
 import com.hotmail.or_dvir.dxdragandswipe.onItemMovedListener
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable

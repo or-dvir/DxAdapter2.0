@@ -6,6 +6,10 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.hotmail.or_dvir.dxadapter.DxAdapter
+import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
+import com.hotmail.or_dvir.dxdragandswipe.drag.IDxItemDraggable
+import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
+import com.hotmail.or_dvir.dxdragandswipe.swipe.IDxItemSwipeable
 
 class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.Callback() {
 
