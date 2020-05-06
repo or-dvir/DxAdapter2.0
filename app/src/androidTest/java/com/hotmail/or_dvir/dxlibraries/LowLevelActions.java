@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxlibraries;
 
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 

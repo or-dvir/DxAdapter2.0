@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxlibraries
 
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.IdRes
@@ -60,7 +61,7 @@ class ActivityMain : AppCompatActivity() {
 //        setClickListeners()
 //        setDragListeners(true, null)
 //        setDragListeners(false, R.id.listItem_dragHandle)
-        setSwipeListeners()
+//        setSwipeListeners()
     }
 
     private fun setSwipeListeners() {
