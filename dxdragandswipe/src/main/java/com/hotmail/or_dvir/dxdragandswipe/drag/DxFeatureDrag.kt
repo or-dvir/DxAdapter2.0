@@ -20,6 +20,9 @@ class DxFeatureDrag(
     internal var dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 
+    //todo when documenting note that in onDragEnd, the parameter adapterPosition is
+    // the FINAL position of the item
+
     @IdRes
     internal var dragHandleId: Int? = null
     internal var itemTouchHelper: ItemTouchHelper? = null

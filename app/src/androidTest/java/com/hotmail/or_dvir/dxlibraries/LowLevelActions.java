@@ -1,8 +1,8 @@
 package com.hotmail.or_dvir.dxlibraries;
 
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
@@ -15,7 +15,7 @@ import org.hamcrest.Matcher;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
 public class LowLevelActions {
-    static MotionEvent sMotionEventDownHeldView = null;
+    private static MotionEvent sMotionEventDownHeldView = null;
 
     public static PressAndHoldAction pressAndHold() {
         return new PressAndHoldAction();
@@ -49,6 +49,8 @@ public class LowLevelActions {
             float[] precision = Press.FINGER.describePrecision();
             float[] coords = GeneralLocation.CENTER.calculateCoordinates(view);
             sMotionEventDownHeldView = MotionEvents.sendDown(uiController, coords, precision).down;
+            //allow processing of the action
+            uiController.loopMainThreadForAtLeast(ViewConfiguration.getLongPressTimeout() + 200);
         }
     }
 

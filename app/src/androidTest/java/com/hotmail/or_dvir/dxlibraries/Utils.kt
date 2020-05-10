@@ -5,9 +5,10 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.action.CoordinatesProvider
 
 /*
-* classes copied from
-* https://stackoverflow.com/questions/54804321/how-to-write-test-case-for-recyclerview-drag-and-drop-using-espress
-* */
+classes copied from
+https://stackoverflow.com/questions/54804321/how-to-write-test-case-for-recyclerview-drag-and-drop-using-espress
+*/
+
 /**
  * finds coordinates of an item within your RecyclerView
  */

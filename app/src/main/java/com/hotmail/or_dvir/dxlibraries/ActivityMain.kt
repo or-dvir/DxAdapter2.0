@@ -1,6 +1,5 @@
 package com.hotmail.or_dvir.dxlibraries
 
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.IdRes
@@ -49,9 +48,17 @@ class ActivityMain : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         setLayoutManagerVertical()
 
+//        initializeForManualTesting()
+    }
+
+    /**
+     * all of these need to be disabled for testing. so this is a convenience method
+     * to be called from onCreate() so i can comment out only 1 line
+     */
+    private fun initializeForManualTesting()
+    {
         activityMain_btn.setOnClickListener {
 //            mAdapter.setItems(List(5) { index -> ItemDraggable("item $index") })
         }
