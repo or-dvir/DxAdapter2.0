@@ -8,8 +8,10 @@ import androidx.test.espresso.action.GeneralLocation
 import androidx.test.espresso.action.GeneralSwipeAction
 import androidx.test.espresso.action.Press
 import androidx.test.espresso.action.Swipe
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
@@ -137,10 +139,36 @@ class TestFeatureDrag {
             }
         }
 
+
         //reducing 1 from positionTo because we are dragging to the CENTER of positionTo
         //and that is not enough for the items to be swapped (even BOTTOM_CENTER is not enough)
-        verify(exactly = 1) { mDragEventEnd.invoke(any(), positionTo - 1) }
+        val actualPositionToCheck = positionTo - 1
+        verify(exactly = 1) { mDragEventEnd.invoke(any(), actualPositionToCheck) }
+
+        scrollAndVerifyText(actualPositionToCheck, "item $positionFrom", adapter)
     }
+
+    /**
+     * a helper function to test that the adapter retains changes made to item in [positionToCheck]
+     * by scrolling to the end and start of the recyclerView and then verifying that the item in
+     * [positionToCheck] contains the desired [textToCheck]
+     */
+    private fun scrollAndVerifyText(
+        positionToCheck: Int,
+        textToCheck: String,
+        adapter: DxAdapter<*>
+    ) {
+        onView(withId(R.id.activityMain_rv))
+            //scroll to end
+            .perform(scrollToPosition<ViewHolder>(adapter.getDxAdapterItems().size - 1))
+            //scroll to start
+            .perform(scrollToPosition<ViewHolder>(0))
+            //scroll to position to make sure its visible
+            .perform(scrollToPosition<ViewHolder>(positionToCheck))
+            //check the text
+            .check(matches(atPosition(positionToCheck, hasDescendant(withText(textToCheck)))))
+    }
+
 
     //todo
     // non draggable item
