@@ -39,9 +39,6 @@ class TestFeatureDrag {
     private lateinit var mOnItemMoved: onItemMovedListener
     private lateinit var mDragFeature: DxFeatureDrag
 
-    private lateinit var mItemTouchHelper: DxItemTouchHelper
-    private lateinit var mItemTouchCallback: DxItemTouchHelper
-
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 
@@ -80,7 +77,7 @@ class TestFeatureDrag {
         activityScenario.scenario.onActivity { task.invoke(it) }
 
     @Test
-    fun dragTest_draggableItem_longClick() {
+    fun dragTest_longClick() {
         val items = MutableList(100) { index -> ItemDraggable("item $index") }
         val adapter = AdapterDraggable(items).apply { addFeature(mDragFeature) }
         mDragFeature.setDragOnLongClick(true)
@@ -92,7 +89,7 @@ class TestFeatureDrag {
         val positionFrom = 1
         val positionTo = 5
 
-        performDrag(positionFrom, positionTo)
+        performDragWithLongClick(positionFrom, positionTo)
 
         //IMPORTANT NOTE!!!
         //for an unknown reason the drag operation in the performDrag() function
@@ -133,7 +130,30 @@ class TestFeatureDrag {
     }
 
     @Test
-    fun dragTest_nonDraggableItem() {
+    fun dragTest_longClick_dragDisabled() {
+        val items = MutableList(100) { index -> ItemDraggable("item $index") }
+        val adapter = AdapterDraggable(items).apply { addFeature(mDragFeature) }
+        mDragFeature.setDragOnLongClick(true)
+        mDragFeature.isDragEnabled = false
+
+        onActivity { it.apply { setAdapter(adapter) } }
+        setupDragFeatureWithRecyclerView(adapter)
+
+        //the positions MUST be visible on screen.
+        val positionFrom = 1
+        val positionTo = 5
+
+        performDragWithLongClick(positionFrom, positionTo)
+
+        verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
+        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
+        verify(exactly = 0) { mDragEventEnd.invoke(any(), any()) }
+
+        scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
+    }
+
+    @Test
+    fun dragTest_nonDraggableItem_longClick() {
         val items = MutableList(100) { index -> ItemNonDraggable("item $index") }
         val adapter = AdapterNonDraggable(items).apply { addFeature(mDragFeature) }
         mDragFeature.setDragOnLongClick(true)
@@ -145,7 +165,7 @@ class TestFeatureDrag {
         val positionFrom = 1
         val positionTo = 5
 
-        performDrag(positionFrom, positionTo)
+        performDragWithLongClick(positionFrom, positionTo)
 
         verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
         verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
@@ -154,7 +174,41 @@ class TestFeatureDrag {
         scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
     }
 
-    private fun performDrag(positionFrom: Int, positionTo: Int) {
+    @Test
+    fun dragTest_longClick_wrongDirection() {
+        val items = MutableList(100) { index -> ItemDraggable("item $index") }
+        val adapter = AdapterDraggable(items).apply { addFeature(mDragFeature) }
+        mDragFeature.apply {
+            setDragOnLongClick(true)
+            setDragDirection(ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT)
+        }
+
+        onActivity {
+            it.apply {
+                setAdapter(adapter)
+                setLayoutManagerVertical()
+            }
+        }
+
+        setupDragFeatureWithRecyclerView(adapter)
+
+        //the positions MUST be visible on screen.
+        val positionFrom = 1
+        val positionTo = 5
+
+        performDragWithLongClick(positionFrom, positionTo)
+
+        test fails here. check if its an actual bug or just a the swipe action triggering the listener
+        for an unknown reason like in the function dragTest_longClick()
+        verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
+        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
+        verify(exactly = 0) { mDragEventEnd.invoke(any(), any()) }
+
+        scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
+    }
+
+
+    private fun performDragWithLongClick(positionFrom: Int, positionTo: Int) {
         onView(withId(R.id.activityMain_rv))
             .perform(
                 actionOnItemAtPosition<ViewHolder>(positionFrom, LowLevelActions.pressAndHold())
@@ -200,11 +254,9 @@ class TestFeatureDrag {
 
 
     //todo
-    // non draggable item
     // all listeners
     // drag with handle
     // drag directions
-    // isDragEnabled flag
     // dragging out of bounds
     // after each test add some up/down swipes and make sure the changes are still there
 }
