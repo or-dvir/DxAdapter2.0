@@ -20,7 +20,9 @@ import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
 import com.hotmail.or_dvir.dxdragandswipe.onDragEventListener
 import com.hotmail.or_dvir.dxdragandswipe.onItemMovedListener
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
+import com.hotmail.or_dvir.dxlibraries.draggable.AdapterNonDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
+import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_main.*
@@ -148,6 +150,49 @@ class TestFeatureDrag {
         scrollAndVerifyText(actualPositionToCheck, "item $positionFrom", adapter)
     }
 
+    @Test
+    fun dragTest_nonDraggableItem() {
+        val items = MutableList(100) { index -> ItemNonDraggable("item $index") }
+        val adapter = AdapterNonDraggable(items).apply { addFeature(mDragFeature) }
+        mDragFeature.setDragOnLongClick(true)
+
+        onActivity { it.apply { setAdapter(adapter) } }
+        setupDragFeatureWithRecyclerView(adapter)
+
+        //the positions MUST be visible on screen.
+        val positionFrom = 1
+        val positionTo = 5
+
+        onView(withId(R.id.activityMain_rv)).perform(
+            actionOnItemAtPosition<ViewHolder>(positionFrom, LowLevelActions.pressAndHold())
+        )
+
+        verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
+
+        onView(withId(R.id.activityMain_rv)).perform(
+            GeneralSwipeAction(
+                Swipe.SLOW,
+                RecyclerViewCoordinatesProvider(
+                    positionFrom,
+                    GeneralLocation.CENTER
+                ),
+                RecyclerViewCoordinatesProvider(
+                    positionTo, GeneralLocation.CENTER
+                ),
+                Press.FINGER
+            )
+        )
+
+        onView(withId(R.id.activityMain_rv)).perform(
+            actionOnItemAtPosition<ViewHolder>(positionFrom, LowLevelActions.release())
+        )
+
+        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
+        verify(exactly = 0) { mDragEventEnd.invoke(any(), any()) }
+
+        scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
+    }
+
     /**
      * a helper function to test that the adapter retains changes made to item in [positionToCheck]
      * by scrolling to the end and start of the recyclerView and then verifying that the item in
@@ -173,7 +218,6 @@ class TestFeatureDrag {
     //todo
     // non draggable item
     // all listeners
-    // slow dragging
     // drag with handle
     // drag directions
     // isDragEnabled flag
