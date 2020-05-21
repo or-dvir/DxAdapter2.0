@@ -1,6 +1,7 @@
 package com.hotmail.or_dvir.dxlibraries
 
 import android.util.Log
+import androidx.annotation.IdRes
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
@@ -61,7 +62,7 @@ class TestFeatureDrag {
 
     @After
     fun after() {
-        LowLevelActions.tearDown()
+        PressActions.tearDown()
     }
 
     private fun setupDragFeatureWithRecyclerView(adapter: DxAdapter<*>) {
@@ -89,7 +90,7 @@ class TestFeatureDrag {
         val positionFrom = 1
         val positionTo = 5
 
-        performDragWithLongClick(positionFrom, positionTo)
+        performDragWithLongClick(positionFrom, positionTo, null)
 
         //IMPORTANT NOTE!!!
         //for an unknown reason the drag operation in the performDragWithLongClick() function
@@ -143,7 +144,7 @@ class TestFeatureDrag {
         val positionFrom = 1
         val positionTo = 5
 
-        performDragWithLongClick(positionFrom, positionTo)
+        performDragWithLongClick(positionFrom, positionTo, null)
 
         verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
         verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
@@ -165,7 +166,7 @@ class TestFeatureDrag {
         val positionFrom = 1
         val positionTo = 5
 
-        performDragWithLongClick(positionFrom, positionTo)
+        performDragWithLongClick(positionFrom, positionTo, null)
 
         verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
         verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
@@ -196,7 +197,7 @@ class TestFeatureDrag {
         val positionFrom = 1
         val positionTo = 5
 
-        performDragWithLongClick(positionFrom, positionTo)
+        performDragWithLongClick(positionFrom, positionTo, null)
 
         //all conditions for allowing drag are fulfilled so its expected behaviour
         // for the start/end drag listeners to trigger. however since this test is about dragging
@@ -236,18 +237,15 @@ class TestFeatureDrag {
         val positionTo = 5
 
 
-
-
-
-        when veryfing call to item move listener, dont specify a number of calls
-        because then you have to copy-paste it into a loop like in other functions
-        and create a helper function and bla bla bla... the number of calls to move listener
-        is testes in another function. that should be enough
+//        when veryfing call to item move listener, dont specify a number of calls
+//        because then you have to copy-paste it into a loop like in other functions
+//        and create a helper function and bla bla bla... the number of calls to move listener
+//        is testes in another function. that should be enough
 
         ////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////
 
-        performDragWithLongClick(positionFrom, positionTo)
+//        performDragWithLongClick(positionFrom, positionTo)
 
         //all conditions for allowing drag are fulfilled so its expected behaviour
         // for the start/end drag listeners to trigger. however since this test is about dragging
@@ -257,19 +255,25 @@ class TestFeatureDrag {
         // triggers mDragEventStart (in addition to the press-and-hold operation).
         // THIS DOES NOT HAPPEN when i manually test the app!!!
         // so just accept it and check that it was called 2 times
-        verify(exactly = 2) { mDragEventStart.invoke(any(), any()) }
-        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
-        verify(exactly = 1) { mDragEventEnd.invoke(any(), any()) }
-
-        scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
+//        verify(exactly = 2) { mDragEventStart.invoke(any(), any()) }
+//        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
+//        verify(exactly = 1) { mDragEventEnd.invoke(any(), any()) }
+//        scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
     }
 
     //region helper functions
     @Suppress("SameParameterValue", "SameParameterValue")
-    private fun performDragWithLongClick(positionFrom: Int, positionTo: Int) {
+    private fun performDragWithLongClick(
+        positionFrom: Int,
+        positionTo: Int,
+        @IdRes innerViewId: Int?
+    ) {
         onView(withId(R.id.activityMain_rv))
             .perform(
-                actionOnItemAtPosition<ViewHolder>(positionFrom, LowLevelActions.pressAndHold())
+                actionOnItemAtPosition<ViewHolder>(
+                    positionFrom,
+                    PressActions.pressAndHold(innerViewId)
+                )
             )
             .perform(
                 GeneralSwipeAction(
@@ -285,7 +289,7 @@ class TestFeatureDrag {
                 )
             )
             .perform(
-                actionOnItemAtPosition<ViewHolder>(positionFrom, LowLevelActions.release())
+                actionOnItemAtPosition<ViewHolder>(positionFrom, PressActions.release(innerViewId))
             )
     }
 
