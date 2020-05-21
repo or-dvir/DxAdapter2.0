@@ -43,10 +43,11 @@ class TestFeatureDrag {
     @get:Rule
     var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 
+    @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     @Before
     fun before() {
         mDragEventStart = spyk({ view, position ->
-            Log.i("aaaaa", "start drag from test");
+            Log.i("aaaaa", "start drag from test")
         })
         mDragEventEnd = spyk({ view, position -> })
         mOnItemMoved = spyk({ draggedView, draggedPosition, targetView, targetPosition -> })
@@ -216,7 +217,9 @@ class TestFeatureDrag {
 
     @Test
     fun dragTest_dragHandle() {
-        val items = MutableList(100) { index -> ItemDraggable("item $index") }
+        val items = MutableList(100) { index ->
+            ItemDraggable("item $index")
+        }
         val adapter = AdapterDraggable(items).apply { addFeature(mDragFeature) }
         mDragFeature.apply {
             setDragOnLongClick(true)
