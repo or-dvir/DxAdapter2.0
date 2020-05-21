@@ -73,10 +73,10 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     override fun onSelectedChanged(holder: ViewHolder?, actionState: Int) {
         super.onSelectedChanged(holder, actionState)
 
-        if (holder != null) {
+        holder?.apply {
             when (actionState) {
-                ItemTouchHelper.ACTION_STATE_DRAG -> dragFeature?.notifyDragStart(holder)
-                ItemTouchHelper.ACTION_STATE_SWIPE -> swipeFeature?.notifySwipeStart(holder)
+                ItemTouchHelper.ACTION_STATE_DRAG -> dragFeature?.notifyDragStart(this)
+                ItemTouchHelper.ACTION_STATE_SWIPE -> swipeFeature?.notifySwipeStart(this)
             }
         }
     }

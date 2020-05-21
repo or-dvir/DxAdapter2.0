@@ -50,19 +50,6 @@ class ActivityMain : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setLayoutManagerVertical()
 
-//        initializeForManualTesting()
-    }
-
-    /**
-     * all of these need to be disabled for testing. so this is a convenience method
-     * to be called from onCreate() so i can comment out only 1 line
-     */
-    private fun initializeForManualTesting()
-    {
-        activityMain_btn.setOnClickListener {
-//            mAdapter.setItems(List(5) { index -> ItemDraggable("item $index") })
-        }
-
 //        setScrollListeners()
 //        setVisibilityListeners()
 //        setClickListeners()
@@ -112,14 +99,8 @@ class ActivityMain : AppCompatActivity() {
         val adapter = AdapterDraggable(
             MutableList(100) { index -> ItemDraggable("item $index") }
         )
+
         setAdapter(adapter)
-
-
-        //todo
-        // set item touch callback
-        // set item touch helper (with above callback)
-        // attach to recycler view
-        // NO NEED to add feature - its done inside DxItemTouchCallback
 
         val touchCallBack = DxItemTouchCallback(adapter).apply {
             fun getItemAtPosition(position: Int) =
@@ -142,7 +123,7 @@ class ActivityMain : AppCompatActivity() {
                         "replaced ${dragged.text}($draggedPosition) with ${target.text}($targetPosition)"
                     )
                 },
-                dragDirections = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                dragDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
                 dragOnLongClick = dragOnLongClick
             )
         }
