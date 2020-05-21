@@ -5,7 +5,6 @@ import android.view.ViewGroup
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
 
 class AdapterNonSwipeable(mItems: MutableList<ItemNonSwipeable>) :
     BaseSampleAdapter<BaseSampleAdapter.ViewHolder>(mItems as MutableList<IDxBaseItem>) {
@@ -17,7 +16,7 @@ class AdapterNonSwipeable(mItems: MutableList<ItemNonSwipeable>) :
         R.layout.list_item_standard
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getDxAdapterItem<ItemNonDraggable>(position)
+        val item = getDxAdapterItem<ItemNonSwipeable>(position)
         holder.tv.text = item.text
     }
 }

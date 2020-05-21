@@ -5,16 +5,16 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
+import com.hotmail.or_dvir.dxdragandswipe.OnItemSwipedListener
+import com.hotmail.or_dvir.dxdragandswipe.OnSwipeEventListener
 import com.hotmail.or_dvir.dxdragandswipe.R
-import com.hotmail.or_dvir.dxdragandswipe.onItemSwipedListener
-import com.hotmail.or_dvir.dxdragandswipe.onSwipeEventListener
 import org.jetbrains.annotations.TestOnly
 
 open class DxFeatureSwipe(
     internal var swipeDirections: Int,
-    private val onSwipeStart: onSwipeEventListener,
-    private val onSwipeEnd: onSwipeEventListener,
-    internal val onItemSwiped: onItemSwipedListener
+    private val onSwipeStart: OnSwipeEventListener,
+    private val onSwipeEnd: OnSwipeEventListener,
+    internal var onItemSwiped: OnItemSwipedListener
 ) : IDxBaseFeature {
 
     //region
@@ -55,6 +55,11 @@ open class DxFeatureSwipe(
         swipeDirections = directions
     }
 
+    @TestOnly
+    fun setOnItemSwipedListener(listener: OnItemSwipedListener) {
+        onItemSwiped = listener
+    }
+
     override fun onCreateViewHolder(
         adapter: DxAdapter<*>,
         itemView: View,
@@ -74,7 +79,14 @@ open class DxFeatureSwipe(
     internal fun notifySwipeEnd(holder: RecyclerView.ViewHolder) {
         if (flagIsSwiping) {
             flagIsSwiping = false
-            onSwipeEnd.invoke(holder.itemView, holder.adapterPosition)
+
+            //todo add this note to documentation:
+            // if item is removed, onSwipeEnd will NOT be called
+            //this can happen if the item is removed from the adapter after the swipe.
+            //due to the way ItemTouchCallback works, onSwiped is called BEFORE this method is invoked
+            if (holder.adapterPosition != -1) {
+                onSwipeEnd.invoke(holder.itemView, holder.adapterPosition)
+            }
         }
     }
 }

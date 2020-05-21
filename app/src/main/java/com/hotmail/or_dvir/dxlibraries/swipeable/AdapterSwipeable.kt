@@ -20,4 +20,9 @@ class AdapterSwipeable(mItems: MutableList<ItemSwipeable>) :
         val item = getDxAdapterItem<ItemSwipeable>(position)
         holder.tv.text = item.text
     }
+
+    fun removeItem(position: Int) {
+        mItems.removeAt(position)
+        notifyItemRemoved(position)
+    }
 }

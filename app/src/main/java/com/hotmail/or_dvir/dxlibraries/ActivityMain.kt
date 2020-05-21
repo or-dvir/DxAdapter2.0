@@ -85,6 +85,7 @@ class ActivityMain : AppCompatActivity() {
                     //(e.g. remove, reset). if you don't, listeners will be called for wrong items
                     //todo add this note in documentation
                     //this resets the item
+//                    adapter.removeItem(adapterPosition)
                     adapter.notifyItemChanged(adapterPosition)
                     Log.i("aaaaa", "${item.text} swiped")
                 },
