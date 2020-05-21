@@ -121,7 +121,6 @@ class TestFeatureDrag {
             }
         }
 
-
         //reducing 1 from positionTo because we are dragging to the CENTER of positionTo
         //and that is not enough for the items to be swapped (even BOTTOM_CENTER is not enough)
         val actualPositionToCheck = positionTo - 1
@@ -196,6 +195,57 @@ class TestFeatureDrag {
         //the positions MUST be visible on screen.
         val positionFrom = 1
         val positionTo = 5
+
+        performDragWithLongClick(positionFrom, positionTo)
+
+        //all conditions for allowing drag are fulfilled so its expected behaviour
+        // for the start/end drag listeners to trigger. however since this test is about dragging
+        // in the wrong direction, the move listener should not be triggered.
+        //IMPORTANT NOTE!!!
+        // for an unknown reason the drag operation in the performDragWithLongClick() function
+        // triggers mDragEventStart (in addition to the press-and-hold operation).
+        // THIS DOES NOT HAPPEN when i manually test the app!!!
+        // so just accept it and check that it was called 2 times
+        verify(exactly = 2) { mDragEventStart.invoke(any(), any()) }
+        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
+        verify(exactly = 1) { mDragEventEnd.invoke(any(), any()) }
+
+        scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
+    }
+
+    @Test
+    fun dragTest_dragHandle() {
+        val items = MutableList(100) { index -> ItemDraggable("item $index") }
+        val adapter = AdapterDraggable(items).apply { addFeature(mDragFeature) }
+        mDragFeature.apply {
+            setDragOnLongClick(true)
+            setDragDirection(ItemTouchHelper.UP or ItemTouchHelper.DOWN)
+        }
+
+        onActivity {
+            it.apply {
+                setAdapter(adapter)
+                setLayoutManagerVertical()
+            }
+        }
+
+        setupDragFeatureWithRecyclerView(adapter)
+
+        //the positions MUST be visible on screen.
+        val positionFrom = 1
+        val positionTo = 5
+
+
+
+
+
+        when veryfing call to item move listener, dont specify a number of calls
+        because then you have to copy-paste it into a loop like in other functions
+        and create a helper function and bla bla bla... the number of calls to move listener
+        is testes in another function. that should be enough
+
+        ////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////
 
         performDragWithLongClick(positionFrom, positionTo)
 
