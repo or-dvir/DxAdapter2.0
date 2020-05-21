@@ -3,8 +3,8 @@ package com.hotmail.or_dvir.dxlibraries.swipeable
 import android.content.Context
 import android.graphics.Color
 import android.view.View
-import com.hotmail.or_dvir.dxdragandswipe.onItemSwipedListener
-import com.hotmail.or_dvir.dxdragandswipe.onSwipeEventListener
+import com.hotmail.or_dvir.dxdragandswipe.OnItemSwipedListener
+import com.hotmail.or_dvir.dxdragandswipe.OnSwipeEventListener
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeIcon
@@ -14,9 +14,9 @@ import com.hotmail.or_dvir.dxlibraries.R
 class MySwipeFeature(
     context: Context,
     swipeDirections: Int,
-    onSwipeStart: onSwipeEventListener,
-    onSwipeEnd: onSwipeEventListener,
-    onItemSwiped: onItemSwipedListener
+    onSwipeStart: OnSwipeEventListener,
+    onSwipeEnd: OnSwipeEventListener,
+    onItemSwiped: OnItemSwipedListener
 ) : DxFeatureSwipe(swipeDirections, onSwipeStart, onSwipeEnd, onItemSwiped) {
 
     //region

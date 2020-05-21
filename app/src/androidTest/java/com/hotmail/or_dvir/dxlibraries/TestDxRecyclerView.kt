@@ -8,7 +8,6 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
@@ -19,10 +18,9 @@ import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-class TestDxRecyclerView {
+class TestDxRecyclerView : BaseTest() {
     //visibility listeners
     private lateinit var mFirstVisible: GenericListener
     private lateinit var mFirstInvisible: GenericListener
@@ -36,15 +34,8 @@ class TestDxRecyclerView {
     private lateinit var mOnScrollLeft: GenericListener
     private lateinit var mOnScrollRight: GenericListener
 
-    @get:Rule
-    var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
-
-    private fun onActivity(task: (act: ActivityMain) -> Unit) =
-        activityScenario.scenario.onActivity { task.invoke(it) }
-
     @Before
     fun before() {
-
         //set a fresh empty list.
         val testAdapter = AdapterDraggable(mutableListOf())
 

@@ -8,15 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxdragandswipe.R
-import com.hotmail.or_dvir.dxdragandswipe.onDragEventListener
-import com.hotmail.or_dvir.dxdragandswipe.onItemMovedListener
+import com.hotmail.or_dvir.dxdragandswipe.OnDragEventListener
+import com.hotmail.or_dvir.dxdragandswipe.OnItemMovedListener
 import org.jetbrains.annotations.TestOnly
 
 class DxFeatureDrag(
     internal var dragDirections: Int,
-    private val onDragStart: onDragEventListener,
-    private val onDragEnd: onDragEventListener,
-    internal val onItemMoved: onItemMovedListener,
+    private val onDragStart: OnDragEventListener,
+    private val onDragEnd: OnDragEventListener,
+    internal val onItemMoved: OnItemMovedListener,
     internal var dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 

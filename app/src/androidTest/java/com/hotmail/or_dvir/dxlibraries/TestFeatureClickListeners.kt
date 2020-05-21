@@ -6,7 +6,6 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
@@ -17,17 +16,13 @@ import com.hotmail.or_dvir.featureclicklisteners.onItemLongClickListener
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-class TestFeatureClickListeners {
+class TestFeatureClickListeners : BaseTest() {
 
     private lateinit var mClickListener: onItemClickListener
     private lateinit var mLongClickListener: onItemLongClickListener
     private lateinit var mClickFeature: DxFeatureClickListeners
-
-    @get:Rule
-    var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
 
     @Before
     fun before() {
@@ -39,9 +34,6 @@ class TestFeatureClickListeners {
             onItemLongClick = mLongClickListener
         }
     }
-
-    private fun onActivity(task: (act: ActivityMain) -> Unit) =
-        activityScenario.scenario.onActivity { task.invoke(it) }
 
     @Test
     fun clickListenersTest_nonClickableItem() {
