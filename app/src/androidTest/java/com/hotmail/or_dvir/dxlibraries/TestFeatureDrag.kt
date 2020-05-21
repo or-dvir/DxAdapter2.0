@@ -35,6 +35,8 @@ import kotlin.math.absoluteValue
 
 class TestFeatureDrag {
 
+    //todo can i test dragging out of bounds of screen?
+
     private lateinit var mDragEventStart: onDragEventListener
     private lateinit var mDragEventEnd: onDragEventListener
     private lateinit var mOnItemMoved: onItemMovedListener
@@ -66,12 +68,15 @@ class TestFeatureDrag {
         PressActions.tearDown()
     }
 
-    private fun setupDragFeatureWithRecyclerView(adapter: DxAdapter<*>) {
+    private fun setupDragFeatureWithRecyclerView(adapter: DxAdapter<*>, @IdRes dragHandleId: Int?) {
         val touchCallback = DxItemTouchCallback(adapter).apply {
             dragFeature = mDragFeature
         }
 
-        val touchHelper = DxItemTouchHelper(touchCallback)
+        val touchHelper = DxItemTouchHelper(touchCallback).apply {
+            dragHandleId?.apply { setDragHandleId(this) }
+        }
+
         onActivity { touchHelper.attachToRecyclerView(it.activityMain_rv) }
     }
 
@@ -85,16 +90,16 @@ class TestFeatureDrag {
         mDragFeature.setDragOnLongClick(true)
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupDragFeatureWithRecyclerView(adapter)
+        setupDragFeatureWithRecyclerView(adapter, null)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
         val positionTo = 5
 
-        performDragWithLongClick(positionFrom, positionTo, null)
+        performDrag(positionFrom, positionTo, null)
 
         //IMPORTANT NOTE!!!
-        //for an unknown reason the drag operation in the performDragWithLongClick() function
+        //for an unknown reason the drag operation in the performDrag() function
         //triggers mDragEventStart (in addition to the press-and-hold operation).
         //THIS DOES NOT HAPPEN when i manually test the app!!!
         //so just accept it and check that it was called 2 times
@@ -139,13 +144,13 @@ class TestFeatureDrag {
         mDragFeature.isDragEnabled = false
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupDragFeatureWithRecyclerView(adapter)
+        setupDragFeatureWithRecyclerView(adapter, null)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
         val positionTo = 5
 
-        performDragWithLongClick(positionFrom, positionTo, null)
+        performDrag(positionFrom, positionTo, null)
 
         verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
         verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
@@ -161,13 +166,13 @@ class TestFeatureDrag {
         mDragFeature.setDragOnLongClick(true)
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupDragFeatureWithRecyclerView(adapter)
+        setupDragFeatureWithRecyclerView(adapter, null)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
         val positionTo = 5
 
-        performDragWithLongClick(positionFrom, positionTo, null)
+        performDrag(positionFrom, positionTo, null)
 
         verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
         verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
@@ -192,19 +197,19 @@ class TestFeatureDrag {
             }
         }
 
-        setupDragFeatureWithRecyclerView(adapter)
+        setupDragFeatureWithRecyclerView(adapter, null)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
         val positionTo = 5
 
-        performDragWithLongClick(positionFrom, positionTo, null)
+        performDrag(positionFrom, positionTo, null)
 
         //all conditions for allowing drag are fulfilled so its expected behaviour
         // for the start/end drag listeners to trigger. however since this test is about dragging
         // in the wrong direction, the move listener should not be triggered.
         //IMPORTANT NOTE!!!
-        // for an unknown reason the drag operation in the performDragWithLongClick() function
+        // for an unknown reason the drag operation in the performDrag() function
         // triggers mDragEventStart (in addition to the press-and-hold operation).
         // THIS DOES NOT HAPPEN when i manually test the app!!!
         // so just accept it and check that it was called 2 times
@@ -222,7 +227,7 @@ class TestFeatureDrag {
         }
         val adapter = AdapterDraggable(items).apply { addFeature(mDragFeature) }
         mDragFeature.apply {
-            setDragOnLongClick(true)
+            setDragOnLongClick(false)
             setDragDirection(ItemTouchHelper.UP or ItemTouchHelper.DOWN)
         }
 
@@ -233,40 +238,35 @@ class TestFeatureDrag {
             }
         }
 
-        setupDragFeatureWithRecyclerView(adapter)
+        val handleId = R.id.listItem_dragHandle
+        setupDragFeatureWithRecyclerView(adapter, handleId)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
         val positionTo = 5
 
+        performDrag(positionFrom, positionTo, handleId)
 
-//        when veryfing call to item move listener, dont specify a number of calls
-//        because then you have to copy-paste it into a loop like in other functions
-//        and create a helper function and bla bla bla... the number of calls to move listener
-//        is testes in another function. that should be enough
-
-        ////////////////////////////////////////////////////////////
-        ////////////////////////////////////////////////////////////
-
-//        performDragWithLongClick(positionFrom, positionTo)
-
-        //all conditions for allowing drag are fulfilled so its expected behaviour
-        // for the start/end drag listeners to trigger. however since this test is about dragging
-        // in the wrong direction, the move listener should not be triggered.
-        //IMPORTANT NOTE!!!
-        // for an unknown reason the drag operation in the performDragWithLongClick() function
+        //NOTE:
+        // not specifying the amount of calls to mDragEventStart because
+        // for an unknown reason the drag operation in the performDrag() function
         // triggers mDragEventStart (in addition to the press-and-hold operation).
         // THIS DOES NOT HAPPEN when i manually test the app!!!
-        // so just accept it and check that it was called 2 times
-//        verify(exactly = 2) { mDragEventStart.invoke(any(), any()) }
-//        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
-//        verify(exactly = 1) { mDragEventEnd.invoke(any(), any()) }
-//        scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
+        //NOTE:
+        // not specifying the amount of calls to mOnItemMoved because the check in dragTest_longClick()
+        // should be enough
+        verify { mDragEventStart.invoke(any(), any()) }
+        verify { mOnItemMoved.invoke(any(), any(), any(), any()) }
+        verify(exactly = 1) { mDragEventEnd.invoke(any(), any()) }
+
+        //reducing 1 from positionTo because we are dragging to the CENTER of positionTo
+        //and that is not enough for the items to be swapped (even BOTTOM_CENTER is not enough)
+        scrollAndVerifyText(positionTo - 1, "item $positionFrom", adapter)
     }
 
     //region helper functions
     @Suppress("SameParameterValue", "SameParameterValue")
-    private fun performDragWithLongClick(
+    private fun performDrag(
         positionFrom: Int,
         positionTo: Int,
         @IdRes innerViewId: Int?
@@ -318,8 +318,4 @@ class TestFeatureDrag {
             .check(matches(atPosition(positionToCheck, hasDescendant(withText(textToCheck)))))
     }
     //endregion
-
-    //todo
-    // drag with handle
-    // dragging out of bounds
 }
