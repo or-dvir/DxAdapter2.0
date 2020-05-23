@@ -8,8 +8,9 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
 class DxFeatureClickListeners : IDxBaseFeature {
 
-    var onItemClick: onItemClickListener? = null
-    var onItemLongClick: onItemLongClickListener? = null
+    //todo put those into the constructor
+    var onItemClick: OnItemClickListener? = null
+    var onItemLongClick: OnItemLongClickListener? = null
 
     override fun onCreateViewHolder(
         adapter: DxAdapter<*>,

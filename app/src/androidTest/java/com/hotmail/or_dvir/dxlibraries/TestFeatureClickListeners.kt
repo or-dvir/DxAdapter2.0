@@ -11,8 +11,8 @@ import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemNonClickable
 import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClickListeners
-import com.hotmail.or_dvir.featureclicklisteners.onItemClickListener
-import com.hotmail.or_dvir.featureclicklisteners.onItemLongClickListener
+import com.hotmail.or_dvir.featureclicklisteners.OnItemClickListener
+import com.hotmail.or_dvir.featureclicklisteners.OnItemLongClickListener
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before
@@ -20,8 +20,8 @@ import org.junit.Test
 
 class TestFeatureClickListeners : BaseTest() {
 
-    private lateinit var mClickListener: onItemClickListener
-    private lateinit var mLongClickListener: onItemLongClickListener
+    private lateinit var mClickListener: OnItemClickListener
+    private lateinit var mLongClickListener: OnItemLongClickListener
     private lateinit var mClickFeature: DxFeatureClickListeners
 
     @Before
