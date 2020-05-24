@@ -8,13 +8,16 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
-abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
+abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Adapter<VH>() {
 
-//    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
+    //    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
     private val allFeatures: LinkedHashMap<Int, IDxBaseFeature> = LinkedHashMap()
 
-    fun addFeature(feature: IDxBaseFeature) = allFeatures.put(feature.getFeatureId(), feature)
-    fun removeFeature(feature: IDxBaseFeature) = allFeatures.remove(feature.getFeatureId())
+    fun addFeature(feature: IDxBaseFeature) =
+        allFeatures.put(feature.getFeatureId(), feature)
+
+    fun removeFeature(feature: IDxBaseFeature) =
+        allFeatures.remove(feature.getFeatureId())
 
     @CallSuper
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -59,29 +62,30 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
 
     //no point in checking the cast, i would only throw an exception anyway...
     @Suppress("UNCHECKED_CAST")
-    fun <T> getDxAdapterItem(position: Int) = getDxAdapterItems()[position] as T
+    fun getDxAdapterItem(position: Int) = getDxAdapterItems()[position]
+//    fun <T> getDxAdapterItem(position: Int) = getDxAdapterItems()[position] as T
 
     /**
      * returns a list of indices for the given [items].
      *
      * note that the returned list may contain -1 as it uses [List.indexOf]
      */
-    fun getIndicesForItems(items: List<IDxBaseItem>) =
+    fun getIndicesForItems(items: List<ITEM>) =
         items.map { getIndexForItem(it) }
 
     /**
      * returns the index of the given [item]
      */
-    fun getIndexForItem(item: IDxBaseItem) = getDxAdapterItems().indexOf(item)
+    fun getIndexForItem(item: ITEM) = getDxAdapterItems().indexOf(item)
 
     /**
-     * returns a list of [IDxBaseItem] at the given [indices]
+     * returns a list of [ITEM] at the given [indices]
      */
     fun getItemsForIndices(indices: List<Int>) =
-        indices.map { getDxAdapterItem<IDxBaseItem>(it) }
+        indices.map { getDxAdapterItem(it) }
 
-    abstract fun getDxAdapterItems(): MutableList<IDxBaseItem>
-//    abstract fun getDxAdapterItems(): List<IDxBaseItem>
+    abstract fun getDxAdapterItems(): MutableList<ITEM>
+//    abstract fun getDxAdapterItems(): List<ITEM>
 //    abstract fun getItems(): List<ITEM>
 
     /**

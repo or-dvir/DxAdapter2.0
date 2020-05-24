@@ -2,11 +2,12 @@ package com.hotmail.or_dvir.dxdragandswipe
 
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.ItemTouchHelper
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
 /**
  * a convenience wrapper for [ItemTouchHelper] what allows dragging with a handle
  */
-class DxItemTouchHelper(private val itemTouchCallback: DxItemTouchCallback) :
+class DxItemTouchHelper<ITEM: IDxBaseItem>(private val itemTouchCallback: DxItemTouchCallback<ITEM>) :
     ItemTouchHelper(itemTouchCallback) {
 
     /**

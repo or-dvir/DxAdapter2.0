@@ -8,7 +8,7 @@ import com.hotmail.or_dvir.dxlibraries.R
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 
 class AdapterClickable(mItems: MutableList<ItemClickable>) :
-    BaseSampleAdapter<BaseSampleAdapter.ViewHolder>(mItems as MutableList<IDxBaseItem>) {
+    BaseSampleAdapter<ItemClickable, BaseSampleAdapter.ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
         ViewHolder(itemView)
@@ -17,7 +17,7 @@ class AdapterClickable(mItems: MutableList<ItemClickable>) :
         R.layout.list_item_standard
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getDxAdapterItem<ItemDraggable>(position)
+        val item = getDxAdapterItem(position)
         holder.tv.text = item.text
     }
 }

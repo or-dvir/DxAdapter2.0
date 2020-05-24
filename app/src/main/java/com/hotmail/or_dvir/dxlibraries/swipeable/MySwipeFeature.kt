@@ -9,6 +9,7 @@ import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeIcon
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeText
+import com.hotmail.or_dvir.dxlibraries.BaseItem
 import com.hotmail.or_dvir.dxlibraries.R
 
 class MySwipeFeature(
@@ -17,7 +18,7 @@ class MySwipeFeature(
     onSwipeStart: OnSwipeEventListener,
     onSwipeEnd: OnSwipeEventListener,
     onItemSwiped: OnItemSwipedListener
-) : DxFeatureSwipe(swipeDirections, onSwipeStart, onSwipeEnd, onItemSwiped) {
+) : DxFeatureSwipe<BaseItem>(swipeDirections, onSwipeStart, onSwipeEnd, onItemSwiped) {
 
     //region
     //possible values to override

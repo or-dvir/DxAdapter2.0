@@ -5,12 +5,17 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import com.hotmail.or_dvir.dxdragandswipe.OnItemSwipedListener
 import com.hotmail.or_dvir.dxdragandswipe.OnSwipeEventListener
 import com.hotmail.or_dvir.dxdragandswipe.R
 import org.jetbrains.annotations.TestOnly
 
-open class DxFeatureSwipe(
+//NOTE:
+//due to the fact that both swipe and drag are handled inside DxItemTouchCallback,
+//the generic type CANNOT be IDxItemSwipeable (because then we wouldn't be able to handle
+//IDxItemDraggable items in DxItemTouchCallback)
+open class DxFeatureSwipe<ITEM: IDxBaseItem>(
     internal var swipeDirections: Int,
     private val onSwipeStart: OnSwipeEventListener,
     private val onSwipeEnd: OnSwipeEventListener,
@@ -61,7 +66,7 @@ open class DxFeatureSwipe(
     }
 
     override fun onCreateViewHolder(
-        adapter: DxAdapter<*>,
+        adapter: DxAdapter<*, *>,
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {

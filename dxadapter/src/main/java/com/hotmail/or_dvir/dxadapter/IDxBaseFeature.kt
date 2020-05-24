@@ -7,13 +7,19 @@ import androidx.recyclerview.widget.RecyclerView
 /**
  * a base interface for all functionalities (click listeners, swipe, etc.) to share
  */
-interface IDxBaseFeature {
-    fun onCreateViewHolder(adapter: DxAdapter<*>, itemView: View, holder: RecyclerView.ViewHolder)
+interface IDxBaseFeature/*<ITEM : IDxBaseItem>*/ {
+    fun onCreateViewHolder(
+        adapter: DxAdapter<*, *>,
+//        adapter: DxAdapter<ITEM, *>,
+        itemView: View,
+        holder: RecyclerView.ViewHolder
+    )
 
     /**
      * used internally by the library.
      *
      * DO NOT OVERRIDE!!!
      */
-    @IdRes fun getFeatureId(): Int
+    @IdRes
+    fun getFeatureId(): Int
 }

@@ -6,7 +6,7 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 
 class DxFeatureSelection(
-    private val adapter: DxAdapter<*>,
+    private val adapter: DxAdapter<*, *>,
     private var onSelectionChanged: OnItemSelectionChangedListener
 ) : IDxBaseFeature {
 
@@ -35,11 +35,11 @@ class DxFeatureSelection(
     // deselect all items
 
     override fun onCreateViewHolder(
-        adapter: DxAdapter<*>,
+        adapter: DxAdapter<*, *>,
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
-        addasasdas
+        TODO()
     }
 
     override fun getFeatureId() = R.id.feature_selection

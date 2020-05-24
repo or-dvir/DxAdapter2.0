@@ -6,28 +6,28 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
-class DxFeatureClickListeners : IDxBaseFeature {
-
-    //todo put those into the constructor
-    var onItemClick: OnItemClickListener? = null
-    var onItemLongClick: OnItemLongClickListener? = null
+class DxFeatureClick<ITEM : IDxBaseItem>(
+    private val onItemClick: OnItemClickListener<ITEM>,
+    private val onItemLongClick: OnItemLongClickListener<ITEM>
+) : IDxBaseFeature {
+//) : IDxBaseFeature<ITEM> {
 
     override fun onCreateViewHolder(
-        adapter: DxAdapter<*>,
+        adapter: DxAdapter<*, *>,
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
         itemView.setOnClickListener { view ->
-            val item = adapter.getDxAdapterItem<IDxBaseItem>(holder.adapterPosition)
+            val item = adapter.getDxAdapterItem(holder.adapterPosition)
             if (item is IDxItemClickable) {
-                onItemClick?.invoke(view, holder.adapterPosition)
+                onItemClick.invoke(view, holder.adapterPosition, item as ITEM)
             }
         }
 
         itemView.setOnLongClickListener { view ->
-            val item = adapter.getDxAdapterItem<IDxBaseItem>(holder.adapterPosition)
+            val item = adapter.getDxAdapterItem(holder.adapterPosition)
             if (item is IDxItemClickable) {
-                onItemLongClick?.invoke(view, holder.adapterPosition) ?: true
+                onItemLongClick.invoke(view, holder.adapterPosition, item as ITEM)
             } else {
                 //if the item is not clickable, we do not consume the event
                 false

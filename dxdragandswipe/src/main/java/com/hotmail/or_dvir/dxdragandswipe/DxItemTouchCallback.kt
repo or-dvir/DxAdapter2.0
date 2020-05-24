@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.hotmail.or_dvir.dxadapter.DxAdapter
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
 import com.hotmail.or_dvir.dxdragandswipe.drag.IDxItemDraggable
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
@@ -14,7 +15,8 @@ import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.IDxItemSwipeable
 import kotlin.math.roundToInt
 
-class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.Callback() {
+class DxItemTouchCallback<ITEM: IDxBaseItem>(private val mAdapter: DxAdapter<ITEM, *>) :
+    ItemTouchHelper.Callback() {
 
     //region
     //fields for onChildDraw() for better performance (onChildDraw() will be called many times)
@@ -31,7 +33,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
     //endregion
 
     //todo when documenting note that there is no need to add the feature to the adapter
-    var dragFeature: DxFeatureDrag? = null
+    var dragFeature: DxFeatureDrag<ITEM>? = null
         set(value) {
             val prevField = field
             field = value
@@ -45,7 +47,7 @@ class DxItemTouchCallback(private val mAdapter: DxAdapter<*>) : ItemTouchHelper.
 
     //todo when documenting note that there is no need to add the feature to the adapter
     // even though nothing will happen as the map in DxAdapter will override it
-    var swipeFeature: DxFeatureSwipe? = null
+    var swipeFeature: DxFeatureSwipe<ITEM>? = null
         set(value) {
             val prevField = field
             field = value
