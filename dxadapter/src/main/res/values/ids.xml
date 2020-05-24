@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="feature_drag" type="id" />
+    <item name="feature_swipe" type="id" />
+    <item name="feature_clickListener" type="id" />
+    <item name="feature_selection" type="id" />
+</resources>

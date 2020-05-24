@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
-    //todo does this needs to be "out"?
-    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
 
-    fun addFunctionality(feature: IDxBaseFeature) {
-        allFeatures.add(feature)
-    }
+//    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
+    private val allFeatures: LinkedHashMap<Int, IDxBaseFeature> = LinkedHashMap()
+
+    fun addFeature(feature: IDxBaseFeature) = allFeatures.put(feature.getFeatureId(), feature)
+    fun removeFeature(feature: IDxBaseFeature) = allFeatures.remove(feature.getFeatureId())
 
     @CallSuper
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
@@ -24,9 +24,8 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
 
         val holder = createAdapterViewHolder(itemView, parent, viewType)
 
-        allFeatures.forEach {
-            val position = holder.adapterPosition
-            it.onCreateViewHolder(itemView, position, getDxAdapterItems()[position])
+        allFeatures.values.forEach {
+            it.onCreateViewHolder(this, itemView, holder)
         }
 
         return holder
@@ -56,29 +55,34 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
 //    }
 
     override fun getItemCount() = getDxAdapterItems().size
-    override fun getItemViewType(position: Int) {
-        val item = getDxAdapterItems()[position]
+    override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
 
-        if (item !is IDxBaseItem) {
-            throw ClassCastException(
-                "item of type ${ITEM::class.java.canonicalName} must implement" +
-                        "the IDxBaseItem interface or one of its descendants"
-            )
-        }
+    //no point in checking the cast, i would only throw an exception anyway...
+    @Suppress("UNCHECKED_CAST")
+    fun <T> getDxAdapterItem(position: Int) = getDxAdapterItems()[position] as T
 
-        return getDxAdapterItems()[position].getViewType()
-    }
+    /**
+     * returns a list of indices for the given [items].
+     *
+     * note that the returned list may contain -1 as it uses [List.indexOf]
+     */
+    fun getIndicesForItems(items: List<IDxBaseItem>) =
+        items.map { getIndexForItem(it) }
 
-    fun <ITEM> getItemAtPosition(position: Int): ITEM {
-        val t = getDxAdapterItems()[position]
-        return t
-    }
+    /**
+     * returns the index of the given [item]
+     */
+    fun getIndexForItem(item: IDxBaseItem) = getDxAdapterItems().indexOf(item)
 
-    //
-    // abstract functions
-    //
+    /**
+     * returns a list of [IDxBaseItem] at the given [indices]
+     */
+    fun getItemsForIndices(indices: List<Int>) =
+        indices.map { getDxAdapterItem<IDxBaseItem>(it) }
 
-    abstract fun getDxAdapterItems(): List<IDxBaseItem>
+    abstract fun getDxAdapterItems(): MutableList<IDxBaseItem>
+//    abstract fun getDxAdapterItems(): List<IDxBaseItem>
+//    abstract fun getItems(): List<ITEM>
 
     /**
      * wrapper for [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder]
