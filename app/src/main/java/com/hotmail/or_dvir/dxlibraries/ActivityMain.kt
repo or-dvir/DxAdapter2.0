@@ -176,6 +176,9 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
+    BEFORE YOU DO ANY OF THE OTHER THINGS, TEST MySwipeFeature with the new generic ITEM!!
+    this is where is the upper bound problem is
+
     go through ALL EXISTING FILES and make changes to add generic ITEM to them
     IN ALL FEATURES, make sure you call the listeners ONLY if the item matches the type (e.g. only trigger click listeners for items of type IDxItemClickable)
     modify all test files
