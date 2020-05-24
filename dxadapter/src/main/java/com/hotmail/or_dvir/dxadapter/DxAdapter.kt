@@ -61,6 +61,25 @@ abstract class DxAdapter<VH : ViewHolder> : RecyclerView.Adapter<VH>() {
     @Suppress("UNCHECKED_CAST")
     fun <T> getDxAdapterItem(position: Int) = getDxAdapterItems()[position] as T
 
+    /**
+     * returns a list of indices for the given [items].
+     *
+     * note that the returned list may contain -1 as it uses [List.indexOf]
+     */
+    fun getIndicesForItems(items: List<IDxBaseItem>) =
+        items.map { getIndexForItem(it) }
+
+    /**
+     * returns the index of the given [item]
+     */
+    fun getIndexForItem(item: IDxBaseItem) = getDxAdapterItems().indexOf(item)
+
+    /**
+     * returns a list of [IDxBaseItem] at the given [indices]
+     */
+    fun getItemsForIndices(indices: List<Int>) =
+        indices.map { getDxAdapterItem<IDxBaseItem>(it) }
+
     abstract fun getDxAdapterItems(): MutableList<IDxBaseItem>
 //    abstract fun getDxAdapterItems(): List<IDxBaseItem>
 //    abstract fun getItems(): List<ITEM>
