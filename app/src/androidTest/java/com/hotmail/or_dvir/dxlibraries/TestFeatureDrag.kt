@@ -69,7 +69,7 @@ class TestFeatureDrag : BaseTest() {
         mDragFeature.setDragOnLongClick(true)
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupDragFeatureWithRecyclerView(adapter, null)
+        setupDragFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>, null)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
@@ -139,7 +139,7 @@ class TestFeatureDrag : BaseTest() {
         mDragFeature.isDragEnabled = false
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupDragFeatureWithRecyclerView(adapter, null)
+        setupDragFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>, null)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
@@ -161,7 +161,7 @@ class TestFeatureDrag : BaseTest() {
         mDragFeature.setDragOnLongClick(true)
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupDragFeatureWithRecyclerView(adapter, null)
+        setupDragFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>, null)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
@@ -192,7 +192,7 @@ class TestFeatureDrag : BaseTest() {
             }
         }
 
-        setupDragFeatureWithRecyclerView(adapter, null)
+        setupDragFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>, null)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
@@ -212,9 +212,21 @@ class TestFeatureDrag : BaseTest() {
         // triggers mDragEventStart (in addition to the press-and-hold operation).
         // THIS DOES NOT HAPPEN when i manually test the app!!!
         // so just accept it and check that it was called 2 times
-        verify(exactly = 2) { mDragEventStart.invoke(any(), positionFrom, adapter.getItem(positionFrom)) }
+        verify(exactly = 2) {
+            mDragEventStart.invoke(
+                any(),
+                positionFrom,
+                adapter.getItem(positionFrom)
+            )
+        }
         verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any(), any(), any()) }
-        verify(exactly = 1) { mDragEventEnd.invoke(any(), actualPositionToCheck, adapter.getItem(actualPositionToCheck)) }
+        verify(exactly = 1) {
+            mDragEventEnd.invoke(
+                any(),
+                actualPositionToCheck,
+                adapter.getItem(actualPositionToCheck)
+            )
+        }
 
         scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
     }
@@ -238,7 +250,7 @@ class TestFeatureDrag : BaseTest() {
         }
 
         val handleId = R.id.listItem_dragHandle
-        setupDragFeatureWithRecyclerView(adapter, handleId)
+        setupDragFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>, handleId)
 
         //the positions MUST be visible on screen.
         val positionFrom = 1
@@ -330,8 +342,9 @@ class TestFeatureDrag : BaseTest() {
             .check(matches(atPosition(positionToCheck, hasDescendant(withText(textToCheck)))))
     }
 
-    private fun <ITEM : BaseItem> setupDragFeatureWithRecyclerView(
-        adapter: DxAdapter<ITEM, *>, @IdRes dragHandleId: Int?
+    private fun setupDragFeatureWithRecyclerView(
+        adapter: DxAdapter<BaseItem, *>,
+        @IdRes dragHandleId: Int?
     ) {
         val touchCallback = DxItemTouchCallback(adapter).apply {
             dragFeature = mDragFeature

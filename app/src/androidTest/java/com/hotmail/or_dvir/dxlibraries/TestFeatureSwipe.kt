@@ -73,7 +73,7 @@ class TestFeatureSwipe : BaseTest() {
         val swipeListener = getResetItemSwipeListener(adapter)
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupSwipeFeatureWithRecyclerView(adapter)
+        setupSwipeFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>)
 
         val swipePosition = 1
         val swipeItem = adapter.getItem(swipePosition)
@@ -95,7 +95,7 @@ class TestFeatureSwipe : BaseTest() {
 
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupSwipeFeatureWithRecyclerView(adapter)
+        setupSwipeFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>)
 
         performSwipe(1, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT)
 
@@ -113,7 +113,7 @@ class TestFeatureSwipe : BaseTest() {
         val swipeListener = getResetItemSwipeListener(adapter)
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupSwipeFeatureWithRecyclerView(adapter)
+        setupSwipeFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>)
 
         performSwipe(1, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT)
 
@@ -132,7 +132,7 @@ class TestFeatureSwipe : BaseTest() {
         mSwipeFeature.setSwipeDirections(ItemTouchHelper.RIGHT)
 
         onActivity { it.apply { setAdapter(adapter) } }
-        setupSwipeFeatureWithRecyclerView(adapter)
+        setupSwipeFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>)
 
         //swiping in the wrong direction
         performSwipe(1, GeneralLocation.CENTER_RIGHT, GeneralLocation.CENTER_LEFT)
@@ -188,7 +188,7 @@ class TestFeatureSwipe : BaseTest() {
         return listener
     }
 
-    private fun <ITEM: BaseItem> setupSwipeFeatureWithRecyclerView(adapter: DxAdapter<ITEM, *>) {
+    private fun setupSwipeFeatureWithRecyclerView(adapter: DxAdapter<BaseItem, *>) {
         val touchCallback = DxItemTouchCallback(adapter).apply {
             swipeFeature = mSwipeFeature
         }
