@@ -14,6 +14,11 @@ class DxVisibilityListener {
     internal var flagNotifiedLastVisible = false
     internal var flagNotifiedLastInvisible = false
 
+    //todo decide on how to handle all variables/listeners
+    // should they be part of the constructor like in DxFeature***
+    // or should they be like here?
+
+    //region optional variables
     /**
      * a listener to be invoked when the FIRST item on your list is VISIBLE.
      *
@@ -45,6 +50,7 @@ class DxVisibilityListener {
      * note that if the entire list DOES fit on the screen, this will NEVER trigger.
      */
     var onLastItemInvisible: GenericListener? = null
+    //endregion
 
     internal fun atLeastOneListenerSet() = atLeastOneListenerFirst() || atLeastOneListenerLast()
     internal fun atLeastOneListenerFirst() =

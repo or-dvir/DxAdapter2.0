@@ -9,18 +9,15 @@ import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeIcon
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeText
-import com.hotmail.or_dvir.dxlibraries.BaseItem
-import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
 
 class MySwipeFeature(
-    adapter: AdapterSwipeable,
     context: Context,
     swipeDirections: Int,
     onSwipeStart: OnSwipeEventListener<ItemSwipeable>,
     onSwipeEnd: OnSwipeEventListener<ItemSwipeable>,
     onItemSwiped: OnItemSwipedListener<ItemSwipeable>
-) : DxFeatureSwipe<ItemSwipeable>(adapter, swipeDirections, onSwipeStart, onSwipeEnd, onItemSwiped) {
+) : DxFeatureSwipe<ItemSwipeable>(swipeDirections, onSwipeStart, onSwipeEnd, onItemSwiped) {
 
     //region
     //possible values to override
@@ -48,10 +45,15 @@ class MySwipeFeature(
             DxSwipeIcon(R.drawable.ic_arrow_left, context, 96)
         )
 
-    override fun getSwipeBackgroundLeft(itemView: View, adapterPosition: Int) = backgroundLeft
+    override fun getSwipeBackgroundLeft(itemView: View, adapterPosition: Int, item: ItemSwipeable) =
+        backgroundLeft
 
-    override fun getSwipeBackgroundRight(itemView: View, adapterPosition: Int): DxSwipeBackground? {
-        return if (adapterPosition % 2 == 0) {
+    override fun getSwipeBackgroundRight(
+        itemView: View,
+        adapterPosition: Int,
+        item: ItemSwipeable
+    ): DxSwipeBackground? {
+        return if (item.randomNum < 50) {
             backgroundRightOptionA
         } else {
             backgroundRightOptionB

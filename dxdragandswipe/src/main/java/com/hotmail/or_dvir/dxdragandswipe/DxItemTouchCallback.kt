@@ -32,6 +32,7 @@ class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<IT
     private val mTextRect = Rect()
     //endregion
 
+    //region optional variables
     //todo when documenting note that there is no need to add the feature to the adapter
     var dragFeature: DxFeatureDrag<ITEM>? = null
         set(value) {
@@ -58,6 +59,7 @@ class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<IT
                 mAdapter.removeFeature(prevField)
             }
         }
+    //endregion
 
     internal fun setUpDragWithHandle(@IdRes handleId: Int, touchHelper: ItemTouchHelper) {
         dragFeature?.apply {
