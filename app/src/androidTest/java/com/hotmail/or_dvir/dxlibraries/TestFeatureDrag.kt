@@ -34,6 +34,8 @@ class TestFeatureDrag : BaseTest() {
 
     //todo can i test dragging out of bounds of screen?
 
+    some tests fail
+
     private lateinit var mDragEventStart: OnDragEventListener<BaseItem>
     private lateinit var mDragEventEnd: OnDragEventListener<BaseItem>
     private lateinit var mOnItemMoved: OnItemMovedListener<BaseItem>
