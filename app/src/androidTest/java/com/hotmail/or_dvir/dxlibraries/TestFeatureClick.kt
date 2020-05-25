@@ -40,7 +40,7 @@ class TestFeatureClick : BaseTest() {
         onActivity { it.apply { setAdapter(adapter) } }
 
         var clickedPosition = 0
-        var clickedItem = adapter.getDxAdapterItem(clickedPosition)
+        var clickedItem = adapter.getItem(clickedPosition)
 
         onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, click())
@@ -72,7 +72,7 @@ class TestFeatureClick : BaseTest() {
         onActivity { it.apply { setAdapter(adapter) } }
 
         var clickedPosition = 0
-        var clickedItem = adapter.getDxAdapterItem(clickedPosition)
+        var clickedItem = adapter.getItem(clickedPosition)
 
         onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, click())
@@ -86,7 +86,7 @@ class TestFeatureClick : BaseTest() {
         //testing long click
 
         clickedPosition = 1
-        clickedItem = adapter.getDxAdapterItem(clickedPosition)
+        clickedItem = adapter.getItem(clickedPosition)
 
         onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, longClick())
@@ -133,7 +133,7 @@ class TestFeatureClick : BaseTest() {
             actionOnItemAtPosition<ViewHolder>(position, longClick())
         )
 
-        val item = adapter.getDxAdapterItem(position)
+        val item = adapter.getItem(position)
 
         //listeners should be called
         verify(exactly = 1) { mClickListener.invoke(any(), position, item) }

@@ -60,33 +60,39 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
     override fun getItemCount() = getDxAdapterItems().size
     override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
 
-    //no point in checking the cast, i would only throw an exception anyway...
-    @Suppress("UNCHECKED_CAST")
-    fun getDxAdapterItem(position: Int) = getDxAdapterItems()[position]
-//    fun <T> getDxAdapterItem(position: Int) = getDxAdapterItems()[position] as T
+    /**
+     * convenience function for [List.indexOf]
+     */
+    fun getIndex(item: ITEM) = getDxAdapterItems().indexOf(item)
 
     /**
      * returns a list of indices for the given [items].
      *
-     * note that the returned list may contain -1 as it uses [List.indexOf]
+     * note that the returned list may contain -1 as it uses [List.indexOf].
+     * To avoid this, set [filterNonExistingItems] to true
      */
-    fun getIndicesForItems(items: List<ITEM>) =
-        items.map { getIndexForItem(it) }
+    fun getIndexList(items: List<ITEM>, filterNonExistingItems: Boolean = false): List<Int> {
+        var list = items.map { getIndex(it) }
+
+        if(filterNonExistingItems) {
+            list = list.filter { it != -1 }
+        }
+
+        return list
+    }
 
     /**
-     * returns the index of the given [item]
+     * gets the item at [position]
      */
-    fun getIndexForItem(item: ITEM) = getDxAdapterItems().indexOf(item)
+    fun getItem(position: Int) = getDxAdapterItems()[position]
 
     /**
-     * returns a list of [ITEM] at the given [indices]
+     * returns a list of items at the given [indices]
      */
     fun getItemsForIndices(indices: List<Int>) =
-        indices.map { getDxAdapterItem(it) }
+        indices.map { getItem(it) }
 
     abstract fun getDxAdapterItems(): MutableList<ITEM>
-//    abstract fun getDxAdapterItems(): List<ITEM>
-//    abstract fun getItems(): List<ITEM>
 
     /**
      * wrapper for [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder]

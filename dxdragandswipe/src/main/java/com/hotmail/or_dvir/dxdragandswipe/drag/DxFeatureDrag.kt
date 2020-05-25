@@ -19,9 +19,9 @@ import org.jetbrains.annotations.TestOnly
 //IDxItemSwipeable items in DxItemTouchCallback)
 class DxFeatureDrag<ITEM : IDxBaseItem>(
     internal var dragDirections: Int,
-    private val onDragStart: OnDragEventListener,
-    private val onDragEnd: OnDragEventListener,
-    internal val onItemMoved: OnItemMovedListener,
+    private val onDragStart: OnDragEventListener<ITEM>,
+    private val onDragEnd: OnDragEventListener<ITEM>,
+    internal val onItemMoved: OnItemMovedListener<ITEM>,
     internal var dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 
@@ -59,12 +59,12 @@ class DxFeatureDrag<ITEM : IDxBaseItem>(
         itemView.findViewById<View>(dragHandleId!!).setOnTouchListener { view, motionEvent ->
             when (motionEvent.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
-                    notifyDragStart(holder)
-                    //signalDragStart is also called from DxItemTouchCallback but
+                    notifyDragStart(adapter, holder)
+                    //notifyDragStart is also called from DxItemTouchCallback but
                     //we only want to manually start the drag operation from here
                     itemTouchHelper?.startDrag(holder)
                 }
-                MotionEvent.ACTION_UP -> notifyDragEnd(holder)
+                MotionEvent.ACTION_UP -> notifyDragEnd(adapter, holder)
             }
 
             //allow normal processing to continue
@@ -72,18 +72,21 @@ class DxFeatureDrag<ITEM : IDxBaseItem>(
         }
     }
 
-    override fun getFeatureId() =
-        R.id.feature_drag
+    override fun getFeatureId() = R.id.feature_drag
 
-    internal fun notifyDragStart(holder: RecyclerView.ViewHolder) {
+    internal fun notifyDragStart(adapter: DxAdapter<*, *>, holder: RecyclerView.ViewHolder) {
         flagIsDragging = true
-        onDragStart.invoke(holder.itemView, holder.adapterPosition)
+        holder.apply {
+            onDragStart.invoke(itemView, adapterPosition, adapter.getItem(adapterPosition) as ITEM)
+        }
     }
 
-    internal fun notifyDragEnd(holder: RecyclerView.ViewHolder) {
+    internal fun notifyDragEnd(adapter: DxAdapter<*, *>, holder: RecyclerView.ViewHolder) {
         if (flagIsDragging) {
             flagIsDragging = false
-            onDragEnd.invoke(holder.itemView, holder.adapterPosition)
+            holder.apply {
+                onDragEnd.invoke(itemView, adapterPosition, adapter.getItem(adapterPosition) as ITEM)
+            }
         }
     }
 }

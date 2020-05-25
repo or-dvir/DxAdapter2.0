@@ -15,7 +15,7 @@ import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.IDxItemSwipeable
 import kotlin.math.roundToInt
 
-class DxItemTouchCallback<ITEM: IDxBaseItem>(private val mAdapter: DxAdapter<ITEM, *>) :
+class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<ITEM, *>) :
     ItemTouchHelper.Callback() {
 
     //region
@@ -77,8 +77,8 @@ class DxItemTouchCallback<ITEM: IDxBaseItem>(private val mAdapter: DxAdapter<ITE
 
         holder?.apply {
             when (actionState) {
-                ItemTouchHelper.ACTION_STATE_DRAG -> dragFeature?.notifyDragStart(this)
-                ItemTouchHelper.ACTION_STATE_SWIPE -> swipeFeature?.notifySwipeStart(this)
+                ItemTouchHelper.ACTION_STATE_DRAG -> dragFeature?.notifyDragStart(mAdapter, this)
+                ItemTouchHelper.ACTION_STATE_SWIPE -> swipeFeature?.notifySwipeStart(mAdapter, this)
             }
         }
     }
@@ -89,8 +89,8 @@ class DxItemTouchCallback<ITEM: IDxBaseItem>(private val mAdapter: DxAdapter<ITE
         //NOTE:
         //there is no bug here - in case of drag the listener for swipe will not be called
         //(and vice-versa). there are flags inside each feature to prevent this
-        dragFeature?.notifyDragEnd(holder)
-        swipeFeature?.notifySwipeEnd(holder)
+        dragFeature?.notifyDragEnd(mAdapter, holder)
+        swipeFeature?.notifySwipeEnd(mAdapter, holder)
     }
 
     override fun getMovementFlags(recycler: RecyclerView, holder: ViewHolder): Int {
@@ -120,23 +120,21 @@ class DxItemTouchCallback<ITEM: IDxBaseItem>(private val mAdapter: DxAdapter<ITE
         dragged: ViewHolder,
         target: ViewHolder
     ): Boolean {
-        val draggedView = dragged.itemView
-        val draggedPosition = dragged.adapterPosition
-
-        val targetView = target.itemView
-        val targetPosition = target.adapterPosition
-
         mAdapter.apply {
+            val draggedPosition = dragged.adapterPosition
+            val targetPosition = target.adapterPosition
 
             //NOTE:
             //should call this BEFORE actually moving the items. otherwise draggedPosition
             //and targetPosition would ve reversed (because they have been switched...)
             //todo add this note to documentation
             dragFeature?.onItemMoved?.invoke(
-                draggedView,
+                dragged.itemView,
                 draggedPosition,
-                targetView,
-                targetPosition
+                getItem(draggedPosition),
+                target.itemView,
+                target.adapterPosition,
+                getItem(targetPosition)
             )
 
             getDxAdapterItems().apply {
@@ -151,7 +149,14 @@ class DxItemTouchCallback<ITEM: IDxBaseItem>(private val mAdapter: DxAdapter<ITE
     }
 
     override fun onSwiped(holder: ViewHolder, direction: Int) {
-        swipeFeature?.onItemSwiped?.invoke(holder.itemView, holder.adapterPosition, direction)
+        holder.apply {
+            swipeFeature?.onItemSwiped?.invoke(
+                itemView,
+                adapterPosition,
+                direction,
+                mAdapter.getItem(adapterPosition)
+            )
+        }
     }
 
     override fun getSwipeEscapeVelocity(defaultValue: Float): Float {
@@ -250,7 +255,11 @@ class DxItemTouchCallback<ITEM: IDxBaseItem>(private val mAdapter: DxAdapter<ITE
             mSwipeBackgroundForDrawing =
                 when {
                     mIsSwipingLeft -> {
-                        getSwipeBackgroundLeft(itemView, holder.adapterPosition)?.apply {
+                        getSwipeBackgroundLeft(
+                            itemView,
+                            holder.adapterPosition,
+                            mAdapter.getItem(holder.adapterPosition)
+                        )?.apply {
                             backgroundColorDrawable.setBounds(
                                 itemView.right + dx.roundToInt(),
                                 itemView.top,
@@ -261,7 +270,11 @@ class DxItemTouchCallback<ITEM: IDxBaseItem>(private val mAdapter: DxAdapter<ITE
                     }
                     //swiping right
                     else -> {
-                        getSwipeBackgroundRight(itemView, holder.adapterPosition)?.apply {
+                        getSwipeBackgroundRight(
+                            itemView,
+                            holder.adapterPosition,
+                            mAdapter.getItem(holder.adapterPosition)
+                        )?.apply {
                             backgroundColorDrawable.setBounds(
                                 itemView.left,
                                 itemView.top,

@@ -1,17 +1,19 @@
 package com.hotmail.or_dvir.dxdragandswipe
 
 import android.view.View
-import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 
 //region drag
-typealias OnDragEventListener = (view: View, adapterPosition: Int) -> Unit
+typealias OnDragEventListener<ITEM> = (view: View, adapterPosition: Int, item: ITEM) -> Unit
 
-typealias OnItemMovedListener =
-            (draggedView: View, draggedPosition: Int, targetView: View, targetPosition: Int) -> Unit
+typealias OnItemMovedListener<ITEM> = (
+    draggedView: View, draggedPosition: Int, draggedItem: ITEM,
+    targetView: View, targetPosition: Int, targetItem: ITEM
+) -> Unit
 //endregion
 
 //region swipe
-typealias OnSwipeEventListener = (view: View, adapterPosition: Int) -> Unit
+typealias OnSwipeEventListener<ITEM> = (view: View, adapterPosition: Int, item: ITEM) -> Unit
 
-typealias OnItemSwipedListener = (view: View, adapterPosition: Int, direction: Int) -> Unit
+typealias OnItemSwipedListener<ITEM> =
+            (view: View, adapterPosition: Int, direction: Int, item: ITEM) -> Unit
 //endregion

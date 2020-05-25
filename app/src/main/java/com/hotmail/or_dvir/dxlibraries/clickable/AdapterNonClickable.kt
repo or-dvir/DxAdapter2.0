@@ -2,10 +2,8 @@ package com.hotmail.or_dvir.dxlibraries.clickable
 
 import android.view.View
 import android.view.ViewGroup
-import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
 
 class AdapterNonClickable(mItems: MutableList<ItemNonClickable>) :
     BaseSampleAdapter<ItemNonClickable, BaseSampleAdapter.ViewHolder>(mItems) {
@@ -17,7 +15,7 @@ class AdapterNonClickable(mItems: MutableList<ItemNonClickable>) :
         R.layout.list_item_standard
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = getDxAdapterItem(position)
+        val item = getItem(position)
         holder.tv.text = item.text
     }
 }

@@ -15,11 +15,11 @@ import org.jetbrains.annotations.TestOnly
 //due to the fact that both swipe and drag are handled inside DxItemTouchCallback,
 //the generic type CANNOT be IDxItemSwipeable (because then we wouldn't be able to handle
 //IDxItemDraggable items in DxItemTouchCallback)
-open class DxFeatureSwipe<ITEM: IDxBaseItem>(
+open class DxFeatureSwipe<ITEM : IDxBaseItem>(
     internal var swipeDirections: Int,
-    private val onSwipeStart: OnSwipeEventListener,
-    private val onSwipeEnd: OnSwipeEventListener,
-    internal var onItemSwiped: OnItemSwipedListener
+    private val onSwipeStart: OnSwipeEventListener<ITEM>,
+    private val onSwipeEnd: OnSwipeEventListener<ITEM>,
+    internal var onItemSwiped: OnItemSwipedListener<ITEM>
 ) : IDxBaseFeature {
 
     //region
@@ -46,9 +46,11 @@ open class DxFeatureSwipe<ITEM: IDxBaseItem>(
      */
     open var swipeEscapeVelocityMultiplier: Float? = null
 
-    open fun getSwipeBackgroundLeft(itemView: View, adapterPosition: Int): DxSwipeBackground? = null
-    open fun getSwipeBackgroundRight(itemView: View, adapterPosition: Int): DxSwipeBackground? =
-        null
+    open fun getSwipeBackgroundLeft(itemView: View, adapterPosition: Int, item: ITEM)
+            : DxSwipeBackground? = null
+
+    open fun getSwipeBackgroundRight(itemView: View, adapterPosition: Int, item: ITEM)
+            : DxSwipeBackground? = null
 
     var isSwipeEnabled = true
     //endregion
@@ -61,7 +63,7 @@ open class DxFeatureSwipe<ITEM: IDxBaseItem>(
     }
 
     @TestOnly
-    fun setOnItemSwipedListener(listener: OnItemSwipedListener) {
+    fun setOnItemSwipedListener(listener: OnItemSwipedListener<ITEM>) {
         onItemSwiped = listener
     }
 
@@ -73,15 +75,21 @@ open class DxFeatureSwipe<ITEM: IDxBaseItem>(
         //do nothing
     }
 
-    override fun getFeatureId() =
-        R.id.feature_swipe
+    override fun getFeatureId() = R.id.feature_swipe
 
-    internal fun notifySwipeStart(holder: RecyclerView.ViewHolder) {
+    internal fun notifySwipeStart(adapter: DxAdapter<ITEM, *>, holder: RecyclerView.ViewHolder) {
         flagIsSwiping = true
-        onSwipeStart.invoke(holder.itemView, holder.adapterPosition)
+
+        holder.apply {
+            onSwipeStart.invoke(
+                itemView,
+                adapterPosition,
+                adapter.getItem(adapterPosition)
+            )
+        }
     }
 
-    internal fun notifySwipeEnd(holder: RecyclerView.ViewHolder) {
+    internal fun notifySwipeEnd(adapter: DxAdapter<ITEM, *>, holder: RecyclerView.ViewHolder) {
         if (flagIsSwiping) {
             flagIsSwiping = false
 
@@ -89,8 +97,15 @@ open class DxFeatureSwipe<ITEM: IDxBaseItem>(
             // if item is removed, onSwipeEnd will NOT be called
             //this can happen if the item is removed from the adapter after the swipe.
             //due to the way ItemTouchCallback works, onSwiped is called BEFORE this method is invoked
-            if (holder.adapterPosition != -1) {
-                onSwipeEnd.invoke(holder.itemView, holder.adapterPosition)
+
+            holder.apply {
+                if (adapterPosition != -1) {
+                    onSwipeEnd.invoke(
+                        itemView,
+                        adapterPosition,
+                        adapter.getItem(adapterPosition)
+                    )
+                }
             }
         }
     }

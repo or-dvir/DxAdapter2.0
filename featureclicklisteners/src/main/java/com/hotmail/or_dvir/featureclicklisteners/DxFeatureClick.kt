@@ -10,7 +10,6 @@ class DxFeatureClick<ITEM : IDxBaseItem>(
     private val onItemClick: OnItemClickListener<ITEM>,
     private val onItemLongClick: OnItemLongClickListener<ITEM>
 ) : IDxBaseFeature {
-//) : IDxBaseFeature<ITEM> {
 
     override fun onCreateViewHolder(
         adapter: DxAdapter<*, *>,
@@ -18,14 +17,14 @@ class DxFeatureClick<ITEM : IDxBaseItem>(
         holder: RecyclerView.ViewHolder
     ) {
         itemView.setOnClickListener { view ->
-            val item = adapter.getDxAdapterItem(holder.adapterPosition)
+            val item = adapter.getItem(holder.adapterPosition)
             if (item is IDxItemClickable) {
                 onItemClick.invoke(view, holder.adapterPosition, item as ITEM)
             }
         }
 
         itemView.setOnLongClickListener { view ->
-            val item = adapter.getDxAdapterItem(holder.adapterPosition)
+            val item = adapter.getItem(holder.adapterPosition)
             if (item is IDxItemClickable) {
                 onItemLongClick.invoke(view, holder.adapterPosition, item as ITEM)
             } else {
