@@ -39,21 +39,21 @@ class TestFeatureSwipe : BaseTest() {
     //do to the way ItemTouchCallback works, you MUST do something with the item once its swiped!
     //(e.g. remove, reset). if you don't, listeners will be called for wrong items.
     //therefore each test function should define the listener on its own
-    private lateinit var mSwipeStart: OnSwipeEventListener
-    private lateinit var mSwipeEnd: OnSwipeEventListener
-    private lateinit var mSwipeFeature: DxFeatureSwipe
+    private lateinit var mSwipeStart: OnSwipeEventListener<BaseItem>
+    private lateinit var mSwipeEnd: OnSwipeEventListener<BaseItem>
+    private lateinit var mSwipeFeature: DxFeatureSwipe<BaseItem>
 
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     @Before
     fun before() {
-        mSwipeStart = spyk({ view, position -> })
-        mSwipeEnd = spyk({ view, position -> })
+        mSwipeStart = spyk({ view, position, item -> })
+        mSwipeEnd = spyk({ view, position, item -> })
 
         mSwipeFeature = DxFeatureSwipe(
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, //may be overridden later
             mSwipeStart,
             mSwipeEnd,
-            { _, _, _ ->
+            { _, _, _, _ ->
                 //this will be overridden in each test function, but must be supplied here
             }
         )
@@ -76,11 +76,12 @@ class TestFeatureSwipe : BaseTest() {
         setupSwipeFeatureWithRecyclerView(adapter)
 
         val swipePosition = 1
+        val swipeItem = adapter.getItem(swipePosition)
         performSwipe(swipePosition, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT)
 
-        verify(exactly = 1) { mSwipeStart.invoke(any(), swipePosition) }
-        verify(exactly = 1) { mSwipeEnd.invoke(any(), swipePosition) }
-        verify(exactly = 1) { swipeListener.invoke(any(), swipePosition, ItemTouchHelper.RIGHT) }
+        verify(exactly = 1) { mSwipeStart.invoke(any(), swipePosition, swipeItem) }
+        verify(exactly = 1) { mSwipeEnd.invoke(any(), swipePosition, swipeItem) }
+        verify(exactly = 1) { swipeListener.invoke(any(), swipePosition, ItemTouchHelper.RIGHT, swipeItem) }
     }
 
     @Test
@@ -98,9 +99,9 @@ class TestFeatureSwipe : BaseTest() {
 
         performSwipe(1, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT)
 
-        verify(exactly = 0) { mSwipeStart.invoke(any(), any()) }
-        verify(exactly = 0) { mSwipeEnd.invoke(any(), any()) }
-        verify(exactly = 0) { swipeListener.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mSwipeStart.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mSwipeEnd.invoke(any(), any(), any()) }
+        verify(exactly = 0) { swipeListener.invoke(any(), any(), any(), any()) }
     }
 
     @Test
@@ -116,9 +117,9 @@ class TestFeatureSwipe : BaseTest() {
 
         performSwipe(1, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT)
 
-        verify(exactly = 0) { mSwipeStart.invoke(any(), any()) }
-        verify(exactly = 0) { mSwipeEnd.invoke(any(), any()) }
-        verify(exactly = 0) { swipeListener.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mSwipeStart.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mSwipeEnd.invoke(any(), any(), any()) }
+        verify(exactly = 0) { swipeListener.invoke(any(), any(), any(), any()) }
     }
 
     @Test
@@ -136,9 +137,9 @@ class TestFeatureSwipe : BaseTest() {
         //swiping in the wrong direction
         performSwipe(1, GeneralLocation.CENTER_RIGHT, GeneralLocation.CENTER_LEFT)
 
-        verify(exactly = 0) { mSwipeStart.invoke(any(), any()) }
-        verify(exactly = 0) { mSwipeEnd.invoke(any(), any()) }
-        verify(exactly = 0) { swipeListener.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mSwipeStart.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mSwipeEnd.invoke(any(), any(), any()) }
+        verify(exactly = 0) { swipeListener.invoke(any(), any(), any(), any()) }
     }
 
     //region helper functions
@@ -177,8 +178,8 @@ class TestFeatureSwipe : BaseTest() {
             )
     }
 
-    private fun getResetItemSwipeListener(adapter: DxAdapter<*>): OnItemSwipedListener {
-        val listener: OnItemSwipedListener = spyk({ view, adapterPosition, direction ->
+    private fun <ITEM: BaseItem> getResetItemSwipeListener(adapter: DxAdapter<ITEM, *>): OnItemSwipedListener<BaseItem> {
+        val listener: OnItemSwipedListener<BaseItem> = spyk({ view, adapterPosition, direction, item ->
             adapter.notifyItemChanged(adapterPosition)
         })
 
@@ -187,7 +188,7 @@ class TestFeatureSwipe : BaseTest() {
         return listener
     }
 
-    private fun setupSwipeFeatureWithRecyclerView(adapter: DxAdapter<*>) {
+    private fun <ITEM: BaseItem> setupSwipeFeatureWithRecyclerView(adapter: DxAdapter<ITEM, *>) {
         val touchCallback = DxItemTouchCallback(adapter).apply {
             swipeFeature = mSwipeFeature
         }

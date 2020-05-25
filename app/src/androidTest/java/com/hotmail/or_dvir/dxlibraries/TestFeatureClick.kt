@@ -40,7 +40,6 @@ class TestFeatureClick : BaseTest() {
         onActivity { it.apply { setAdapter(adapter) } }
 
         var clickedPosition = 0
-        var clickedItem = adapter.getItem(clickedPosition)
 
         onView(withId(R.id.activityMain_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, click())

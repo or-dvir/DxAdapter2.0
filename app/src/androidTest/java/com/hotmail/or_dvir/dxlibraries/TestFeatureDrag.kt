@@ -34,17 +34,19 @@ class TestFeatureDrag : BaseTest() {
 
     //todo can i test dragging out of bounds of screen?
 
-    private lateinit var mDragEventStart: OnDragEventListener
-    private lateinit var mDragEventEnd: OnDragEventListener
-    private lateinit var mOnItemMoved: OnItemMovedListener
-    private lateinit var mDragFeature: DxFeatureDrag
+    private lateinit var mDragEventStart: OnDragEventListener<BaseItem>
+    private lateinit var mDragEventEnd: OnDragEventListener<BaseItem>
+    private lateinit var mOnItemMoved: OnItemMovedListener<BaseItem>
+    private lateinit var mDragFeature: DxFeatureDrag<BaseItem>
 
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     @Before
     fun before() {
-        mDragEventStart = spyk({ view, position -> })
-        mDragEventEnd = spyk({ view, position -> })
-        mOnItemMoved = spyk({ draggedView, draggedPosition, targetView, targetPosition -> })
+        mDragEventStart = spyk({ view, position, item -> })
+        mDragEventEnd = spyk({ view, position, item -> })
+        mOnItemMoved = spyk({ draggedView, draggedPosition, draggedItem,
+                              targetView, targetPosition, targetItem ->
+        })
 
         mDragFeature = DxFeatureDrag(
             ItemTouchHelper.UP or ItemTouchHelper.DOWN, //may be overridden later
@@ -58,18 +60,6 @@ class TestFeatureDrag : BaseTest() {
     @After
     fun after() {
         PressActions.tearDown()
-    }
-
-    private fun setupDragFeatureWithRecyclerView(adapter: DxAdapter<*>, @IdRes dragHandleId: Int?) {
-        val touchCallback = DxItemTouchCallback(adapter).apply {
-            dragFeature = mDragFeature
-        }
-
-        val touchHelper = DxItemTouchHelper(touchCallback).apply {
-            dragHandleId?.apply { setDragHandleId(this) }
-        }
-
-        onActivity { touchHelper.attachToRecyclerView(it.activityMain_rv) }
     }
 
     @Test
@@ -92,7 +82,13 @@ class TestFeatureDrag : BaseTest() {
         //triggers mDragEventStart (in addition to the press-and-hold operation).
         //THIS DOES NOT HAPPEN when i manually test the app!!!
         //so just accept it and check that it was called 2 times
-        verify(exactly = 2) { mDragEventStart.invoke(any(), positionFrom) }
+        verify(exactly = 2) {
+            mDragEventStart.invoke(
+                any(),
+                positionFrom,
+                adapter.getItem(positionFrom)
+            )
+        }
 
         //using absoluteValue in case we change the positions in the future to be dragged
         //from bottom to top.
@@ -104,23 +100,33 @@ class TestFeatureDrag : BaseTest() {
         val range = 0 until (positionTo - positionFrom).absoluteValue - 1
 
         var newPositionFrom: Int
+        var actualPositionToCheck: Int
 
         for (i in range) {
             newPositionFrom = positionFrom + i
+            actualPositionToCheck = newPositionFrom + 1 //dragging sequentially so should be 1 more
             verify(exactly = 1) {
                 mOnItemMoved.invoke(
                     any(),
                     newPositionFrom,
+                    adapter.getItem(newPositionFrom),
                     any(),
-                    newPositionFrom + 1 //dragging sequentially so should be 1 higher
+                    actualPositionToCheck,
+                    adapter.getItem(actualPositionToCheck)
                 )
             }
         }
 
         //reducing 1 from positionTo because we are dragging to the CENTER of positionTo
         //and that is not enough for the items to be swapped (even BOTTOM_CENTER is not enough)
-        val actualPositionToCheck = positionTo - 1
-        verify(exactly = 1) { mDragEventEnd.invoke(any(), actualPositionToCheck) }
+        actualPositionToCheck = positionTo - 1
+        verify(exactly = 1) {
+            mDragEventEnd.invoke(
+                any(),
+                actualPositionToCheck,
+                adapter.getItem(actualPositionToCheck)
+            )
+        }
 
         scrollAndVerifyText(actualPositionToCheck, "item $positionFrom", adapter)
     }
@@ -141,9 +147,9 @@ class TestFeatureDrag : BaseTest() {
 
         performDrag(positionFrom, positionTo, null)
 
-        verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
-        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
-        verify(exactly = 0) { mDragEventEnd.invoke(any(), any()) }
+        verify(exactly = 0) { mDragEventStart.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any(), any(), any()) }
+        verify(exactly = 0) { mDragEventEnd.invoke(any(), any(), any()) }
 
         scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
     }
@@ -163,9 +169,9 @@ class TestFeatureDrag : BaseTest() {
 
         performDrag(positionFrom, positionTo, null)
 
-        verify(exactly = 0) { mDragEventStart.invoke(any(), any()) }
-        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
-        verify(exactly = 0) { mDragEventEnd.invoke(any(), any()) }
+        verify(exactly = 0) { mDragEventStart.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any(), any(), any()) }
+        verify(exactly = 0) { mDragEventEnd.invoke(any(), any(), any()) }
 
         scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
     }
@@ -194,6 +200,10 @@ class TestFeatureDrag : BaseTest() {
 
         performDrag(positionFrom, positionTo, null)
 
+        //reducing 1 from positionTo because we are dragging to the CENTER of positionTo
+        //and that is not enough for the items to be swapped (even BOTTOM_CENTER is not enough)
+        val actualPositionToCheck = positionTo - 1
+
         //all conditions for allowing drag are fulfilled so its expected behaviour
         // for the start/end drag listeners to trigger. however since this test is about dragging
         // in the wrong direction, the move listener should not be triggered.
@@ -202,9 +212,9 @@ class TestFeatureDrag : BaseTest() {
         // triggers mDragEventStart (in addition to the press-and-hold operation).
         // THIS DOES NOT HAPPEN when i manually test the app!!!
         // so just accept it and check that it was called 2 times
-        verify(exactly = 2) { mDragEventStart.invoke(any(), any()) }
-        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any()) }
-        verify(exactly = 1) { mDragEventEnd.invoke(any(), any()) }
+        verify(exactly = 2) { mDragEventStart.invoke(any(), positionFrom, adapter.getItem(positionFrom)) }
+        verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any(), any(), any()) }
+        verify(exactly = 1) { mDragEventEnd.invoke(any(), actualPositionToCheck, adapter.getItem(actualPositionToCheck)) }
 
         scrollAndVerifyText(positionFrom, "item $positionFrom", adapter)
     }
@@ -236,6 +246,10 @@ class TestFeatureDrag : BaseTest() {
 
         performDrag(positionFrom, positionTo, handleId)
 
+        //reducing 1 from positionTo because we are dragging to the CENTER of positionTo
+        //and that is not enough for the items to be swapped (even BOTTOM_CENTER is not enough)
+        val actualPositionToCheck = positionTo - 1
+
         //NOTE:
         // not specifying the amount of calls to mDragEventStart because
         // for an unknown reason the drag operation in the performDrag() function
@@ -244,9 +258,18 @@ class TestFeatureDrag : BaseTest() {
         //NOTE:
         // not specifying the amount of calls to mOnItemMoved because the check in dragTest_longClick()
         // should be enough
-        verify { mDragEventStart.invoke(any(), any()) }
-        verify { mOnItemMoved.invoke(any(), any(), any(), any()) }
-        verify(exactly = 1) { mDragEventEnd.invoke(any(), any()) }
+        //NOTE:
+        // not specifying actual parameters to check got mOnItemMoved because its a little complicated
+        // (has to be checked in a loop) and the check in deagtest_dragTest_longClick() should be enough
+        verify { mDragEventStart.invoke(any(), positionFrom, adapter.getItem(positionFrom)) }
+        verify { mOnItemMoved.invoke(any(), any(), any(), any(), any(), any()) }
+        verify(exactly = 1) {
+            mDragEventEnd.invoke(
+                any(),
+                actualPositionToCheck,
+                adapter.getItem(actualPositionToCheck)
+            )
+        }
 
         //reducing 1 from positionTo because we are dragging to the CENTER of positionTo
         //and that is not enough for the items to be swapped (even BOTTOM_CENTER is not enough)
@@ -294,7 +317,7 @@ class TestFeatureDrag : BaseTest() {
     private fun scrollAndVerifyText(
         positionToCheck: Int,
         textToCheck: String,
-        adapter: DxAdapter<*>
+        adapter: DxAdapter<*, *>
     ) {
         onView(withId(R.id.activityMain_rv))
             //scroll to end
@@ -305,6 +328,20 @@ class TestFeatureDrag : BaseTest() {
             .perform(scrollToPosition<ViewHolder>(positionToCheck))
             //check the text
             .check(matches(atPosition(positionToCheck, hasDescendant(withText(textToCheck)))))
+    }
+
+    private fun <ITEM : BaseItem> setupDragFeatureWithRecyclerView(
+        adapter: DxAdapter<ITEM, *>, @IdRes dragHandleId: Int?
+    ) {
+        val touchCallback = DxItemTouchCallback(adapter).apply {
+            dragFeature = mDragFeature
+        }
+
+        val touchHelper = DxItemTouchHelper(touchCallback).apply {
+            dragHandleId?.apply { setDragHandleId(this) }
+        }
+
+        onActivity { touchHelper.attachToRecyclerView(it.activityMain_rv) }
     }
     //endregion
 }

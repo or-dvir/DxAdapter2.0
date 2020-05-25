@@ -81,6 +81,8 @@ open class DxFeatureSwipe<ITEM : IDxBaseItem>(
         flagIsSwiping = true
 
         holder.apply {
+            //NOTE:
+            //if the item is not swipeable, this function will not be called
             onSwipeStart.invoke(
                 itemView,
                 adapterPosition,
@@ -100,6 +102,8 @@ open class DxFeatureSwipe<ITEM : IDxBaseItem>(
 
             holder.apply {
                 if (adapterPosition != -1) {
+                    //NOTE:
+                    //if the item is not swipeable, this function will not be called
                     onSwipeEnd.invoke(
                         itemView,
                         adapterPosition,

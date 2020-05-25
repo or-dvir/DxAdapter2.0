@@ -165,9 +165,7 @@ class ActivityMain : AppCompatActivity() {
             onScrollRight = { Log.i("aaaaa", "scroll right") }
         }
     }
-    
-    IN ALL FEATURES, make sure you call the listeners ONLY if the item matches the type (e.g. only trigger click listeners for items of type IDxItemClickable)
-    modify all test files
+
     FOR ALL TEST FILES: add tests for mixed items in the same adapter (e.g. clickable and non-clickable)
 
     @VisibleForTesting

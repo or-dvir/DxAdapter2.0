@@ -129,6 +129,8 @@ class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<IT
             //NOTE:
             //should call this BEFORE actually moving the items. otherwise draggedPosition
             //and targetPosition would ve reversed (because they have been switched...)
+            //NOTE:
+            //if the item is not draggable, this function will not be called
             //todo add this note to documentation
             dragFeature?.onItemMoved?.invoke(
                 dragged.itemView,
@@ -152,6 +154,8 @@ class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<IT
 
     override fun onSwiped(holder: ViewHolder, direction: Int) {
         holder.apply {
+            //NOTE:
+            //if the item is not swipeable, this function will not be called
             swipeFeature?.onItemSwiped?.invoke(
                 itemView,
                 adapterPosition,

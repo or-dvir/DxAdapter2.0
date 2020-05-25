@@ -77,6 +77,8 @@ class DxFeatureDrag<ITEM : IDxBaseItem>(
     internal fun notifyDragStart(adapter: DxAdapter<*, *>, holder: RecyclerView.ViewHolder) {
         flagIsDragging = true
         holder.apply {
+            //NOTE:
+            //if the item is not draggable, this function will not be called
             onDragStart.invoke(itemView, adapterPosition, adapter.getItem(adapterPosition) as ITEM)
         }
     }
@@ -85,6 +87,8 @@ class DxFeatureDrag<ITEM : IDxBaseItem>(
         if (flagIsDragging) {
             flagIsDragging = false
             holder.apply {
+                //NOTE:
+                //if the item is not draggable, this function will not be called
                 onDragEnd.invoke(itemView, adapterPosition, adapter.getItem(adapterPosition) as ITEM)
             }
         }
