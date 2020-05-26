@@ -53,14 +53,29 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     private fun getAllSelectableItems() =
         adapter.getDxAdapterItems().filterIsInstance<IDxItemSelectable>() //as List<ITEM>
 
+    //region select
     fun select(index: Int) = select(adapter.getItem(index))
     fun select(item: ITEM) = select(listOf(item))
     fun select(items: List<ITEM>) = selectOrDeselect(true, items)
+
     @JvmName("selectIndices")
     fun select(indices: List<Int>) = select(adapter.getItemsForIndices(indices))
 
     fun selectAll() = select(adapter.getDxAdapterItems())
+    //endregion
 
+    //region select
+    fun deselect(index: Int) = deselect(adapter.getItem(index))
+    fun deselect(item: ITEM) = deselect(listOf(item))
+    fun deselect(items: List<ITEM>) = selectOrDeselect(false, items)
+
+    @JvmName("deselectIndices")
+    fun deselect(indices: List<Int>) = deselect(adapter.getItemsForIndices(indices))
+
+    fun deselectAll() = deselect(adapter.getDxAdapterItems())
+    //endregion
+
+    //region general
     fun getAllSelectedItems() =
         adapter.getDxAdapterItems().filter { it is IDxItemSelectable && it.isSelected }
 
@@ -70,14 +85,6 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     //only returns items that are already in the adapter
     fun getAllSelectedIndices() = adapter.getIndexList(getAllSelectableItems() as List<ITEM>, true)
 
-
-    fun deselect(index: Int) = deselect(adapter.getItem(index))
-    fun deselect(item: ITEM) = deselect(listOf(item))
-    fun deselect(items: List<ITEM>) = selectOrDeselect(false, items)
-    @JvmName("deselectIndices")
-    fun deselect(indices: List<Int>) = deselect(adapter.getItemsForIndices(indices))
-
-    fun deselectAll() = deselect(adapter.getDxAdapterItems())
-
     fun isInSelectionMode() = getAllSelectableItems().any { it.isSelected }
+    //endregion
 }
