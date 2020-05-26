@@ -90,6 +90,7 @@ class ActivityMain : AppCompatActivity() {
         ItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
     }
 
+    @Suppress("SameParameterValue")
     private fun setDragListeners(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {
         val adapter = AdapterDraggable(
             MutableList(100) { index -> ItemDraggable("item $index") }
@@ -114,7 +115,7 @@ class ActivityMain : AppCompatActivity() {
                                 "with ${targetItem.text}($targetPosition)"
                     )
                 },
-                dragDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
+                dragDirections = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
                 dragOnLongClick = dragOnLongClick
             )
         }
@@ -166,7 +167,7 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
-    FOR ALL TEST FILES: add tests for mixed items in the same adapter (e.g. clickable and non-clickable)
+    //todo FOR ALL TEST FILES: add tests for mixed items in the same adapter (e.g. clickable and non-clickable)
 
     @VisibleForTesting
     fun setAdapter(adapter: DxAdapter<*, *>) {

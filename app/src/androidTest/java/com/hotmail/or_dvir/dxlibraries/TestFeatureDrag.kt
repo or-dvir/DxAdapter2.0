@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxlibraries
 
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -34,7 +35,7 @@ class TestFeatureDrag : BaseTest() {
 
     //todo can i test dragging out of bounds of screen?
 
-    some tests fail
+//    some tests fail
 
     private lateinit var mDragEventStart: OnDragEventListener<BaseItem>
     private lateinit var mDragEventEnd: OnDragEventListener<BaseItem>
@@ -44,10 +45,15 @@ class TestFeatureDrag : BaseTest() {
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     @Before
     fun before() {
-        mDragEventStart = spyk({ view, position, item -> })
-        mDragEventEnd = spyk({ view, position, item -> })
+        mDragEventStart = spyk({ view, position, item ->
+            Log.i("aaaaa", "test drag started for ${item.text}")
+        })
+        mDragEventEnd = spyk({ view, position, item ->
+            Log.i("aaaaa", "test drag ended for ${item.text}")
+        })
         mOnItemMoved = spyk({ draggedView, draggedPosition, draggedItem,
                               targetView, targetPosition, targetItem ->
+            Log.i("aaaaaa", "test drag replaced ${draggedItem.text} with ${targetItem.text}")
         })
 
         mDragFeature = DxFeatureDrag(
@@ -76,6 +82,9 @@ class TestFeatureDrag : BaseTest() {
         //the positions MUST be visible on screen.
         val positionFrom = 1
         val positionTo = 5
+        //we need a reference to the adapter BEFORE the drag operation because dragging changes
+        //the positions and some tests need to reference the items at their original positions
+        val itemsBeforeDrag = adapter.getDxAdapterItems().toList()
 
         performDrag(positionFrom, positionTo, null)
 
@@ -88,7 +97,7 @@ class TestFeatureDrag : BaseTest() {
             mDragEventStart.invoke(
                 any(),
                 positionFrom,
-                adapter.getItem(positionFrom)
+                itemsBeforeDrag[positionFrom]
             )
         }
 
@@ -107,17 +116,19 @@ class TestFeatureDrag : BaseTest() {
         for (i in range) {
             newPositionFrom = positionFrom + i
             actualPositionToCheck = newPositionFrom + 1 //dragging sequentially so should be 1 more
+
             verify(exactly = 1) {
                 mOnItemMoved.invoke(
                     any(),
                     newPositionFrom,
-                    adapter.getItem(newPositionFrom),
+                    itemsBeforeDrag[positionFrom],
                     any(),
                     actualPositionToCheck,
-                    adapter.getItem(actualPositionToCheck)
+                    itemsBeforeDrag[actualPositionToCheck]
                 )
             }
         }
+
 
         //reducing 1 from positionTo because we are dragging to the CENTER of positionTo
         //and that is not enough for the items to be swapped (even BOTTOM_CENTER is not enough)
@@ -126,7 +137,7 @@ class TestFeatureDrag : BaseTest() {
             mDragEventEnd.invoke(
                 any(),
                 actualPositionToCheck,
-                adapter.getItem(actualPositionToCheck)
+                itemsBeforeDrag[positionFrom]
             )
         }
 
