@@ -60,6 +60,8 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
     override fun getItemCount() = getDxAdapterItems().size
     override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
 
+    //todo add unit tests for these functions (
+
     /**
      * convenience function for [List.indexOf]
      */
@@ -74,7 +76,7 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
     fun getIndexList(items: List<ITEM>, filterNonExistingItems: Boolean = false): List<Int> {
         var list = items.map { getIndex(it) }
 
-        if(filterNonExistingItems) {
+        if (filterNonExistingItems) {
             list = list.filter { it != -1 }
         }
 
@@ -87,10 +89,22 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
     fun getItem(position: Int) = getDxAdapterItems()[position]
 
     /**
-     * returns a list of items at the given [indices]
+     * returns a list of items at the given [indices].
+     *
+     * If an index in [indices] is out of bounds of the adapter, that index is ignored
      */
-    fun getItemsForIndices(indices: List<Int>) =
-        indices.map { getItem(it) }
+    fun getItemsForIndices(indices: List<Int>): List<ITEM> {
+        val range = 0 until itemCount - 1
+        val list = mutableListOf<ITEM>()
+
+        indices.forEach {
+            if (it in range) {
+                list.add(getItem(it))
+            }
+        }
+
+        return list
+    }
 
     abstract fun getDxAdapterItems(): MutableList<ITEM>
 

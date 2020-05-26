@@ -4,35 +4,20 @@ import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
+import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
-class DxFeatureSelection(
-    private val adapter: DxAdapter<*, *>,
+class DxFeatureSelection<ITEM : IDxBaseItem>(
+    private val adapter: DxAdapter<ITEM, *>,
     private var onSelectionChanged: OnItemSelectionChangedListener
 ) : IDxBaseFeature {
 
-    //todo can the tests for this feature be unit tests????
-
+    //todo test the "helper functions" (e.g. select, deselect and all those) in UNIT TESTS
 
     //todo
     // behaviour is: first long click triggers selection, every subsequent click triggers
     //      selection/deselection
-    // isInSelectionMode(at least one item is selected)
-    //      this can be used in click listeners to trigger or not trigger regular click action
-    // getAllSelectedItems
-    // numSelectedItems
-    // getAllSelectedIndices
     // listener for first item selected
     // listener for last item deselected
-    // manually selected item
-    // manually selected list of item
-    // manually selected index
-    // manually selected list of indices
-    // manually deselected item
-    // manually deselected list of item
-    // manually deselected index
-    // manually deselected list of indices
-    // select all items
-    // deselect all items
 
     override fun onCreateViewHolder(
         adapter: DxAdapter<*, *>,
@@ -44,21 +29,14 @@ class DxFeatureSelection(
 
     override fun getFeatureId() = R.id.feature_selection
 
-    //NOTE:
-    //we must call this function every time and not use a global variable
-    //because the adapter is dynamic and may change at anytime.
-    //if we have a global variable, we will only ever access the initial list of items
-    fun getAllSelectableItems() =
-        adapter.getDxAdapterItems().filterIsInstance<IDxItemSelectable>()
-
-    private fun selectOrDeselect(shouldSelect: Boolean, items: List<IDxItemSelectable>) {
+    private fun selectOrDeselect(shouldSelect: Boolean, items: List<ITEM>) {
         var tempPosition: Int
         items.forEach {
             //only select/deselect if actually needed
             //to avoid triggering listener multiple times
-            if (shouldSelect != it.isSelected) {
+            if (it is IDxItemSelectable && shouldSelect != it.isSelected) {
                 it.isSelected = shouldSelect
-                tempPosition = getIndexForItem(it)
+                tempPosition = adapter.getIndex(it)
 
                 if (tempPosition != -1) {
                     onSelectionChanged.invoke(tempPosition, shouldSelect)
@@ -68,28 +46,38 @@ class DxFeatureSelection(
         }
     }
 
-    /**
-     * @see [List.indexOf]
-     */
-    private fun getIndexForItem(item: IDxItemSelectable) =
-        adapter.getDxAdapterItems().indexOf(item)
+    //NOTE:
+    //we must call this function every time and not use a global variable
+    //because the adapter is dynamic and may change at anytime.
+    //if we have a global variable, we will only ever access the initial list of items
+    private fun getAllSelectableItems() =
+        adapter.getDxAdapterItems().filterIsInstance<IDxItemSelectable>() //as List<ITEM>
 
-    fun select(items: List<IDxItemSelectable>) =
-        selectOrDeselect(true, items)
+    fun select(index: Int) = select(adapter.getItem(index))
+    fun select(item: ITEM) = select(listOf(item))
+    fun select(items: List<ITEM>) = selectOrDeselect(true, items)
+    @JvmName("selectIndices")
+    fun select(indices: List<Int>) = select(adapter.getItemsForIndices(indices))
 
-    fun deselect(items: List<IDxItemSelectable>) =
-        selectOrDeselect(false, items)
+    fun selectAll() = select(adapter.getDxAdapterItems())
+
+    fun getAllSelectedItems() =
+        adapter.getDxAdapterItems().filter { it is IDxItemSelectable && it.isSelected }
+
+    fun getNumSelectedItems() = getAllSelectedItems().size
+
+    //the returned list should NOT contain -1, because getAllSelectableItems()
+    //only returns items that are already in the adapter
+    fun getAllSelectedIndices() = adapter.getIndexList(getAllSelectableItems() as List<ITEM>, true)
 
 
-    //todo
-    // manually selected item
-    // manually selected index
-    // manually selected list of item
-    // manually selected list of indices
-    // manually deselected item
-    // manually deselected index
-    // manually deselected list of item
-    // manually deselected list of indices
-    // select all items
-    // deselect all items
+    fun deselect(index: Int) = deselect(adapter.getItem(index))
+    fun deselect(item: ITEM) = deselect(listOf(item))
+    fun deselect(items: List<ITEM>) = selectOrDeselect(false, items)
+    @JvmName("deselectIndices")
+    fun deselect(indices: List<Int>) = deselect(adapter.getItemsForIndices(indices))
+
+    fun deselectAll() = deselect(adapter.getDxAdapterItems())
+
+    fun isInSelectionMode() = getAllSelectableItems().any { it.isSelected }
 }
