@@ -234,10 +234,13 @@ class TestFeatureDrag : BaseTest() {
         }
         verify(exactly = 0) { mOnItemMoved.invoke(any(), any(), any(), any(), any(), any()) }
         verify(exactly = 1) {
+            //NOTE:
+            //there was no dragging, so parameters for mDragEventEnd should be the same as
+            //for mDragEventStart
             mDragEventEnd.invoke(
                 any(),
-                actualPositionToCheck,
-                adapter.getItem(actualPositionToCheck)
+                positionFrom,
+                adapter.getItem(positionFrom)
             )
         }
 
