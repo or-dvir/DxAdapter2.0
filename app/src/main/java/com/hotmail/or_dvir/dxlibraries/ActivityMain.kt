@@ -18,6 +18,7 @@ import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
+import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
 import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterSwipeable
 import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
 import com.hotmail.or_dvir.dxlibraries.swipeable.MySwipeFeature
@@ -55,6 +56,7 @@ class ActivityMain : AppCompatActivity() {
 //        setClickListeners()
 //        setDragListeners(true, null)
 //        setDragListeners(false, R.id.listItem_dragHandle)
+//        setDragListenersMixed()
 //        setSwipeListeners()
     }
 
@@ -88,6 +90,39 @@ class ActivityMain : AppCompatActivity() {
         }
 
         ItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
+    }
+
+    private fun setDragListenersMixed() {
+        val items = mutableListOf(
+            ItemNonDraggable("non-draggable"),
+            ItemDraggable("draggable")
+        )
+        val adapter = BaseAdapter(items)
+        setAdapter(adapter)
+
+        val touchCallBack = DxItemTouchCallback(adapter).apply {
+            dragFeature = DxFeatureDrag(
+                onDragStart = { view, adapterPosition, item ->
+                    Log.i("aaaaa", "drag start for ${item.text}")
+                },
+                onDragEnd = { view, adapterPosition, item ->
+                    Log.i("aaaaa", "drag end for ${item.text}")
+                },
+
+                onItemMoved = { draggedView, draggedPosition, draggedItem,
+                                targetView, targetPosition, targetItem ->
+                    Log.i(
+                        "aaaaa",
+                        "replaced ${draggedItem.text}($draggedPosition) " +
+                                "with ${targetItem.text}($targetPosition)"
+                    )
+                },
+                dragDirections = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                dragOnLongClick = true
+            )
+        }
+
+        DxItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
     }
 
     @Suppress("SameParameterValue")
@@ -166,8 +201,6 @@ class ActivityMain : AppCompatActivity() {
             onScrollRight = { Log.i("aaaaa", "scroll right") }
         }
     }
-
-//    FOR ALL TEST FILES: add tests for mixed items in the same adapter (e.g. clickable and non-clickable)
 
     @VisibleForTesting
     fun setAdapter(adapter: DxAdapter<*, *>) {
