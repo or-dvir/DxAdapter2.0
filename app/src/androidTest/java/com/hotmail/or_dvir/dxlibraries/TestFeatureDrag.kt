@@ -53,7 +53,7 @@ class TestFeatureDrag : BaseTest() {
         })
         mOnItemMoved = spyk({ draggedView, draggedPosition, draggedItem,
                               targetView, targetPosition, targetItem ->
-            Log.i("aaaaaa", "test drag replaced ${draggedItem.text} with ${targetItem.text}")
+            Log.i("aaaaa", "test drag replaced ${draggedItem.text} with ${targetItem.text}")
         })
 
         mDragFeature = DxFeatureDrag(
@@ -271,6 +271,9 @@ class TestFeatureDrag : BaseTest() {
         //the positions MUST be visible on screen.
         val positionFrom = 1
         val positionTo = 5
+        //we need a reference to the adapter BEFORE the drag operation because dragging changes
+        //the positions and some tests need to reference the items at their original positions
+        val itemsBeforeDrag = adapter.getDxAdapterItems().toList()
 
         performDrag(positionFrom, positionTo, handleId)
 
@@ -284,12 +287,9 @@ class TestFeatureDrag : BaseTest() {
         // triggers mDragEventStart (in addition to the press-and-hold operation).
         // THIS DOES NOT HAPPEN when i manually test the app!!!
         //NOTE:
-        // not specifying the amount of calls to mOnItemMoved because the check in dragTest_longClick()
-        // should be enough
-        //NOTE:
-        // not specifying actual parameters to check got mOnItemMoved because its a little complicated
-        // (has to be checked in a loop) and the check in deagtest_dragTest_longClick() should be enough
-        verify { mDragEventStart.invoke(any(), positionFrom, adapter.getItem(positionFrom)) }
+        // not specifying the amount of calls and parameters to mOnItemMoved because the test in
+        // dragTest_longClick() should be enough
+        verify { mDragEventStart.invoke(any(), positionFrom, itemsBeforeDrag[positionFrom]) }
         verify { mOnItemMoved.invoke(any(), any(), any(), any(), any(), any()) }
         verify(exactly = 1) {
             mDragEventEnd.invoke(
