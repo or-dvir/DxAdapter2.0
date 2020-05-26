@@ -34,7 +34,7 @@ import kotlin.math.absoluteValue
 class TestFeatureDrag : BaseTest() {
 
     //todo can i test dragging out of bounds of screen?
-    
+
     private lateinit var mDragEventStart: OnDragEventListener<BaseItem>
     private lateinit var mDragEventEnd: OnDragEventListener<BaseItem>
     private lateinit var mOnItemMoved: OnItemMovedListener<BaseItem>
