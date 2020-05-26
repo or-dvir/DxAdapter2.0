@@ -167,7 +167,7 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
-    FOR ALL TEST FILES: add tests for mixed items in the same adapter (e.g. clickable and non-clickable)
+//    FOR ALL TEST FILES: add tests for mixed items in the same adapter (e.g. clickable and non-clickable)
 
     @VisibleForTesting
     fun setAdapter(adapter: DxAdapter<*, *>) {

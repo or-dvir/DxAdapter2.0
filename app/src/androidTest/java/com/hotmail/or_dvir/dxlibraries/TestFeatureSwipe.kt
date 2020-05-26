@@ -29,8 +29,8 @@ class TestFeatureSwipe : BaseTest() {
 
     //NOTE:
     //the following features are simple variables to return to google's default
-    //implementation (in other words: there is no custom logic behind them),
-    //and therefore do not need to be tested.
+    //implementation (in other words: there is no custom logic behind them), and therefore they
+    //do not need to be tested:
     // swipeThreshold.
     // swipeEscapeVelocity.
     // swipeEscapeVelocityMultiplier.
@@ -70,7 +70,7 @@ class TestFeatureSwipe : BaseTest() {
             ItemSwipeable("item $index")
         }
         val adapter = AdapterSwipeable(items).apply { addFeature(mSwipeFeature) }
-        val swipeListener = getResetItemSwipeListener(adapter)
+        val onItemSwiped = getResetItemSwipeListener(adapter)
 
         onActivity { it.apply { setAdapter(adapter) } }
         setupSwipeFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>)
@@ -81,7 +81,7 @@ class TestFeatureSwipe : BaseTest() {
 
         verify(exactly = 1) { mSwipeStart.invoke(any(), swipePosition, swipeItem) }
         verify(exactly = 1) { mSwipeEnd.invoke(any(), swipePosition, swipeItem) }
-        verify(exactly = 1) { swipeListener.invoke(any(), swipePosition, ItemTouchHelper.RIGHT, swipeItem) }
+        verify(exactly = 1) { onItemSwiped.invoke(any(), swipePosition, ItemTouchHelper.RIGHT, swipeItem) }
     }
 
     @Test
@@ -90,7 +90,7 @@ class TestFeatureSwipe : BaseTest() {
             ItemSwipeable("item $index")
         }
         val adapter = AdapterSwipeable(items).apply { addFeature(mSwipeFeature) }
-        val swipeListener = getResetItemSwipeListener(adapter)
+        val onItemSwiped = getResetItemSwipeListener(adapter)
         mSwipeFeature.isSwipeEnabled = false
 
 
@@ -101,7 +101,7 @@ class TestFeatureSwipe : BaseTest() {
 
         verify(exactly = 0) { mSwipeStart.invoke(any(), any(), any()) }
         verify(exactly = 0) { mSwipeEnd.invoke(any(), any(), any()) }
-        verify(exactly = 0) { swipeListener.invoke(any(), any(), any(), any()) }
+        verify(exactly = 0) { onItemSwiped.invoke(any(), any(), any(), any()) }
     }
 
     @Test
@@ -110,7 +110,7 @@ class TestFeatureSwipe : BaseTest() {
             ItemNonSwipeable("item $index")
         }
         val adapter = AdapterNonSwipeable(items).apply { addFeature(mSwipeFeature) }
-        val swipeListener = getResetItemSwipeListener(adapter)
+        val onItemSwiped = getResetItemSwipeListener(adapter)
 
         onActivity { it.apply { setAdapter(adapter) } }
         setupSwipeFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>)
@@ -119,7 +119,7 @@ class TestFeatureSwipe : BaseTest() {
 
         verify(exactly = 0) { mSwipeStart.invoke(any(), any(), any()) }
         verify(exactly = 0) { mSwipeEnd.invoke(any(), any(), any()) }
-        verify(exactly = 0) { swipeListener.invoke(any(), any(), any(), any()) }
+        verify(exactly = 0) { onItemSwiped.invoke(any(), any(), any(), any()) }
     }
 
     @Test
@@ -128,7 +128,7 @@ class TestFeatureSwipe : BaseTest() {
             ItemSwipeable("item $index")
         }
         val adapter = AdapterSwipeable(items).apply { addFeature(mSwipeFeature) }
-        val swipeListener = getResetItemSwipeListener(adapter)
+        val onItemSwiped = getResetItemSwipeListener(adapter)
         mSwipeFeature.setSwipeDirections(ItemTouchHelper.RIGHT)
 
         onActivity { it.apply { setAdapter(adapter) } }
@@ -139,7 +139,43 @@ class TestFeatureSwipe : BaseTest() {
 
         verify(exactly = 0) { mSwipeStart.invoke(any(), any(), any()) }
         verify(exactly = 0) { mSwipeEnd.invoke(any(), any(), any()) }
-        verify(exactly = 0) { swipeListener.invoke(any(), any(), any(), any()) }
+        verify(exactly = 0) { onItemSwiped.invoke(any(), any(), any(), any()) }
+    }
+
+    @Test
+    fun swipeTest_swipeable_and_nonSwipeable_items() {
+        val items = mutableListOf(
+            //THE ORDER IS IMPORTANT!!! DO NOT CHANGE IT!!!
+            //THE ORDER IS IMPORTANT!!! DO NOT CHANGE IT!!!
+            //THE ORDER IS IMPORTANT!!! DO NOT CHANGE IT!!!
+            ItemNonSwipeable("non-swipeable"),
+            ItemSwipeable("swipeable")
+        )
+        val adapter = BaseAdapter(items).apply { addFeature(mSwipeFeature) }
+        val onItemSwiped = getResetItemSwipeListener(adapter)
+
+        onActivity { it.apply { setAdapter(adapter) } }
+        setupSwipeFeatureWithRecyclerView(adapter as DxAdapter<BaseItem, *>)
+
+        var position = 0
+        performSwipe(position, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT)
+
+        verify(exactly = 0) { mSwipeStart.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mSwipeEnd.invoke(any(), any(), any()) }
+        verify(exactly = 0) { onItemSwiped.invoke(any(), any(), any(), any()) }
+
+        //must release first action before doing the next
+        PressActions.tearDown()
+
+        position = 1
+        val swipeItem = adapter.getItem(position)
+        performSwipe(position, GeneralLocation.CENTER_LEFT, GeneralLocation.CENTER_RIGHT)
+
+        verify(exactly = 1) { mSwipeStart.invoke(any(), position, swipeItem) }
+        verify(exactly = 1) { mSwipeEnd.invoke(any(), position, swipeItem) }
+        verify(exactly = 1) { onItemSwiped.invoke(any(), position, ItemTouchHelper.RIGHT, swipeItem) }
+
+        //no need to release the press action because its done in @After function
     }
 
     //region helper functions
