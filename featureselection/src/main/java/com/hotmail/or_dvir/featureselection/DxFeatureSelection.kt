@@ -15,16 +15,12 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
     private val onItemSelectionChanged: OnItemSelectionChangedListener<ITEM>,
-    private var onSelectionModeStateChanged: OnSelectionModeStateChanged
+    private var onSelectionModeChanged: OnSelectionModeStateChanged
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
-    //todo test the "helper functions" (e.g. select, deselect and all those) in UNIT TESTS
-
-    //todo
-    // behaviour is: first long click triggers selection, every subsequent click triggers
-    //      selection/deselection
-    // listener for first item selected
-    // listener for last item deselected
+    write tests!!!
+    "helper functions" (e.g. select, deselect etc) should be UNIT tests
+    do i even need instrumentation tests here????
 
     init {
         clickFeature.clickListenerFeatures.add(this)
@@ -35,9 +31,11 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
-        //todo
-        // if item is selected, trigger the listener
-        // trigger deselect listener?????????
+        //do nothing
+        //todo when documenting add a note that the listeners will only be invoked when an item is
+        // manually selected/deselected and not here for example.
+        // any visual changes (like background) should be done in the user's adapter
+        // using the IDxItemSelectable.isSelected field
     }
 
     override fun getFeatureId() = R.id.feature_selection
@@ -54,9 +52,9 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
                     select(adapterPosition)
                 }
 
-                if (getNumSelectedItems() == 0) {
-                    onSelectionModeStateChanged.invoke(false)
-                }
+                //NOTE:
+                //do NOT trigger any listeners here.
+                //all listeners are controlled in selectOrDeselect()
             }
         }
 
@@ -66,7 +64,10 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
             //already in selection mode (first long click triggers selectionMode)
             if (item is IDxItemSelectable && !isInSelectionMode()) {
                 select(adapterPosition)
-                onSelectionModeStateChanged.invoke(true)
+
+                //NOTE:
+                //do NOT trigger any listeners here.
+                //all listeners are controlled in selectOrDeselect()
             }
 
             //it doesn't matter which value we return here
@@ -75,6 +76,8 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
 
     private fun selectOrDeselect(shouldSelect: Boolean, items: List<ITEM>) {
         var tempPosition: Int
+        val wasInSelectionModeBefore = isInSelectionMode()
+
         items.forEach {
             //only select/deselect if actually needed
             //to avoid triggering listener multiple times
@@ -87,6 +90,14 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
                     adapter.notifyItemChanged(tempPosition)
                 }
             }
+        }
+
+        val isInSelectionModeAfter = isInSelectionMode()
+
+        if (wasInSelectionModeBefore && !isInSelectionModeAfter) {
+            onSelectionModeChanged.invoke(false)
+        } else if (!wasInSelectionModeBefore && isInSelectionModeAfter) {
+            onSelectionModeChanged.invoke(true)
         }
     }
 
@@ -120,14 +131,15 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     //endregion
 
     //region general
-    fun getAllSelectedItems() =
+    fun getAllCurrentlySelectedItems() =
         adapter.getDxAdapterItems().filter { it is IDxItemSelectable && it.isSelected }
 
-    fun getNumSelectedItems() = getAllSelectedItems().size
+    fun getNumCurrentlySelectedItems() = getAllCurrentlySelectedItems().size
 
     //the returned list should NOT contain -1, because getAllSelectableItems()
     //only returns items that are already in the adapter
-    fun getAllSelectedIndices() = adapter.getIndexList(getAllSelectableItems() as List<ITEM>, true)
+    fun getAllCurrentlySelectedIndices() =
+        adapter.getIndexList(getAllSelectableItems() as List<ITEM>, true)
 
     fun isInSelectionMode() = getAllSelectableItems().any { it.isSelected }
     //endregion
