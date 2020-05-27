@@ -11,6 +11,9 @@ class DxFeatureClick<ITEM : IDxBaseItem>(
     private val onItemLongClick: OnItemLongClickListener<ITEM>
 ) : IDxBaseFeature {
 
+    val clickListenerFeatures =
+        mutableListOf<IDxClickListenerFeature>()
+
     override fun onCreateViewHolder(
         adapter: DxAdapter<*, *>,
         itemView: View,
@@ -20,13 +23,21 @@ class DxFeatureClick<ITEM : IDxBaseItem>(
             val item = adapter.getItem(holder.adapterPosition)
             if (item is IDxItemClickable) {
                 onItemClick.invoke(view, holder.adapterPosition, item as ITEM)
+                clickListenerFeatures.forEach {
+                    it.onItemClick(view, holder.adapterPosition, item)
+                }
             }
         }
 
         itemView.setOnLongClickListener { view ->
             val item = adapter.getItem(holder.adapterPosition)
             if (item is IDxItemClickable) {
-                onItemLongClick.invoke(view, holder.adapterPosition, item as ITEM)
+                val result = onItemLongClick.invoke(view, holder.adapterPosition, item as ITEM)
+                clickListenerFeatures.forEach {
+                    it.onItemLongClick(view, holder.adapterPosition, item)
+                }
+
+                result
             } else {
                 //if the item is not clickable, we do not consume the event
                 false

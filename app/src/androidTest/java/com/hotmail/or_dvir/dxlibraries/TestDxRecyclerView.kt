@@ -8,7 +8,6 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
@@ -19,7 +18,6 @@ import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_main.*
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
 class TestDxRecyclerView : BaseTest() {

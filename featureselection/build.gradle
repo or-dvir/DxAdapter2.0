@@ -37,4 +37,5 @@ dependencies {
     //todo or is it ok to leave it like this???
     //todo change implementation to api???
     implementation project(path: ':dxadapter')
+    implementation project(path: ':featureclick')
 }

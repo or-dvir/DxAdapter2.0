@@ -5,11 +5,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
+import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClick
+import com.hotmail.or_dvir.featureclicklisteners.IDxClickListenerFeature
+import com.hotmail.or_dvir.featureclicklisteners.OnItemClickListener
+import com.hotmail.or_dvir.featureclicklisteners.OnItemLongClickListener
 
+@Suppress("MemberVisibilityCanBePrivate", "unused")
 class DxFeatureSelection<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
-    private var onSelectionChanged: OnItemSelectionChangedListener
-) : IDxBaseFeature {
+    clickFeature: DxFeatureClick<ITEM>,
+    private val onItemSelectionChanged: OnItemSelectionChangedListener<ITEM>,
+    private var onSelectionModeStateChanged: OnSelectionModeStateChanged
+) : IDxBaseFeature, IDxClickListenerFeature {
 
     //todo test the "helper functions" (e.g. select, deselect and all those) in UNIT TESTS
 
@@ -19,15 +26,52 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     // listener for first item selected
     // listener for last item deselected
 
+    init {
+        clickFeature.clickListenerFeatures.add(this)
+    }
+
     override fun onCreateViewHolder(
         adapter: DxAdapter<*, *>,
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
-        TODO()
+        //todo
+        // if item is selected, trigger the listener
+        // trigger deselect listener?????????
     }
 
     override fun getFeatureId() = R.id.feature_selection
+
+    override val onItemClick: OnItemClickListener<IDxBaseItem> =
+        { view, adapterPosition, item ->
+            //only trigger the selection actions if the item is selectable and
+            //we are already in selection mode
+            if (item is IDxItemSelectable && isInSelectionMode()) {
+                //reverse the selection
+                if (item.isSelected) {
+                    deselect(adapterPosition)
+                } else {
+                    select(adapterPosition)
+                }
+
+                if (getNumSelectedItems() == 0) {
+                    onSelectionModeStateChanged.invoke(false)
+                }
+            }
+        }
+
+    override val onItemLongClick: OnItemLongClickListener<IDxBaseItem> =
+        { view, adapterPosition, item ->
+            //only trigger the selection actions if the item is selectable and we are not
+            //already in selection mode (first long click triggers selectionMode)
+            if (item is IDxItemSelectable && !isInSelectionMode()) {
+                select(adapterPosition)
+                onSelectionModeStateChanged.invoke(true)
+            }
+
+            //it doesn't matter which value we return here
+            true
+        }
 
     private fun selectOrDeselect(shouldSelect: Boolean, items: List<ITEM>) {
         var tempPosition: Int
@@ -39,7 +83,7 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
                 tempPosition = adapter.getIndex(it)
 
                 if (tempPosition != -1) {
-                    onSelectionChanged.invoke(tempPosition, shouldSelect)
+                    onItemSelectionChanged.invoke(tempPosition, shouldSelect, it)
                     adapter.notifyItemChanged(tempPosition)
                 }
             }

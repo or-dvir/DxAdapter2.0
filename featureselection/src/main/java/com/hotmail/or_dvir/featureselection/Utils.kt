@@ -6,4 +6,7 @@ package com.hotmail.or_dvir.featureselection
  * @param adapterPosition the adapter position of the changed item
  * @param isSelected the new selected state of the item at [adapterPosition]
  */
-typealias OnItemSelectionChangedListener = (adapterPosition: Int, isSelected: Boolean) -> Unit
+typealias OnItemSelectionChangedListener<ITEM> =
+            (adapterPosition: Int, isSelected: Boolean, ITEM) -> Unit
+
+typealias OnSelectionModeStateChanged = (isSelectionModeActive: Boolean) -> Unit
