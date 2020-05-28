@@ -1,11 +1,11 @@
 package com.hotmail.or_dvir.dxselection
 
-import com.hotmail.or_dvir.dxadapter.IDxBaseItem
+import com.hotmail.or_dvir.dxclick.IDxItemClickable
 
 /**
  * represents an item that is selectable.
  */
-interface IDxItemSelectable: IDxBaseItem {
+interface IDxItemSelectable: IDxItemClickable {
     /**
      * holds the current selected state of this item.
      *

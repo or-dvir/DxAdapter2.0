@@ -28,6 +28,7 @@ class TestFeatureClick : BaseTest() {
     fun before() {
         mClickListener = spyk({ _, _, _ -> })
         mLongClickListener = spyk({ _, _, _ -> true })
+        mLongClickListener = spyk({ _, _, _ -> true })
 
         mClickFeature = DxFeatureClick(mClickListener, mLongClickListener)
     }

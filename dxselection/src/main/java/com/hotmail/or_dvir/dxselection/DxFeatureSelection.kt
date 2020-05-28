@@ -1,6 +1,7 @@
 package com.hotmail.or_dvir.dxselection
 
 import android.view.View
+import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
@@ -18,11 +19,8 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     private var onSelectionModeChanged: OnSelectionModeStateChanged
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
-    write tests!!!
-    "helper functions" (e.g. select, deselect etc) should be UNIT tests
-    do i even need instrumentation tests here????
-
     init {
+        adapter.addFeature(clickFeature)
         clickFeature.clickListenerFeatures.add(this)
     }
 
@@ -33,9 +31,11 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     ) {
         //do nothing
         //todo when documenting add a note that the listeners will only be invoked when an item is
-        // manually selected/deselected and not here for example.
-        // any visual changes (like background) should be done in the user's adapter
-        // using the IDxItemSelectable.isSelected field
+        // manually selected/deselected (and not here).
+        // any visual changes (like background) should be done in the user's adapter using the
+        // IDxItemSelectable.isSelected field.
+        // the onItemSelectionChanged listener are good to update the actionMode title for example.
+        // the
     }
 
     override fun getFeatureId() = R.id.feature_selection
@@ -86,7 +86,7 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
                 tempPosition = adapter.getIndex(it)
 
                 if (tempPosition != -1) {
-                    onItemSelectionChanged.invoke(tempPosition, shouldSelect, it)
+                    onItemSelectionChanged.invoke(tempPosition, it.isSelected, it)
                     adapter.notifyItemChanged(tempPosition)
                 }
             }
@@ -101,13 +101,6 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
         }
     }
 
-    //NOTE:
-    //we must call this function every time and not use a global variable
-    //because the adapter is dynamic and may change at anytime.
-    //if we have a global variable, we will only ever access the initial list of items
-    private fun getAllSelectableItems() =
-        adapter.getDxAdapterItems().filterIsInstance<IDxItemSelectable>() //as List<ITEM>
-
     //region select
     fun select(index: Int) = select(adapter.getItem(index))
     fun select(item: ITEM) = select(listOf(item))
@@ -119,7 +112,7 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     fun selectAll() = select(adapter.getDxAdapterItems())
     //endregion
 
-    //region select
+    //region deselect
     fun deselect(index: Int) = deselect(adapter.getItem(index))
     fun deselect(item: ITEM) = deselect(listOf(item))
     fun deselect(items: List<ITEM>) = selectOrDeselect(false, items)
@@ -131,16 +124,24 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     //endregion
 
     //region general
-    fun getAllCurrentlySelectedItems() =
+    fun getAllSelectedItems() =
         adapter.getDxAdapterItems().filter { it is IDxItemSelectable && it.isSelected }
-
-    fun getNumCurrentlySelectedItems() = getAllCurrentlySelectedItems().size
 
     //the returned list should NOT contain -1, because getAllSelectableItems()
     //only returns items that are already in the adapter
-    fun getAllCurrentlySelectedIndices() =
+    fun getAllSelectedIndices() =
         adapter.getIndexList(getAllSelectableItems() as List<ITEM>, true)
 
+    fun getNumSelectedItems() = getAllSelectedItems().size
+
     fun isInSelectionMode() = getAllSelectableItems().any { it.isSelected }
+
+    //NOTE:
+    //we must call this function every time and not use a global variable
+    //because the adapter is dynamic and may change at anytime.
+    //if we have a global variable, we will only ever access the initial list of items
+    @VisibleForTesting
+    fun getAllSelectableItems() =
+        adapter.getDxAdapterItems().filterIsInstance<IDxItemSelectable>()
     //endregion
 }
