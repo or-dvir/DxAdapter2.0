@@ -95,52 +95,28 @@ class TestDxAdapter {
                 nonExistingItems[0]
             )
 
-            indices = getIndexList(nonExistingItems)
+            indices = getIndexList(mixedItems)
             assertEquals(1, indices.filter { it == -1 }.size)
 
-            indices = getIndexList(nonExistingItems, true)
+            indices = getIndexList(mixedItems, true)
             assertEquals(0, indices.filter { it == -1 }.size)
             //endregion
 
-            i stopped here
-
             //region items
+
+            //all indices valid
+            indices = listOf(0, 1, 2)
+            val expectedItems = indices.map { mItems[it] }
+            assertTrue(getItemsForIndices(indices).containsAll(expectedItems))
+
+            //all indices invalid
+            indices = listOf(-1, 1000000)
+            assertTrue(getItemsForIndices(indices).isEmpty())
+
+            //mixed indices
+            indices = listOf(0, 1, -1)
+            assertEquals(2, getItemsForIndices(indices).size)
             //endregion
         }
-    }
-
-
-    /**
-     * returns a list of indices for the given [items].
-     *
-     * note that the returned list may contain -1 as it uses [List.indexOf].
-     * To avoid this, set [filterNonExistingItems] to true
-     */
-    fun getIndexList(items: List<ITEM>, filterNonExistingItems: Boolean = false): List<Int> {
-        var list = items.map { getIndex(it) }
-
-        if (filterNonExistingItems) {
-            list = list.filter { it != -1 }
-        }
-
-        return list
-    }
-
-    /**
-     * returns a list of items at the given [indices].
-     *
-     * If an index in [indices] is out of bounds of the adapter, that index is ignored
-     */
-    fun getItemsForIndices(indices: List<Int>): List<ITEM> {
-        val range = 0 until itemCount - 1
-        val list = mutableListOf<ITEM>()
-
-        indices.forEach {
-            if (it in range) {
-                list.add(getItem(it))
-            }
-        }
-
-        return list
     }
 }
