@@ -49,6 +49,7 @@ dependencies {
     implementation project(path: ':dxrecyclerview')
     implementation project(path: ':dxcountingidlingresource')
     implementation project(path: ':dxadapter')
-    implementation project(path: ':featureclick')
+    implementation project(path: ':dxclick')
     implementation project(path: ':dxdragandswipe')
+    implementation project(path: ':dxselection')
 }

@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.featureselection
+package com.hotmail.or_dvir.dxselection
 
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 

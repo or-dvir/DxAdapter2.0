@@ -1,14 +1,14 @@
-package com.hotmail.or_dvir.featureselection
+package com.hotmail.or_dvir.dxselection
 
 import android.view.View
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
-import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClick
-import com.hotmail.or_dvir.featureclicklisteners.IDxClickListenerFeature
-import com.hotmail.or_dvir.featureclicklisteners.OnItemClickListener
-import com.hotmail.or_dvir.featureclicklisteners.OnItemLongClickListener
+import com.hotmail.or_dvir.dxclick.DxFeatureClick
+import com.hotmail.or_dvir.dxclick.IDxClickListenerFeature
+import com.hotmail.or_dvir.dxclick.OnItemClickListener
+import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 class DxFeatureSelection<ITEM : IDxBaseItem>(

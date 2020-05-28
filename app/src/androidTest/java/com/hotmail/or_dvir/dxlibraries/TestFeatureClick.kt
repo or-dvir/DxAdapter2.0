@@ -10,9 +10,9 @@ import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemNonClickable
-import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClick
-import com.hotmail.or_dvir.featureclicklisteners.OnItemClickListener
-import com.hotmail.or_dvir.featureclicklisteners.OnItemLongClickListener
+import com.hotmail.or_dvir.dxclick.DxFeatureClick
+import com.hotmail.or_dvir.dxclick.OnItemClickListener
+import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before

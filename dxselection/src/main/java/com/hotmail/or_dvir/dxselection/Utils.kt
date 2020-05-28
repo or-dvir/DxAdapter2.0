@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.featureselection
+package com.hotmail.or_dvir.dxselection
 
 /**
  * a listener called when the selected state of an item has changed

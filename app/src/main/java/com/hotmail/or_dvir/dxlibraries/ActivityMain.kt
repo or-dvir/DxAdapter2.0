@@ -24,7 +24,7 @@ import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
 import com.hotmail.or_dvir.dxlibraries.swipeable.MySwipeFeature
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
-import com.hotmail.or_dvir.featureclicklisteners.DxFeatureClick
+import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.annotations.TestOnly
 

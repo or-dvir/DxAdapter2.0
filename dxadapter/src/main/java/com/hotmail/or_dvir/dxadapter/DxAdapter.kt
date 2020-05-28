@@ -60,8 +60,6 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
     override fun getItemCount() = getDxAdapterItems().size
     override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
 
-    //todo add unit tests for these functions (
-
     /**
      * convenience function for [List.indexOf]
      */
