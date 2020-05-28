@@ -25,28 +25,30 @@ class TestDxAdapter {
         val newItem = BaseItem("new item")
         val newItemIndex = 30
 
-        //region indices
-        adapter.mItems.add(newItemIndex, newItem)
-        assertEquals(newItemIndex, adapter.getIndex(newItem))
+        adapter.apply {
+            //region indices
+            mItems.add(newItemIndex, newItem)
+            assertEquals(newItemIndex, getIndex(newItem))
 
-        val nonExistingItem = BaseItem("non-existing item")
-        assertEquals(-1, adapter.getIndex(nonExistingItem))
-        //endregion
+            val nonExistingItem = BaseItem("non-existing item")
+            assertEquals(-1, getIndex(nonExistingItem))
+            //endregion
 
-        //region items
-        assertEquals(newItem, adapter.getItem(newItemIndex))
+            //region items
+            assertEquals(newItem, getItem(newItemIndex))
 
-        var exception: Exception? = null
-        val nonExistingIndex = -1
+            var exception: Exception? = null
+            val nonExistingIndex = -1
 
-        try {
-            adapter.getItem(nonExistingIndex)
-        } catch (e: Exception) {
-            exception = e
-        } finally {
-            assertNotNull(exception)
+            try {
+                getItem(nonExistingIndex)
+            } catch (e: Exception) {
+                exception = e
+            } finally {
+                assertNotNull(exception)
+            }
+            //endregion
         }
-        //endregion
     }
 
     @Test
@@ -57,21 +59,54 @@ class TestDxAdapter {
             BaseItem("new item 3")
         )
 
-        adapter.mItems.addAll(newItems)
-        i stopped here
+        adapter.apply {
+            //region indices
+            mItems.addAll(newItems)
+            var indices = getIndexList(newItems)
 
-        //region indices
+            assertFalse(indices.contains(-1))
+            assertTrue(
+                getIndexList(newItems).containsAll(
+                    listOf(
+                        //indices are 0-based!
+                        ORIGINAL_LIST_SIZE,
+                        ORIGINAL_LIST_SIZE + 1,
+                        ORIGINAL_LIST_SIZE + 2
+                    )
+                )
+            )
+
+            val nonExistingItems = mutableListOf(
+                BaseItem("non-existing item 1"),
+                BaseItem("non-existing item 2"),
+                BaseItem("non-existing item 3")
+            )
+
+            indices = getIndexList(nonExistingItems)
+            indices.forEach { assertEquals(-1, it) }
+
+            indices = getIndexList(nonExistingItems, true)
+            assertTrue(indices.isEmpty())
 
 
-        //todo
-        // all indices contained in adapter
-        // none of the indices are contained
-        // some are contained (returned list includes -1)
-        // some are contained (returned list does not contain -1)
-        //endregion
+            val mixedItems = listOf(
+                newItems[0],
+                newItems[1],
+                nonExistingItems[0]
+            )
 
-        //region items
-        //endregion
+            indices = getIndexList(nonExistingItems)
+            assertEquals(1, indices.filter { it == -1 }.size)
+
+            indices = getIndexList(nonExistingItems, true)
+            assertEquals(0, indices.filter { it == -1 }.size)
+            //endregion
+
+            i stopped here
+
+            //region items
+            //endregion
+        }
     }
 
 
