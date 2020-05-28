@@ -21,7 +21,7 @@ class TestFeatureSelection {
     @Before
     fun before() {
         mItemSelectionListener = spyk({ _, _, _ -> })
-        mSelectionModeListener = spyk({ })
+        mSelectionModeListener = spyk({ _ -> })
 
         val featureClick = DxFeatureClick<BaseItem>(
             onItemClick = { _, _, _ -> },
@@ -38,6 +38,10 @@ class TestFeatureSelection {
         //selection feature automatically adds the click feature to the adapter
         mAdapter.addFeature(mSelectionFeature)
     }
+
+    tests fail because null pointer exception.
+    this null is inside android source code... when i call notifyItemChanged() on adapter
+    maybe in order to call this i need a instrumented test??????
 
     @Test
     fun selectedItems_selectedIndices_selectionMode() {
