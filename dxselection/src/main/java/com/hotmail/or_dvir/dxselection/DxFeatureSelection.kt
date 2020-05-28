@@ -130,7 +130,7 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     //the returned list should NOT contain -1, because getAllSelectableItems()
     //only returns items that are already in the adapter
     fun getAllSelectedIndices() =
-        adapter.getIndexList(getAllSelectableItems() as List<ITEM>, true)
+        adapter.getIndexList(getAllSelectedItems(), true)
 
     fun getNumSelectedItems() = getAllSelectedItems().size
 
