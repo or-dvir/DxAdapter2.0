@@ -105,17 +105,54 @@ class TestFeatureSelection {
 
             //select all
             selectAll()
+            assertEquals(3, getNumSelectedItems())
             getAllSelectableItems().forEach { assertTrue(it.isSelected) }
         }
     }
 
+    @Test
+    fun deselection() {
+        val selectable1 = ItemSelectable("").apply { isSelected = true }
+        val selectable2 = ItemSelectable("").apply { isSelected = true }
+        val selectable3 = ItemSelectable("").apply { isSelected = true }
+        val nonSelectable = ItemNonSelectable("")
+
+        mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
+
+        mSelectionFeature.apply {
+            //making sure it doesn't crash
+            deselect(nonSelectable)
+
+            //single index
+            deselect(0)
+            assertFalse(selectable1.isSelected)
+            selectAll() //reset the items
+
+            //index list
+            deselect(listOf(0, 1))
+            assertFalse(selectable1.isSelected)
+            assertFalse(selectable2.isSelected)
+            selectAll() //reset the items
+
+            //single item
+            deselect(selectable2)
+            assertFalse(selectable2.isSelected)
+            selectAll() //reset the items
+
+            //item list
+            deselect(listOf(selectable1, selectable2))
+            assertFalse(selectable1.isSelected)
+            assertFalse(selectable2.isSelected)
+            selectAll() //reset the items
+
+            //deselect all
+            deselectAll()
+            assertEquals(0, getNumSelectedItems())
+            getAllSelectableItems().forEach { assertFalse(it.isSelected) }
+        }
+    }
+
     //todo
-    // deselect index
-    // deselect invalid index
-    // deselect list of indices
-    // deselect item
-    // deselect item list
-    // deselect all
     // first long click triggers selection mode, next long click does nothing
     // next regular click selects the item
     // next regular click deselects the item
