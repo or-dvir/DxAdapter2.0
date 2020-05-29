@@ -40,123 +40,135 @@ class TestFeatureSelection : BaseTest() {
         onActivity { it.apply { setAdapter(mAdapter) } }
     }
 
-//    tests fail because null pointer exception.
-//    this null is inside android source code... when i call notifyItemChanged() on adapter
-//    maybe in order to call this i need a instrumented test??????
-
     @Test
     fun selectedItems_selectedIndices_selectionMode() {
-        val selectable1 = ItemSelectable("").apply { isSelected = true }
-        val selectable2 = ItemSelectable("").apply { isSelected = true }
-        val selectable3 = ItemSelectable("").apply { isSelected = false }
-        val nonSelectable = ItemNonSelectable("")
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = true }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
+        val nonSelectable = ItemNonSelectable("non-selectable")
 
         mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
 
-        mSelectionFeature.apply {
-            //items
-            val selectedItems = getAllSelectedItems()
-            val expectedItems = listOf(selectable1, selectable2)
-            assertEquals(2, selectedItems.size)
-            assertTrue(selectedItems.containsAll(expectedItems))
+        //NOTE:
+        //for some reason, if i call any selection function from outside an onActivity{} block,
+        //i get an exception saying im trying to access the ui from a non-ui thread
+        onActivity {
+            mSelectionFeature.apply {
+                //items
+                val selectedItems = getAllSelectedItems()
+                val expectedItems = listOf(selectable1, selectable2)
+                assertEquals(2, selectedItems.size)
+                assertTrue(selectedItems.containsAll(expectedItems))
 
-            //indices
-            val selectedIndices = getAllSelectedIndices()
-            val expectedIndices = listOf(0, 1)
-            assertEquals(2, selectedIndices.size)
-            assertTrue(selectedIndices.containsAll(expectedIndices))
+                //indices
+                val selectedIndices = getAllSelectedIndices()
+                val expectedIndices = listOf(0, 1)
+                assertEquals(2, selectedIndices.size)
+                assertTrue(selectedIndices.containsAll(expectedIndices))
 
-            //selection mode
-            assertTrue(isInSelectionMode())
-            deselectAll()
-            assertFalse(isInSelectionMode())
+                //selection mode
+                assertTrue(isInSelectionMode())
+                deselectAll()
+                assertFalse(isInSelectionMode())
+            }
         }
     }
 
     @Test
     fun selection() {
-        val selectable1 = ItemSelectable("").apply { isSelected = false }
-        val selectable2 = ItemSelectable("").apply { isSelected = false }
-        val selectable3 = ItemSelectable("").apply { isSelected = false }
-        val nonSelectable = ItemNonSelectable("")
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = false }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = false }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
+        val nonSelectable = ItemNonSelectable("non-selectable")
 
         mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
 
-        mSelectionFeature.apply {
-            //making sure it doesn't crash
-            select(nonSelectable)
+        //NOTE:
+        //for some reason, if i call any selection function from outside an onActivity{} block,
+        //i get an exception saying im trying to access the ui from a non-ui thread
+        onActivity {
+            mSelectionFeature.apply {
+                //making sure it doesn't crash
+                select(nonSelectable)
 
-            //single index
-            select(0)
-            assertTrue(selectable1.isSelected)
-            deselectAll() //reset the items
+                //single index
+                select(0)
+                assertTrue(selectable1.isSelected)
+                deselectAll() //reset the items
 
-            //index list
-            select(listOf(0, 1))
-            assertTrue(selectable1.isSelected)
-            assertTrue(selectable2.isSelected)
-            deselectAll() //reset the items
+                //index list
+                select(listOf(0, 1))
+                assertTrue(selectable1.isSelected)
+                assertTrue(selectable2.isSelected)
+                deselectAll() //reset the items
 
-            //single item
-            select(selectable2)
-            assertTrue(selectable2.isSelected)
-            deselectAll() //reset the items
+                //single item
+                select(selectable2)
+                assertTrue(selectable2.isSelected)
+                deselectAll() //reset the items
 
-            //item list
-            select(listOf(selectable1, selectable2))
-            assertTrue(selectable1.isSelected)
-            assertTrue(selectable2.isSelected)
-            deselectAll() //reset the items
+                //item list
+                select(listOf(selectable1, selectable2))
+                assertTrue(selectable1.isSelected)
+                assertTrue(selectable2.isSelected)
+                deselectAll() //reset the items
 
-            //select all
-            selectAll()
-            assertEquals(3, getNumSelectedItems())
-            getAllSelectableItems().forEach { assertTrue(it.isSelected) }
+                //select all
+                selectAll()
+                assertEquals(3, getNumSelectedItems())
+                getAllSelectableItems().forEach { assertTrue(it.isSelected) }
+            }
         }
     }
 
     @Test
     fun deselection() {
-        val selectable1 = ItemSelectable("").apply { isSelected = true }
-        val selectable2 = ItemSelectable("").apply { isSelected = true }
-        val selectable3 = ItemSelectable("").apply { isSelected = true }
-        val nonSelectable = ItemNonSelectable("")
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = true }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = true }
+        val nonSelectable = ItemNonSelectable("non-selectable")
 
         mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
 
-        mSelectionFeature.apply {
-            //making sure it doesn't crash
-            deselect(nonSelectable)
+        //NOTE:
+        //for some reason, if i call any selection function from outside an onActivity{} block,
+        //i get an exception saying im trying to access the ui from a non-ui thread
+        onActivity {
+            mSelectionFeature.apply {
+                //making sure it doesn't crash
+                deselect(nonSelectable)
 
-            //single index
-            deselect(0)
-            assertFalse(selectable1.isSelected)
-            selectAll() //reset the items
+                //single index
+                deselect(0)
+                assertFalse(selectable1.isSelected)
+                selectAll() //reset the items
 
-            //index list
-            deselect(listOf(0, 1))
-            assertFalse(selectable1.isSelected)
-            assertFalse(selectable2.isSelected)
-            selectAll() //reset the items
+                //index list
+                deselect(listOf(0, 1))
+                assertFalse(selectable1.isSelected)
+                assertFalse(selectable2.isSelected)
+                selectAll() //reset the items
 
-            //single item
-            deselect(selectable2)
-            assertFalse(selectable2.isSelected)
-            selectAll() //reset the items
+                //single item
+                deselect(selectable2)
+                assertFalse(selectable2.isSelected)
+                selectAll() //reset the items
 
-            //item list
-            deselect(listOf(selectable1, selectable2))
-            assertFalse(selectable1.isSelected)
-            assertFalse(selectable2.isSelected)
-            selectAll() //reset the items
+                //item list
+                deselect(listOf(selectable1, selectable2))
+                assertFalse(selectable1.isSelected)
+                assertFalse(selectable2.isSelected)
+                selectAll() //reset the items
 
-            //deselect all
-            deselectAll()
-            assertEquals(0, getNumSelectedItems())
-            getAllSelectableItems().forEach { assertFalse(it.isSelected) }
+                //deselect all
+                deselectAll()
+                assertEquals(0, getNumSelectedItems())
+                getAllSelectableItems().forEach { assertFalse(it.isSelected) }
+            }
         }
     }
 
+    keep implementing these
     //todo
     // first long click triggers selection mode, next long click does nothing
     // next regular click selects the item
