@@ -51,6 +51,7 @@ class ActivityMain : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setLayoutManagerVertical()
 
+        //todo manually test selection feature
 //        setScrollListeners()
 //        setVisibilityListeners()
 //        setClickListeners()

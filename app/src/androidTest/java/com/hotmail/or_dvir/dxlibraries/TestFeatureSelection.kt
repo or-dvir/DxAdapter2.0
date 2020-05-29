@@ -11,7 +11,7 @@ import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class TestFeatureSelection {
+class TestFeatureSelection : BaseTest() {
     private val mAdapter = BaseAdapter(mutableListOf())
     private lateinit var mItemSelectionListener: OnItemSelectionChangedListener<BaseItem>
     private lateinit var mSelectionModeListener: OnSelectionModeStateChanged
@@ -37,11 +37,12 @@ class TestFeatureSelection {
 
         //selection feature automatically adds the click feature to the adapter
         mAdapter.addFeature(mSelectionFeature)
+        onActivity { it.apply { setAdapter(mAdapter) } }
     }
 
-    tests fail because null pointer exception.
-    this null is inside android source code... when i call notifyItemChanged() on adapter
-    maybe in order to call this i need a instrumented test??????
+//    tests fail because null pointer exception.
+//    this null is inside android source code... when i call notifyItemChanged() on adapter
+//    maybe in order to call this i need a instrumented test??????
 
     @Test
     fun selectedItems_selectedIndices_selectionMode() {
