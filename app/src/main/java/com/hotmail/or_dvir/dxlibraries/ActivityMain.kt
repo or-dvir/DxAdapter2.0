@@ -22,12 +22,16 @@ import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
 import com.hotmail.or_dvir.dxlibraries.selectable.AdapterSelectable
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
+import com.hotmail.or_dvir.dxlibraries.stickyheader.AdapterStickyHeader
+import com.hotmail.or_dvir.dxlibraries.stickyheader.ItemHeader
+import com.hotmail.or_dvir.dxlibraries.stickyheader.MyStickyHeaderFeature
 import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterSwipeable
 import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
 import com.hotmail.or_dvir.dxlibraries.swipeable.MySwipeFeature
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxselection.DxFeatureSelection
+import com.hotmail.or_dvir.dxstickyheader.DxStickyHeaderItemDecoration
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.annotations.TestOnly
 
@@ -60,7 +64,31 @@ class ActivityMain : AppCompatActivity() {
 //        setDragListeners(false, R.id.listItem_dragHandle)
 //        setDragListenersMixed()
 //        setSwipeListeners()
-        setSelectionListeners()
+//        setSelectionListeners()
+//        setStickyHeader()
+    }
+
+    private fun setStickyHeader() {
+        val items = mutableListOf<BaseItem>()
+
+        var headerCounter = 1
+        for (i in 1..100) {
+            if (i % 10 == 0) {
+                items.add(ItemHeader("Header $headerCounter"))
+                headerCounter++
+            } else {
+                items.add(BaseItem("item $i"))
+            }
+        }
+
+        val adapter = AdapterStickyHeader(items)
+        setAdapter(adapter)
+
+        val featureHeader = MyStickyHeaderFeature(adapter)
+        //todo when documenting add note that this is not really needed but should
+        // do it for future updates
+        adapter.addFeature(featureHeader)
+        activityMain_rv.addItemDecoration(DxStickyHeaderItemDecoration(featureHeader))
     }
 
     private fun setSelectionListeners() {

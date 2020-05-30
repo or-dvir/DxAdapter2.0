@@ -33,5 +33,5 @@ abstract class DxFeatureStickyHeader<ITEM : IDxBaseItem>(private val adapter: Dx
     @LayoutRes
     abstract fun getHeaderLayoutRes(): Int
 
-    abstract fun bindStickyHeader(stickyHeader: View, headerAdapterPosition: Int, item: ITEM)
+    abstract fun bindStickyHeader(headerView: View, headerAdapterPosition: Int, item: ITEM)
 }
