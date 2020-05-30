@@ -47,14 +47,12 @@ class ActivityMain : AppCompatActivity() {
     // make sure to have proper documentation for all classes in ALL MODULES
     // add readme file to all modules
     // delete all example test files from all modules
-    // make all classes open so they can be extended
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setLayoutManagerVertical()
 
-        //todo manually test selection feature
 //        setScrollListeners()
 //        setVisibilityListeners()
 //        setClickListeners()
