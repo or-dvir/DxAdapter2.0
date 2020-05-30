@@ -7,6 +7,6 @@ package com.hotmail.or_dvir.dxselection
  * @param isSelected the new selected state of the item at [adapterPosition]
  */
 typealias OnItemSelectionChangedListener<ITEM> =
-            (adapterPosition: Int, isSelected: Boolean, ITEM) -> Unit
+            (adapterPosition: Int, isSelected: Boolean, item: ITEM) -> Unit
 
 typealias OnSelectionModeStateChanged = (isSelectionModeActive: Boolean) -> Unit

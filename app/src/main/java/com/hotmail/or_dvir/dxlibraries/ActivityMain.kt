@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
+import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
 import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
@@ -19,12 +20,14 @@ import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
+import com.hotmail.or_dvir.dxlibraries.selectable.AdapterSelectable
+import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
 import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterSwipeable
 import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
 import com.hotmail.or_dvir.dxlibraries.swipeable.MySwipeFeature
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
-import com.hotmail.or_dvir.dxclick.DxFeatureClick
+import com.hotmail.or_dvir.dxselection.DxFeatureSelection
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.annotations.TestOnly
 
@@ -59,6 +62,32 @@ class ActivityMain : AppCompatActivity() {
 //        setDragListeners(false, R.id.listItem_dragHandle)
 //        setDragListenersMixed()
 //        setSwipeListeners()
+        setSelectionListeners()
+    }
+
+    private fun setSelectionListeners() {
+        val adapter = AdapterSelectable(
+            MutableList(10) { index -> ItemSelectable("item $index") }
+        )
+        setAdapter(adapter)
+
+        val clickFeature = DxFeatureClick<ItemSelectable>(
+            onItemClick = { _, _, _ -> },
+            onItemLongClick = { _, _, _ -> true }
+        )
+
+        val selectFeature = DxFeatureSelection<ItemSelectable>(
+            adapter,
+            clickFeature,
+            onItemSelectionChanged = { adapterPosition, isSelected, item ->
+                Log.i("aaaaa", "${item.text} selected: $isSelected")
+            },
+            onSelectionModeChanged = { isSelectionModeActive ->
+                Log.i("aaaaa", "in selection mode? $isSelectionModeActive")
+            }
+        )
+
+        adapter.addFeature(selectFeature)
     }
 
     private fun setSwipeListeners() {
@@ -163,7 +192,10 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun setClickListeners() {
-        val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
+        val adapter = AdapterClickable(
+            MutableList(100) { index -> ItemClickable("item $index") }
+        )
+
         setAdapter(adapter)
 
         val clickListeners = DxFeatureClick<ItemClickable>(

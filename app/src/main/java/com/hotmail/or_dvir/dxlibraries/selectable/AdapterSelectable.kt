@@ -1,5 +1,7 @@
 package com.hotmail.or_dvir.dxlibraries.selectable
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
 import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
@@ -16,6 +18,15 @@ class AdapterSelectable(mItems: MutableList<ItemSelectable>) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position)
-        holder.tv.text = item.text
+        holder.apply {
+            tv.text = item.text
+            itemView.background = ColorDrawable(
+                if (item.isSelected) {
+                    Color.RED
+                } else {
+                    Color.WHITE
+                }
+            )
+        }
     }
 }

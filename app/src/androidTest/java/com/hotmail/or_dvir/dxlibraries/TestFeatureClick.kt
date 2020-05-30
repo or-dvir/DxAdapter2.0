@@ -41,10 +41,7 @@ class TestFeatureClick : BaseTest() {
         onActivity { it.apply { setAdapter(adapter) } }
 
         var clickedPosition = 0
-
-        onView(withId(R.id.activityMain_rv)).perform(
-            actionOnItemAtPosition<ViewHolder>(clickedPosition, click())
-        )
+        clickAtPosition(clickedPosition)
 
         //non of the listeners should be called
         verify(exactly = 0) { mClickListener.invoke(any(), any(), any()) }
@@ -74,9 +71,7 @@ class TestFeatureClick : BaseTest() {
         var clickedPosition = 0
         var clickedItem = adapter.getItem(clickedPosition)
 
-        onView(withId(R.id.activityMain_rv)).perform(
-            actionOnItemAtPosition<ViewHolder>(clickedPosition, click())
-        )
+        clickAtPosition(clickedPosition)
 
         //only regular click listener should be called
         verify(exactly = 1) { mClickListener.invoke(any(), clickedPosition, clickedItem) }
@@ -114,11 +109,8 @@ class TestFeatureClick : BaseTest() {
 
         //region non-clickable item
         var position = 0
-        onView(withId(R.id.activityMain_rv)).perform(
-            actionOnItemAtPosition<ViewHolder>(position, click())
-        ).perform(
-            actionOnItemAtPosition<ViewHolder>(position, longClick())
-        )
+        clickAtPosition(position)
+        longClickAtPosition(position)
 
         //listeners should not be called
         verify(exactly = 0) { mClickListener.invoke(any(), any(), any()) }

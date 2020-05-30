@@ -4,24 +4,26 @@ import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemNonSelectable
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
 import com.hotmail.or_dvir.dxselection.DxFeatureSelection
+import com.hotmail.or_dvir.dxselection.IDxItemSelectable
 import com.hotmail.or_dvir.dxselection.OnItemSelectionChangedListener
 import com.hotmail.or_dvir.dxselection.OnSelectionModeStateChanged
 import io.mockk.spyk
+import io.mockk.verify
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
 class TestFeatureSelection : BaseTest() {
     private val mAdapter = BaseAdapter(mutableListOf())
-    private lateinit var mItemSelectionListener: OnItemSelectionChangedListener<BaseItem>
-    private lateinit var mSelectionModeListener: OnSelectionModeStateChanged
+    private lateinit var mItemSelection: OnItemSelectionChangedListener<BaseItem>
+    private lateinit var mSelectionMode: OnSelectionModeStateChanged
 
     private lateinit var mSelectionFeature: DxFeatureSelection<BaseItem>
 
     @Before
     fun before() {
-        mItemSelectionListener = spyk({ _, _, _ -> })
-        mSelectionModeListener = spyk({ _ -> })
+        mItemSelection = spyk({ _, _, _ -> })
+        mSelectionMode = spyk({ _ -> })
 
         val featureClick = DxFeatureClick<BaseItem>(
             onItemClick = { _, _, _ -> },
@@ -31,8 +33,8 @@ class TestFeatureSelection : BaseTest() {
         mSelectionFeature = DxFeatureSelection(
             mAdapter,
             featureClick,
-            mItemSelectionListener,
-            mSelectionModeListener
+            mItemSelection,
+            mSelectionMode
         )
 
         //selection feature automatically adds the click feature to the adapter
@@ -168,13 +170,143 @@ class TestFeatureSelection : BaseTest() {
         }
     }
 
-    keep implementing these
-    //todo
-    // first long click triggers selection mode, next long click does nothing
-    // next regular click selects the item
-    // next regular click deselects the item
-    // already selected item does not get selected again
-    // onItemSelectionChanged
-    // onSelectionModeChanged
+    @Test
+    fun clickBehaviourAndListeners() {
+        //start off with no items selected
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = false }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = false }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
+        val nonSelectable = ItemNonSelectable("non-selectable")
 
+        mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
+
+        mSelectionFeature.apply {
+            var position = 0
+
+            //cannot "reset" the verify calls counter, so keep our own counter
+            var numCallsSelectionMode = 0
+            var numCallsItem = 0
+
+            //IMPORTANT NOTE!!!
+            //when testing calls to mItemSelection we will NOT
+            //specify the item parameter, because it makes it complicated to track the number
+            //of calls
+
+            //region clicking item (nothing should happen)
+            clickAtPosition(position)
+            verify(exactly = numCallsItem) { mItemSelection.invoke(any(), any(), any()) }
+            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
+            //endregion
+
+            //region long clicking non-selectable item (nothing should happen)
+            position = 3
+            longClickAtPosition(position)
+            verify(exactly = numCallsItem) { mItemSelection.invoke(any(), any(), any()) }
+            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
+            //endregion
+
+            //region long clicking first item
+            position = 0
+            longClickAtPosition(position)
+            ++numCallsItem
+            ++numCallsSelectionMode
+            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(true) }
+            verify(exactly = numCallsItem) {
+                mItemSelection.invoke(
+                    position,
+                    true,
+                    any()
+                )
+            }
+            assertTrue((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
+            assertTrue(isInSelectionMode())
+            assertEquals(getNumSelectedItems(), 1)
+            //endregion
+
+            //region long clicking another item (nothing should change)
+            position = 1
+            longClickAtPosition(position)
+
+            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
+            verify(exactly = numCallsItem) { mItemSelection.invoke(any(), any(), any()) }
+            assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
+            assertEquals(getNumSelectedItems(), 1)
+            //endregion
+
+            //region selecting another item by clicking it
+            //position and itemToCheck have not changed
+            clickAtPosition(position)
+            ++numCallsItem
+
+            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
+
+            //not specifying item because it makes it complicated to track how many times
+            //the listener was triggered for each item
+            verify(exactly = 1) {
+                mItemSelection.invoke(
+                    position,
+                    true,
+                    any()
+                )
+            }
+            assertTrue((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
+            assertEquals(getNumSelectedItems(), 2)
+            //endregion
+
+            //region deselecting item by clicking it
+            //clickedPosition and itemToCheck have not changed
+            clickAtPosition(position)
+            ++numCallsItem
+
+            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
+            verify(exactly = numCallsItem) {
+                mItemSelection.invoke(
+                    position,
+                    false,
+                    any()
+                )
+            }
+            assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
+            assertTrue(isInSelectionMode())
+            assertEquals(getNumSelectedItems(), 1)
+            //endregion
+
+            //region deselecting last item
+            position = 0
+            clickAtPosition(position)
+            ++numCallsItem
+            ++numCallsSelectionMode
+
+            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(false) }
+            verify(exactly = numCallsItem) {
+                mItemSelection.invoke(
+                    position,
+                    false,
+                    any()
+                )
+            }
+            assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
+            assertFalse(isInSelectionMode())
+            assertEquals(getNumSelectedItems(), 0)
+            //endregion
+        }
+
+        //todo check clicking/long-clicking non selectable item
+    }
+
+    @Test
+    fun alreadySelectedItemDoesNotTriggerListenerAgain() {
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
+        mAdapter.mItems.add(selectable1)
+
+        //NOTE:
+        //for some reason, if i call any selection function from outside an onActivity{} block,
+        //i get an exception saying im trying to access the ui from a non-ui thread
+        onActivity {
+            mSelectionFeature.apply {
+                select(selectable1)
+                verify(exactly = 0) { mItemSelection.invoke(any(), any(), any()) }
+            }
+        }
+    }
 }
