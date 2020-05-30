@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxlibraries
 
+import android.util.Log
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemNonSelectable
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
@@ -20,6 +21,7 @@ class TestFeatureSelection : BaseTest() {
 
     private lateinit var mSelectionFeature: DxFeatureSelection<BaseItem>
 
+    @Suppress("RedundantLambdaArrow")
     @Before
     fun before() {
         mItemSelection = spyk({ _, _, _ -> })
@@ -185,7 +187,8 @@ class TestFeatureSelection : BaseTest() {
 
             //cannot "reset" the verify calls counter, so keep our own counter
             var numCallsSelectionMode = 0
-            var numCallsItem = 0
+            var numCallsItemTrue = 0
+            var numCallsItemFalse = 0
 
             //IMPORTANT NOTE!!!
             //when testing calls to mItemSelection we will NOT
@@ -193,25 +196,28 @@ class TestFeatureSelection : BaseTest() {
             //of calls
 
             //region clicking item (nothing should happen)
+            Log.i("aaaaaa", "region 1")
             clickAtPosition(position)
-            verify(exactly = numCallsItem) { mItemSelection.invoke(any(), any(), any()) }
+            verify(exactly = numCallsItemTrue) { mItemSelection.invoke(any(), any(), any()) }
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
             //endregion
 
             //region long clicking non-selectable item (nothing should happen)
+            Log.i("aaaaaa", "region 2")
             position = 3
             longClickAtPosition(position)
-            verify(exactly = numCallsItem) { mItemSelection.invoke(any(), any(), any()) }
+            verify(exactly = numCallsItemTrue) { mItemSelection.invoke(any(), any(), any()) }
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
             //endregion
 
             //region long clicking first item
+            Log.i("aaaaaa", "region 3")
             position = 0
             longClickAtPosition(position)
-            ++numCallsItem
+            ++numCallsItemTrue
             ++numCallsSelectionMode
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(true) }
-            verify(exactly = numCallsItem) {
+            verify(exactly = numCallsItemTrue) {
                 mItemSelection.invoke(
                     position,
                     true,
@@ -224,24 +230,23 @@ class TestFeatureSelection : BaseTest() {
             //endregion
 
             //region long clicking another item (nothing should change)
+            Log.i("aaaaaa", "region 4")
             position = 1
             longClickAtPosition(position)
 
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
-            verify(exactly = numCallsItem) { mItemSelection.invoke(any(), any(), any()) }
+            verify(exactly = numCallsItemTrue) { mItemSelection.invoke(any(), any(), any()) }
             assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
             assertEquals(getNumSelectedItems(), 1)
             //endregion
 
             //region selecting another item by clicking it
             //position and itemToCheck have not changed
+            Log.i("aaaaaa", "region 5")
             clickAtPosition(position)
-            ++numCallsItem
+            ++numCallsItemTrue
 
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
-
-            //not specifying item because it makes it complicated to track how many times
-            //the listener was triggered for each item
             verify(exactly = 1) {
                 mItemSelection.invoke(
                     position,
@@ -255,30 +260,33 @@ class TestFeatureSelection : BaseTest() {
 
             //region deselecting item by clicking it
             //clickedPosition and itemToCheck have not changed
+            Log.i("aaaaaa", "region 6")
             clickAtPosition(position)
-            ++numCallsItem
+            ++numCallsItemFalse
 
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
-            verify(exactly = numCallsItem) {
+            verify(exactly = numCallsItemFalse) {
                 mItemSelection.invoke(
                     position,
                     false,
                     any()
                 )
             }
+            Log.i("aaaaaa", "after again")
             assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
             assertTrue(isInSelectionMode())
             assertEquals(getNumSelectedItems(), 1)
             //endregion
 
             //region deselecting last item
+            Log.i("aaaaaa", "region 7")
             position = 0
             clickAtPosition(position)
-            ++numCallsItem
-            ++numCallsSelectionMode
 
-            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(false) }
-            verify(exactly = numCallsItem) {
+            //not using numCallsSelectionMode and numCallsItem because this is the first time the
+            //method is called with these specific parameters
+            verify(exactly = 1) { mSelectionMode.invoke(false) }
+            verify(exactly = 1) {
                 mItemSelection.invoke(
                     position,
                     false,
@@ -290,8 +298,6 @@ class TestFeatureSelection : BaseTest() {
             assertEquals(getNumSelectedItems(), 0)
             //endregion
         }
-
-        //todo check clicking/long-clicking non selectable item
     }
 
     @Test
