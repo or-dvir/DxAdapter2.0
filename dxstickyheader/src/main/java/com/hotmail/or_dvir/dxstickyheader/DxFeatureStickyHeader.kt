@@ -1,9 +1,7 @@
-package com.example.dxstickeyheader
+package com.hotmail.or_dvir.dxstickyheader
 
 import android.view.View
-import android.widget.AdapterView
 import androidx.annotation.LayoutRes
-import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
@@ -17,19 +15,23 @@ abstract class DxFeatureStickyHeader<ITEM : IDxBaseItem>(private val adapter: Dx
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
-        //todo()
+        //do nothing
     }
+
+    internal fun isHeader(position: Int): Boolean {
+        if (position !in 0 until adapter.getDxAdapterItems().size) {
+            return false
+        }
+
+        return adapter.getItem(position) is IDxItemHeader
+    }
+
+    internal fun getItem(position: Int) = adapter.getItem(position)
 
     override fun getFeatureId() = R.id.feature_stickyHeader
 
-    /**
-     * returns the resource id of the header layout
-     */
-    //todo add support for multiple types of headers- in order to do this you need to
-    // add position parameter!!!
-    // note that this might require some changes in the adapter!!!
     @LayoutRes
-    abstract fun getHeaderLayoutRes(/*headerPosition: Int*/): Int
+    abstract fun getHeaderLayoutRes(): Int
 
     abstract fun bindStickyHeader(stickyHeader: View, headerAdapterPosition: Int, item: ITEM)
 }

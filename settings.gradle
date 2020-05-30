@@ -1,3 +1,4 @@
+include ':dxstickyheader'
 include ':dxstickeyheader'
 rootProject.name='DxLibraries'
 include ':app'
