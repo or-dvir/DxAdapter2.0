@@ -1,3 +1,4 @@
+include ':dxstickeyheader'
 rootProject.name='DxLibraries'
 include ':app'
 include ':dxrecyclerview'
