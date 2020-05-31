@@ -18,9 +18,7 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
     private val adapter: DxAdapter<ITEM, VH>,
     clickFeature: DxFeatureClick<ITEM>,
     private val expandAndCollapseOnClick: Boolean,
-    private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>,
-    private val expandAnimation: Animation? = null,
-    private val collapseAnimation: Animation? = null
+    private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
     //todo
@@ -49,21 +47,12 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
         val item = adapter.getItem(holder.adapterPosition)
         if (item is IDxItemExpandable) {
             (holder as VH).expandableView.apply {
-                val animation: Animation?
-
                 visibility =
                     if (item.isExpanded) {
-                        animation = expandAnimation
                         View.VISIBLE
                     } else {
-                        animation = collapseAnimation
                         View.GONE
                     }
-
-                if (animation != null) {
-//                    TransitionManager.beginDelayedTransition(this, Slide().setDuration(5000).addTarget(this))
-                    startAnimation(animation)
-                }
             }
         }
 

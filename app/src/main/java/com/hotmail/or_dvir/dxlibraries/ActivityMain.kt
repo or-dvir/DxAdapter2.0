@@ -114,9 +114,7 @@ class ActivityMain : AppCompatActivity() {
             true,
             onItemExpansionStateChanged = { adapterPosition, isExpanded, item ->
                 //do something
-            },
-            expandAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_top),
-            collapseAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_out_to_top)
+            }
         )
 
         adapter.addFeature(expandFeature)
