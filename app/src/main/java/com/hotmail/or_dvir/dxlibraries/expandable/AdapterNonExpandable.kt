@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxlibraries.selectable
+package com.hotmail.or_dvir.dxlibraries.expandable
 
 import android.view.View
 import android.view.ViewGroup
@@ -6,8 +6,8 @@ import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
 import com.hotmail.or_dvir.dxlibraries.expandable.ItemNonExpandable
 
-class AdapterNonSelectable(mItems: MutableList<ItemNonSelectable>) :
-    BaseSampleAdapter<ItemNonSelectable, BaseSampleAdapter.ViewHolder>(mItems) {
+class AdapterNonExpandable(mItems: MutableList<ItemNonExpandable>) :
+    BaseSampleAdapter<ItemNonExpandable, BaseSampleAdapter.ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
         ViewHolder(itemView)

@@ -15,13 +15,14 @@ import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
 import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
+import com.hotmail.or_dvir.dxexpansion.DxFeatureExpansion
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
-import com.hotmail.or_dvir.dxlibraries.selectable.AdapterSelectable
-import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
+import com.hotmail.or_dvir.dxlibraries.expandable.AdapterExpandable
+import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
 import com.hotmail.or_dvir.dxlibraries.stickyheader.AdapterStickyHeader
 import com.hotmail.or_dvir.dxlibraries.stickyheader.ItemHeader
 import com.hotmail.or_dvir.dxlibraries.stickyheader.MyStickyHeaderFeature
@@ -59,12 +60,14 @@ class ActivityMain : AppCompatActivity() {
 
 //        setScrollListeners()
 //        setVisibilityListeners()
-//        setClickListeners()
-//        setDragListeners(true, null)
-//        setDragListeners(false, R.id.listItem_dragHandle)
-//        setDragListenersMixed()
-//        setSwipeListeners()
-//        setSelectionListeners()
+//        setClickFeature()
+//        setDragFeature(true, null)
+//        setDragFeature(false, R.id.listItem_dragHandle)
+//        setDragFeatureMixed()
+//        setSwipeFeature()
+//        setSelectionFeature()
+        //todo test mixed viewHolders!!!
+        setExpansionFeature()
 //        setStickyHeader()
     }
 
@@ -92,18 +95,44 @@ class ActivityMain : AppCompatActivity() {
         activityMain_rv.addItemDecoration(DxStickyHeaderItemDecoration(featureHeader))
     }
 
-    private fun setSelectionListeners() {
-        val adapter = AdapterSelectable(
-            MutableList(10) { index -> ItemSelectable("item $index") }
+    private fun setExpansionFeature() {
+
+        click to expand doesnt work!!!
+        
+        val adapter = AdapterExpandable(
+            MutableList(10) { index -> ItemExpandable("item $index") }
         )
         setAdapter(adapter)
 
-        val clickFeature = DxFeatureClick<ItemSelectable>(
+        val clickFeature = DxFeatureClick<ItemExpandable>(
             onItemClick = { _, _, _ -> },
             onItemLongClick = { _, _, _ -> true }
         )
 
-        val selectFeature = DxFeatureSelection<ItemSelectable>(
+        val expandFeature = DxFeatureExpansion(
+            adapter,
+            clickFeature,
+            true,
+            onItemExpansionStateChanged = { adapterPosition, isExpanded, item ->
+                //do something
+            }
+        )
+
+        adapter.addFeature(expandFeature)
+    }
+
+    private fun setSelectionFeature() {
+        val adapter = AdapterExpandable(
+            MutableList(10) { index -> ItemExpandable("item $index") }
+        )
+        setAdapter(adapter)
+
+        val clickFeature = DxFeatureClick<ItemExpandable>(
+            onItemClick = { _, _, _ -> },
+            onItemLongClick = { _, _, _ -> true }
+        )
+
+        val selectFeature = DxFeatureSelection<ItemExpandable>(
             adapter,
             clickFeature,
             onItemSelectionChanged = { adapterPosition, isSelected, item ->
@@ -117,7 +146,7 @@ class ActivityMain : AppCompatActivity() {
         adapter.addFeature(selectFeature)
     }
 
-    private fun setSwipeListeners() {
+    private fun setSwipeFeature() {
         val adapter = AdapterSwipeable(
             MutableList(10) { index -> ItemSwipeable("item $index") }
         )
@@ -149,7 +178,7 @@ class ActivityMain : AppCompatActivity() {
         ItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
     }
 
-    private fun setDragListenersMixed() {
+    private fun setDragFeatureMixed() {
         val items = mutableListOf(
             ItemNonDraggable("non-draggable"),
             ItemDraggable("draggable")
@@ -183,7 +212,7 @@ class ActivityMain : AppCompatActivity() {
     }
 
     @Suppress("SameParameterValue")
-    private fun setDragListeners(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {
+    private fun setDragFeature(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {
         val adapter = AdapterDraggable(
             MutableList(100) { index -> ItemDraggable("item $index") }
         )
@@ -218,7 +247,7 @@ class ActivityMain : AppCompatActivity() {
         }
     }
 
-    private fun setClickListeners() {
+    private fun setClickFeature() {
         val adapter = AdapterClickable(
             MutableList(100) { index -> ItemClickable("item $index") }
         )

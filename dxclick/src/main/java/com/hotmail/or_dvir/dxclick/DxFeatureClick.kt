@@ -45,5 +45,13 @@ class DxFeatureClick<ITEM : IDxBaseItem>(
         }
     }
 
+    override fun onBindViewHolder(
+        adapter: DxAdapter<*, *>,
+        itemView: View,
+        holder: RecyclerView.ViewHolder
+    ) {
+        //do nothing
+    }
+
     override fun getFeatureId() = R.id.feature_clickListener
 }

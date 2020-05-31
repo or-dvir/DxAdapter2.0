@@ -42,6 +42,14 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
         // the
     }
 
+    override fun onBindViewHolder(
+        adapter: DxAdapter<*, *>,
+        itemView: View,
+        holder: RecyclerView.ViewHolder
+    ) {
+        //do nothing
+    }
+
     override fun getFeatureId() = R.id.feature_selection
 
     override val onItemClick: OnItemClickListener<IDxBaseItem> =

@@ -1,7 +1,6 @@
 package com.hotmail.or_dvir.dxexpansion
 
 import android.view.View
-import androidx.annotation.IdRes
 import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
@@ -47,7 +46,7 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
                 if (item.isExpanded) {
                     View.VISIBLE
                 } else {
-                    View.OVER_SCROLL_NEVER
+                    View.GONE
                 }
         }
 
@@ -150,9 +149,6 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
     //////////////////////////////////////
 
     abstract class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        internal val expandableView: View = itemView.findViewById(this.getExpandableViewId())
-
-        @IdRes
-        abstract fun getExpandableViewId(): Int
+        abstract val expandableView: View
     }
 }

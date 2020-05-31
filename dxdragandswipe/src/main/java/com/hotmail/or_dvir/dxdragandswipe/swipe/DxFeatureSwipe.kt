@@ -75,6 +75,14 @@ open class DxFeatureSwipe<ITEM : IDxBaseItem>(
         //do nothing
     }
 
+    override fun onBindViewHolder(
+        adapter: DxAdapter<*, *>,
+        itemView: View,
+        holder: RecyclerView.ViewHolder
+    ) {
+        //do nothing
+    }
+
     override fun getFeatureId() = R.id.feature_swipe
 
     internal fun notifySwipeStart(adapter: DxAdapter<ITEM, *>, holder: RecyclerView.ViewHolder) {

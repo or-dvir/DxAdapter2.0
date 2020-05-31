@@ -10,6 +10,14 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 abstract class DxFeatureStickyHeader<ITEM : IDxBaseItem>(private val adapter: DxAdapter<ITEM, *>) :
     IDxBaseFeature {
 
+    override fun onBindViewHolder(
+        adapter: DxAdapter<*, *>,
+        itemView: View,
+        holder: RecyclerView.ViewHolder
+    ) {
+        //do nothing
+    }
+
     override fun onCreateViewHolder(
         adapter: DxAdapter<*, *>,
         itemView: View,

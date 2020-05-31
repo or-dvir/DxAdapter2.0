@@ -72,6 +72,14 @@ class DxFeatureDrag<ITEM : IDxBaseItem>(
         }
     }
 
+    override fun onBindViewHolder(
+        adapter: DxAdapter<*, *>,
+        itemView: View,
+        holder: RecyclerView.ViewHolder
+    ) {
+        //do nothinig
+    }
+
     override fun getFeatureId() = R.id.feature_drag
 
     internal fun notifyDragStart(adapter: DxAdapter<*, *>, holder: RecyclerView.ViewHolder) {
