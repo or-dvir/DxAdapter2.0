@@ -96,9 +96,6 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private fun setExpansionFeature() {
-
-        click to expand doesnt work!!!
-        
         val adapter = AdapterExpandable(
             MutableList(10) { index -> ItemExpandable("item $index") }
         )

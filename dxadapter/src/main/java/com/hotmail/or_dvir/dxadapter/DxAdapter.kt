@@ -34,6 +34,7 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
         return holder
     }
 
+    @CallSuper
     override fun onBindViewHolder(holder: VH, position: Int) {
         allFeatures.values.forEach {
             it.onBindViewHolder(this, holder.itemView, holder)

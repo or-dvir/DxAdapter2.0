@@ -16,6 +16,7 @@ class AdapterNonDraggable(mItems: MutableList<ItemNonDraggable>) :
         R.layout.list_item_draggable
 
     override fun onBindViewHolder(holder: AdapterDraggable.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
         val item = getItem(position)
         holder.tv.text = item.text
     }

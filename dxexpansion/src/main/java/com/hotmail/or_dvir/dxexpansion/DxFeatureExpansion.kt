@@ -20,7 +20,10 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
     private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
-    //todo add option for only 1 item expanded
+    //todo
+    // add option for only 1 item expanded
+    // add animation option
+    // write tests
 
     init {
         adapter.addFeature(clickFeature)

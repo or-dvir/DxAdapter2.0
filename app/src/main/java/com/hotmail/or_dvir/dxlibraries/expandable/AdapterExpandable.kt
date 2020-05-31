@@ -18,6 +18,7 @@ class AdapterExpandable(mItems: MutableList<ItemExpandable>) :
         R.layout.list_item_expandable
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
         val item = getItem(position)
         holder.tv.text = item.text
     }

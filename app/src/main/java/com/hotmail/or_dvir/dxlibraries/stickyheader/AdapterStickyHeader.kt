@@ -34,6 +34,7 @@ class AdapterStickyHeader(mItems: MutableList<BaseItem>) :
 
     @Suppress("USELESS_IS_CHECK")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
         when (val item = getItem(position)) {
             is ItemHeader -> (holder as ViewHolder).tv.text = item.text
             is BaseItem -> (holder as BaseSampleAdapter.ViewHolder).tv.text = item.text

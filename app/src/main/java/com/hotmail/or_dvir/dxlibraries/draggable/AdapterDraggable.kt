@@ -19,6 +19,7 @@ class AdapterDraggable(mItems: MutableList<ItemDraggable>) :
         R.layout.list_item_draggable
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
         val item = getItem(position)
         holder.tv.text = item.text
     }
