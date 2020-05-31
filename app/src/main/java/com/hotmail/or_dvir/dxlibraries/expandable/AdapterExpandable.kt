@@ -21,8 +21,6 @@ class AdapterExpandable(mItems: MutableList<ItemExpandable>) :
         super.onBindViewHolder(holder, position)
         val item = getItem(position)
         holder.tv.text = item.text
-
-        
     }
 
     //////////////////////////////////
