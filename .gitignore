@@ -86,3 +86,4 @@ lint/tmp/
 gradle/wrapper/gradle-wrapper.properties
 .idea/jarRepositories.xml
 .idea/misc.xml
+.idea/misc.xml

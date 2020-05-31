@@ -53,4 +53,5 @@ dependencies {
     implementation project(path: ':dxdragandswipe')
     implementation project(path: ':dxselection')
     implementation project(path: ':dxstickyheader')
+    implementation project(path: ':dxexpandable')
 }

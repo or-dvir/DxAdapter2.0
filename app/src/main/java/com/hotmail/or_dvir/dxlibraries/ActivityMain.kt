@@ -68,7 +68,8 @@ class ActivityMain : AppCompatActivity() {
 //        setStickyHeader()
     }
 
-    private fun setStickyHeader() {
+    @VisibleForTesting
+    fun setStickyHeader() {
         val items = mutableListOf<BaseItem>()
 
         var headerCounter = 1
