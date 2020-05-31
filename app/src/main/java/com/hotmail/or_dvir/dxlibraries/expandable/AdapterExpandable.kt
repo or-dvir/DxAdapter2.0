@@ -21,6 +21,8 @@ class AdapterExpandable(mItems: MutableList<ItemExpandable>) :
         super.onBindViewHolder(holder, position)
         val item = getItem(position)
         holder.tv.text = item.text
+
+        
     }
 
     //////////////////////////////////
@@ -30,6 +32,6 @@ class AdapterExpandable(mItems: MutableList<ItemExpandable>) :
 
     class ViewHolder(itemView: View) : DxFeatureExpansion.ViewHolder(itemView) {
         val tv: TextView = itemView.listItem_tv
-        override val expandableView: View = itemView.listItem_expandable_expandedTv
+        override val expandableView: View = itemView.listItem_expandable_expansionRoot
     }
 }

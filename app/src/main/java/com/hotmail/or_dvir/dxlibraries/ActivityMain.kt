@@ -2,6 +2,7 @@ package com.hotmail.or_dvir.dxlibraries
 
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.AnimationUtils
 import androidx.annotation.IdRes
 import androidx.annotation.VisibleForTesting
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.vectordrawable.graphics.drawable.AnimationUtilsCompat
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
@@ -112,7 +114,9 @@ class ActivityMain : AppCompatActivity() {
             true,
             onItemExpansionStateChanged = { adapterPosition, isExpanded, item ->
                 //do something
-            }
+            },
+            expandAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_in_from_top),
+            collapseAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_out_to_top)
         )
 
         adapter.addFeature(expandFeature)
