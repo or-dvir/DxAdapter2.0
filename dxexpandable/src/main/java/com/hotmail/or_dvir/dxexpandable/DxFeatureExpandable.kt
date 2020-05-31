@@ -15,8 +15,7 @@ import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
 class DxFeatureExpandable<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
-    private val onItemSelectionChanged: OnItemSelectionChangedListener<ITEM>,
-    private var onSelectionModeChanged: OnSelectionModeStateChanged
+    private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
     init {
@@ -29,6 +28,13 @@ class DxFeatureExpandable<ITEM : IDxBaseItem>(
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
+        //todo
+        // should i expand and collapse item here?
+        // should i trigger the listener here?
+        // unlike selection which the user can interpret in different ways,
+        //      in this case there are only 2 possible cases: expanded view is visible or gone
+
+        //NOTE COPIED FROM SELECTION FEATURE
         //do nothing
         //todo when documenting add a note that the listeners will only be invoked when an item is
         // manually selected/deselected (and not here).
@@ -38,7 +44,7 @@ class DxFeatureExpandable<ITEM : IDxBaseItem>(
         // the
     }
 
-    override fun getFeatureId() = R.id.feature_selection
+    override fun getFeatureId() = R.id.feature_expansion
 
     override val onItemClick: OnItemClickListener<IDxBaseItem> =
         { view, adapterPosition, item ->

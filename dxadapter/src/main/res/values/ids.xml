@@ -4,5 +4,6 @@
     <item name="feature_swipe" type="id" />
     <item name="feature_clickListener" type="id" />
     <item name="feature_selection" type="id" />
+    <item name="feature_expansion" type="id" />
     <item name="feature_stickyHeader" type="id" />
 </resources>
