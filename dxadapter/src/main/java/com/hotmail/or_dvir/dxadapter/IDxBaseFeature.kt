@@ -18,12 +18,8 @@ interface IDxBaseFeature {
         holder: RecyclerView.ViewHolder
     )
 
-    /**
-     * used internally by the library.
-     *
-     * DO NOT OVERRIDE!!!
-     */
-    //todo should i use a val instead? but then the @IdRes annotation does not work
+    fun onBindViewHolder(adapter: DxAdapter<*, *>, itemView: View, holder: RecyclerView.ViewHolder)
+
     @IdRes
     fun getFeatureId(): Int
 }

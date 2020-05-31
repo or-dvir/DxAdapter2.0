@@ -19,6 +19,10 @@ class DxFeatureSelection<ITEM : IDxBaseItem>(
     private var onSelectionModeChanged: OnSelectionModeStateChanged
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
+
+    //todo add flag whether selection should be done with clicks or not
+    // maybe the user only wants to select when clicking the user image for example...
+
     init {
         adapter.addFeature(clickFeature)
         clickFeature.clickListenerFeatures.add(this)

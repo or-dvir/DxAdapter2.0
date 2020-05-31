@@ -1,4 +1,4 @@
-include ':dxexpandable'
+include ':dxexpansion'
 include ':dxstickyheader'
 include ':dxstickeyheader'
 rootProject.name='DxLibraries'

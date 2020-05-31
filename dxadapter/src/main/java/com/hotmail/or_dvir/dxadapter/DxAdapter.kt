@@ -34,15 +34,11 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
         return holder
     }
 
-//    @CallSuper
-//    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-//
-//        //todo
-//
-//        //position parameter may not be accurate
-////        val adapterPosition = holder.adapterPosition
-////        bindViewHolder(holder, adapterPosition, getItems()[adapterPosition])
-//    }
+    override fun onBindViewHolder(holder: VH, position: Int) {
+        allFeatures.values.forEach {
+            it.onBindViewHolder(this, holder.itemView, holder)
+        }
+    }
 
 //    @CallSuper
 //    override fun onViewRecycled(holder: ViewHolder) {

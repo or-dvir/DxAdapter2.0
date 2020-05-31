@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxexpandable
+package com.hotmail.or_dvir.dxexpansion
 
 /**
  * a listener called when the expanded state of an item has changed
