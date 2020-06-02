@@ -17,6 +17,7 @@ class DxFeatureExpansion<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
     private var expandAndCollapseOnClick: Boolean,
+    private val onlyOneItemExpanded: Boolean,
     private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
@@ -115,7 +116,15 @@ class DxFeatureExpansion<ITEM : IDxBaseItem>(
     //region expand
     fun expand(index: Int) = expand(adapter.getItem(index))
     fun expand(item: ITEM) = expand(listOf(item))
-    fun expand(items: List<ITEM>) = expandOrCollapse(true, items)
+    fun expand(items: List<ITEM>) {
+        if (onlyOneItemExpanded) {
+            val itemsToCollapse = getAllExpandedItems().minus(items[0])
+            collapse(itemsToCollapse)
+            expandOrCollapse(true, listOf(items.first { it is IDxItemExpandable }))
+        } else {
+            expandOrCollapse(true, items)
+        }
+    }
 
     @JvmName("expandIndices")
     fun expand(indices: List<Int>) = expand(adapter.getItemsForIndices(indices))

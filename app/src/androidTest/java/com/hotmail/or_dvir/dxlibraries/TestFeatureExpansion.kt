@@ -32,8 +32,9 @@ class TestFeatureExpansion : BaseTest() {
         mExpansionFeature = DxFeatureExpansion(
             mAdapter,
             featureClick,
-            true,
-            mItemExpansion
+            expandAndCollapseOnClick = true,
+            onlyOneItemExpanded = false,
+            onItemExpansionStateChanged = mItemExpansion
         )
 
         //selection feature automatically adds the click feature to the adapter

@@ -66,7 +66,7 @@ class ActivityMain : AppCompatActivity() {
 //        setDragFeatureMixed()
 //        setSwipeFeature()
 //        setSelectionFeature()
-//        setExpansionFeature()
+        setExpansionFeature()
 //        setStickyHeader()
     }
 
@@ -108,7 +108,8 @@ class ActivityMain : AppCompatActivity() {
         val expandFeature = DxFeatureExpansion(
             adapter,
             clickFeature,
-            true,
+            expandAndCollapseOnClick = true,
+            onlyOneItemExpanded = true,
             onItemExpansionStateChanged = { adapterPosition, isExpanded, item ->
                 //do something
             }
