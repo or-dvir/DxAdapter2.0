@@ -2,8 +2,8 @@ package com.hotmail.or_dvir.dxlibraries
 
 import android.util.Log
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
-import com.hotmail.or_dvir.dxlibraries.expandable.ItemNonExpandable
-import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
+import com.hotmail.or_dvir.dxlibraries.selectable.ItemNonSelectable
+import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
 import com.hotmail.or_dvir.dxselection.DxFeatureSelection
 import com.hotmail.or_dvir.dxselection.IDxItemSelectable
 import com.hotmail.or_dvir.dxselection.OnItemSelectionChangedListener
@@ -46,10 +46,10 @@ class TestFeatureSelection : BaseTest() {
 
     @Test
     fun selectedItems_selectedIndices_selectionMode() {
-        val selectable1 = ItemExpandable("selectable 1").apply { isSelected = true }
-        val selectable2 = ItemExpandable("selectable 2").apply { isSelected = true }
-        val selectable3 = ItemExpandable("selectable 3").apply { isSelected = false }
-        val nonSelectable = ItemNonExpandable("non-selectable")
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = true }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
+        val nonSelectable = ItemNonSelectable("non-selectable")
 
         mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
 
@@ -80,10 +80,10 @@ class TestFeatureSelection : BaseTest() {
 
     @Test
     fun selection() {
-        val selectable1 = ItemExpandable("selectable 1").apply { isSelected = false }
-        val selectable2 = ItemExpandable("selectable 2").apply { isSelected = false }
-        val selectable3 = ItemExpandable("selectable 3").apply { isSelected = false }
-        val nonSelectable = ItemNonExpandable("non-selectable")
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = false }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = false }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
+        val nonSelectable = ItemNonSelectable("non-selectable")
 
         mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
 
@@ -127,10 +127,10 @@ class TestFeatureSelection : BaseTest() {
 
     @Test
     fun deselection() {
-        val selectable1 = ItemExpandable("selectable 1").apply { isSelected = true }
-        val selectable2 = ItemExpandable("selectable 2").apply { isSelected = true }
-        val selectable3 = ItemExpandable("selectable 3").apply { isSelected = true }
-        val nonSelectable = ItemNonExpandable("non-selectable")
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = true }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = true }
+        val nonSelectable = ItemNonSelectable("non-selectable")
 
         mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
 
@@ -175,10 +175,10 @@ class TestFeatureSelection : BaseTest() {
     @Test
     fun clickBehaviourAndListeners() {
         //start off with no items selected
-        val selectable1 = ItemExpandable("selectable 1").apply { isSelected = false }
-        val selectable2 = ItemExpandable("selectable 2").apply { isSelected = false }
-        val selectable3 = ItemExpandable("selectable 3").apply { isSelected = false }
-        val nonSelectable = ItemNonExpandable("non-selectable")
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = false }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = false }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
+        val nonSelectable = ItemNonSelectable("non-selectable")
 
         mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
 
@@ -302,7 +302,7 @@ class TestFeatureSelection : BaseTest() {
 
     @Test
     fun alreadySelectedItemDoesNotTriggerListenerAgain() {
-        val selectable1 = ItemExpandable("selectable 1").apply { isSelected = true }
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
         mAdapter.mItems.add(selectable1)
 
         //NOTE:
