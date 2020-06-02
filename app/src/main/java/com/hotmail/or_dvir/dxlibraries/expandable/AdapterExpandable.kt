@@ -32,4 +32,6 @@ class AdapterExpandable(mItems: MutableList<ItemExpandable>) :
         val tv: TextView = itemView.listItem_tv
         override val expandableView: View = itemView.listItem_expandable_expansionRoot
     }
+
+    //////////////////////////////////////////////////////////////////////
 }

@@ -1,7 +1,6 @@
 package com.hotmail.or_dvir.dxexpansion
 
 import android.view.View
-import android.view.animation.Animation
 import androidx.annotation.VisibleForTesting
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter
@@ -11,11 +10,10 @@ import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxclick.IDxClickListenerFeature
 import com.hotmail.or_dvir.dxclick.OnItemClickListener
 import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
-import com.hotmail.or_dvir.dxexpansion.DxFeatureExpansion.ViewHolder
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
-    private val adapter: DxAdapter<ITEM, VH>,
+class DxFeatureExpansion<ITEM : IDxBaseItem>(
+    private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
     private val expandAndCollapseOnClick: Boolean,
     private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
@@ -23,8 +21,6 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
 
     //todo
     // add option for only 1 item expanded
-    // add animation option
-    // write tests
 
     init {
         adapter.addFeature(clickFeature)
@@ -45,8 +41,8 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
         holder: RecyclerView.ViewHolder
     ) {
         val item = adapter.getItem(holder.adapterPosition)
-        if (item is IDxItemExpandable) {
-            (holder as VH).expandableView.apply {
+        if (item is IDxItemExpandable && holder is ViewHolder) {
+            holder.expandableView.apply {
                 visibility =
                     if (item.isExpanded) {
                         View.VISIBLE
@@ -70,6 +66,7 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
 
     override fun getFeatureId() = R.id.feature_expansion
 
+    @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     override val onItemClick: OnItemClickListener<IDxBaseItem> =
         { view, adapterPosition, item ->
             if (expandAndCollapseOnClick && item is IDxItemExpandable) {
@@ -97,7 +94,7 @@ class DxFeatureExpansion<ITEM : IDxBaseItem, out VH : ViewHolder>(
         var tempPosition: Int
 
         items.forEach {
-            if (it is IDxItemExpandable) {
+            if (it is IDxItemExpandable && shouldExpand != it.isExpanded) {
                 it.isExpanded = shouldExpand
                 tempPosition = adapter.getIndex(it)
 

@@ -1,188 +1,185 @@
 package com.hotmail.or_dvir.dxlibraries
 
-import android.util.Log
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
-import com.hotmail.or_dvir.dxlibraries.selectable.ItemNonSelectable
+import com.hotmail.or_dvir.dxexpansion.DxFeatureExpansion
+import com.hotmail.or_dvir.dxexpansion.OnItemExpansionStateChangedListener
+import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
+import com.hotmail.or_dvir.dxlibraries.expandable.ItemNonExpandable
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
-import com.hotmail.or_dvir.dxselection.DxFeatureSelection
+import com.hotmail.or_dvir.dxlibraries.stickyheader.AdapterExpandableMix
 import com.hotmail.or_dvir.dxselection.IDxItemSelectable
-import com.hotmail.or_dvir.dxselection.OnItemSelectionChangedListener
-import com.hotmail.or_dvir.dxselection.OnSelectionModeStateChanged
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
-class TestFeatureSelection : BaseTest() {
-    private val mAdapter = BaseAdapter(mutableListOf())
-    private lateinit var mItemSelection: OnItemSelectionChangedListener<BaseItem>
-    private lateinit var mSelectionMode: OnSelectionModeStateChanged
+class TestFeatureExpansion : BaseTest() {
 
-    private lateinit var mSelectionFeature: DxFeatureSelection<BaseItem>
+    //todo
+    // test expand/collapse on click
+    // test mixed adapter
+
+    private val mAdapter = AdapterExpandableMix(mutableListOf())
+    private lateinit var mItemExpansion: OnItemExpansionStateChangedListener<BaseItem>
+    private lateinit var mExpansionFeature: DxFeatureExpansion<BaseItem>
 
     @Suppress("RedundantLambdaArrow")
     @Before
     fun before() {
-        mItemSelection = spyk({ _, _, _ -> })
-        mSelectionMode = spyk({ _ -> })
+        mItemExpansion = spyk({ _, _, _ -> })
 
         val featureClick = DxFeatureClick<BaseItem>(
             onItemClick = { _, _, _ -> },
             onItemLongClick = { _, _, _ -> true }
         )
 
-        mSelectionFeature = DxFeatureSelection(
+        mExpansionFeature = DxFeatureExpansion(
             mAdapter,
             featureClick,
-            mItemSelection,
-            mSelectionMode
+            true,
+            mItemExpansion
         )
 
         //selection feature automatically adds the click feature to the adapter
-        mAdapter.addFeature(mSelectionFeature)
+        mAdapter.addFeature(mExpansionFeature)
         onActivity { it.apply { setAdapter(mAdapter) } }
     }
 
     @Test
-    fun selectedItems_selectedIndices_selectionMode() {
-        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
-        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = true }
-        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
-        val nonSelectable = ItemNonSelectable("non-selectable")
+    fun expandedItems_expandedIndices() {
+        val expanded1 = ItemExpandable("expandable 1").apply { isExpanded = true }
+        val expanded2 = ItemExpandable("expandable 2").apply { isExpanded = true }
+        val expanded3 = ItemExpandable("expandable 3").apply { isExpanded = false }
+        val nonExpandable = ItemNonExpandable("non-expandable")
 
-        mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
+        mAdapter.mItems.addAll(listOf(expanded1, expanded2, expanded3, nonExpandable))
 
         //NOTE:
-        //for some reason, if i call any selection function from outside an onActivity{} block,
+        //for some reason, if i call any expansion functions from outside an onActivity{} block,
         //i get an exception saying im trying to access the ui from a non-ui thread
         onActivity {
-            mSelectionFeature.apply {
+            mExpansionFeature.apply {
                 //items
-                val selectedItems = getAllSelectedItems()
-                val expectedItems = listOf(selectable1, selectable2)
-                assertEquals(2, selectedItems.size)
-                assertTrue(selectedItems.containsAll(expectedItems))
+                val expandedItems = getAllExpandedItems()
+                val expectedItems = listOf(expanded1, expanded2)
+                assertEquals(2, expandedItems.size)
+                assertTrue(expandedItems.containsAll(expectedItems))
 
                 //indices
-                val selectedIndices = getAllSelectedIndices()
+                val expandedIndices = getAllExpandedIndices()
                 val expectedIndices = listOf(0, 1)
-                assertEquals(2, selectedIndices.size)
-                assertTrue(selectedIndices.containsAll(expectedIndices))
-
-                //selection mode
-                assertTrue(isInSelectionMode())
-                deselectAll()
-                assertFalse(isInSelectionMode())
+                assertEquals(2, expandedIndices.size)
+                assertTrue(expandedIndices.containsAll(expectedIndices))
             }
         }
     }
 
     @Test
-    fun selection() {
-        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = false }
-        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = false }
-        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
-        val nonSelectable = ItemNonSelectable("non-selectable")
+    fun expand() {
+        val expanded1 = ItemExpandable("expandable 1").apply { isExpanded = false }
+        val expanded2 = ItemExpandable("expandable 2").apply { isExpanded = false }
+        val expanded3 = ItemExpandable("expandable 3").apply { isExpanded = false }
+        val nonExpandable = ItemNonExpandable("non-expandable")
 
-        mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
+        mAdapter.mItems.addAll(listOf(expanded1, expanded2, expanded3, nonExpandable))
 
         //NOTE:
         //for some reason, if i call any selection function from outside an onActivity{} block,
         //i get an exception saying im trying to access the ui from a non-ui thread
         onActivity {
-            mSelectionFeature.apply {
+            mExpansionFeature.apply {
                 //making sure it doesn't crash
-                select(nonSelectable)
+                expand(nonExpandable)
 
                 //single index
-                select(0)
-                assertTrue(selectable1.isSelected)
-                deselectAll() //reset the items
+                expand(0)
+                assertTrue(expanded1.isExpanded)
+                collapseAll() //reset the items
 
                 //index list
-                select(listOf(0, 1))
-                assertTrue(selectable1.isSelected)
-                assertTrue(selectable2.isSelected)
-                deselectAll() //reset the items
+                expand(listOf(0, 1))
+                assertTrue(expanded1.isExpanded)
+                assertTrue(expanded2.isExpanded)
+                collapseAll() //reset the items
 
                 //single item
-                select(selectable2)
-                assertTrue(selectable2.isSelected)
-                deselectAll() //reset the items
+                expand(expanded2)
+                assertTrue(expanded2.isExpanded)
+                collapseAll() //reset the items
 
                 //item list
-                select(listOf(selectable1, selectable2))
-                assertTrue(selectable1.isSelected)
-                assertTrue(selectable2.isSelected)
-                deselectAll() //reset the items
+                expand(listOf(expanded1, expanded2))
+                assertTrue(expanded1.isExpanded)
+                assertTrue(expanded2.isExpanded)
+                collapseAll() //reset the items
 
-                //select all
-                selectAll()
-                assertEquals(3, getNumSelectedItems())
-                getAllSelectableItems().forEach { assertTrue(it.isSelected) }
+                //expand all
+                expandAll()
+                assertEquals(3, getNumExpandedItems())
+                getAllExpandableItems().forEach { assertTrue(it.isExpanded) }
             }
         }
     }
 
     @Test
-    fun deselection() {
-        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
-        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = true }
-        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = true }
-        val nonSelectable = ItemNonSelectable("non-selectable")
+    fun collapse() {
+        val expanded1 = ItemExpandable("expandable 1").apply { isExpanded = true }
+        val expanded2 = ItemExpandable("expandable 2").apply { isExpanded = true }
+        val expanded3 = ItemExpandable("expandable 3").apply { isExpanded = true }
+        val nonSelectable = ItemNonExpandable("non-expandable")
 
-        mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
+        mAdapter.mItems.addAll(listOf(expanded1, expanded2, expanded3, nonSelectable))
 
         //NOTE:
         //for some reason, if i call any selection function from outside an onActivity{} block,
         //i get an exception saying im trying to access the ui from a non-ui thread
         onActivity {
-            mSelectionFeature.apply {
+            mExpansionFeature.apply {
                 //making sure it doesn't crash
-                deselect(nonSelectable)
+                collapse(nonSelectable)
 
                 //single index
-                deselect(0)
-                assertFalse(selectable1.isSelected)
-                selectAll() //reset the items
+                collapse(0)
+                assertFalse(expanded1.isExpanded)
+                collapseAll() //reset the items
 
                 //index list
-                deselect(listOf(0, 1))
-                assertFalse(selectable1.isSelected)
-                assertFalse(selectable2.isSelected)
-                selectAll() //reset the items
+                collapse(listOf(0, 1))
+                assertFalse(expanded1.isExpanded)
+                assertFalse(expanded2.isExpanded)
+                collapseAll() //reset the items
 
                 //single item
-                deselect(selectable2)
-                assertFalse(selectable2.isSelected)
-                selectAll() //reset the items
+                collapse(expanded2)
+                assertFalse(expanded2.isExpanded)
+                collapseAll() //reset the items
 
                 //item list
-                deselect(listOf(selectable1, selectable2))
-                assertFalse(selectable1.isSelected)
-                assertFalse(selectable2.isSelected)
-                selectAll() //reset the items
+                collapse(listOf(expanded1, expanded2))
+                assertFalse(expanded1.isExpanded)
+                assertFalse(expanded2.isExpanded)
+                collapseAll() //reset the items
 
                 //deselect all
-                deselectAll()
-                assertEquals(0, getNumSelectedItems())
-                getAllSelectableItems().forEach { assertFalse(it.isSelected) }
+                collapseAll()
+                assertEquals(0, getNumExpandedItems())
+                getAllExpandableItems().forEach { assertFalse(it.isExpanded) }
             }
         }
     }
 
     @Test
     fun clickBehaviourAndListeners() {
-        //start off with no items selected
-        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = false }
-        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = false }
-        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
-        val nonSelectable = ItemNonSelectable("non-selectable")
+        //start off with no items expanded
+        val expandable1 = ItemExpandable("expandable 1").apply { isExpanded = false }
+        val expandable2 = ItemExpandable("expandable 2").apply { isExpanded = false }
+        val expandable3 = ItemExpandable("expandable 3").apply { isExpanded = false }
+        val nonSelectable = ItemNonExpandable("non-expandable")
 
-        mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3, nonSelectable))
+        mAdapter.mItems.addAll(listOf(expandable1, expandable2, expandable3, nonSelectable))
 
-        mSelectionFeature.apply {
+        mExpansionFeature.apply {
             var position = 0
 
             //cannot "reset" the verify calls counter, so keep our own counter
@@ -191,20 +188,20 @@ class TestFeatureSelection : BaseTest() {
             var numCallsItemFalse = 0
 
             //IMPORTANT NOTE!!!
-            //when testing calls to mItemSelection we will NOT
+            //when testing calls to mItemExpansion we will NOT
             //specify the item parameter, because it makes it complicated to track the number
             //of calls
 
             //region clicking item (nothing should happen)
             clickAtPosition(position)
-            verify(exactly = numCallsItemTrue) { mItemSelection.invoke(any(), any(), any()) }
+            verify(exactly = numCallsItemTrue) { mItemExpansion.invoke(any(), any(), any()) }
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
             //endregion
 
             //region long clicking non-selectable item (nothing should happen)
             position = 3
             longClickAtPosition(position)
-            verify(exactly = numCallsItemTrue) { mItemSelection.invoke(any(), any(), any()) }
+            verify(exactly = numCallsItemTrue) { mItemExpansion.invoke(any(), any(), any()) }
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
             //endregion
 
@@ -215,7 +212,7 @@ class TestFeatureSelection : BaseTest() {
             ++numCallsSelectionMode
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(true) }
             verify(exactly = numCallsItemTrue) {
-                mItemSelection.invoke(
+                mItemExpansion.invoke(
                     position,
                     true,
                     any()
@@ -231,7 +228,7 @@ class TestFeatureSelection : BaseTest() {
             longClickAtPosition(position)
 
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
-            verify(exactly = numCallsItemTrue) { mItemSelection.invoke(any(), any(), any()) }
+            verify(exactly = numCallsItemTrue) { mItemExpansion.invoke(any(), any(), any()) }
             assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
             assertEquals(getNumSelectedItems(), 1)
             //endregion
@@ -243,7 +240,7 @@ class TestFeatureSelection : BaseTest() {
 
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
             verify(exactly = 1) {
-                mItemSelection.invoke(
+                mItemExpansion.invoke(
                     position,
                     true,
                     any()
@@ -260,7 +257,7 @@ class TestFeatureSelection : BaseTest() {
 
             verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
             verify(exactly = numCallsItemFalse) {
-                mItemSelection.invoke(
+                mItemExpansion.invoke(
                     position,
                     false,
                     any()
@@ -279,7 +276,7 @@ class TestFeatureSelection : BaseTest() {
             //method is called with these specific parameters
             verify(exactly = 1) { mSelectionMode.invoke(false) }
             verify(exactly = 1) {
-                mItemSelection.invoke(
+                mItemExpansion.invoke(
                     position,
                     false,
                     any()
@@ -294,16 +291,16 @@ class TestFeatureSelection : BaseTest() {
 
     @Test
     fun alreadySelectedItemDoesNotTriggerListenerAgain() {
-        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
-        mAdapter.mItems.add(selectable1)
+        val expandable1 = ItemExpandable("expandable 1").apply { isExpanded = true }
+        mAdapter.mItems.add(expandable1)
 
         //NOTE:
         //for some reason, if i call any selection function from outside an onActivity{} block,
         //i get an exception saying im trying to access the ui from a non-ui thread
         onActivity {
-            mSelectionFeature.apply {
-                select(selectable1)
-                verify(exactly = 0) { mItemSelection.invoke(any(), any(), any()) }
+            mExpansionFeature.apply {
+                expand(expandable1)
+                verify(exactly = 0) { mItemExpansion.invoke(any(), any(), any()) }
             }
         }
     }

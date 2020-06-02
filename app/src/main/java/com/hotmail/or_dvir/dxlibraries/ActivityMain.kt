@@ -66,8 +66,7 @@ class ActivityMain : AppCompatActivity() {
 //        setDragFeatureMixed()
 //        setSwipeFeature()
 //        setSelectionFeature()
-        //todo test mixed viewHolders!!!
-        setExpansionFeature()
+//        setExpansionFeature()
 //        setStickyHeader()
     }
 
