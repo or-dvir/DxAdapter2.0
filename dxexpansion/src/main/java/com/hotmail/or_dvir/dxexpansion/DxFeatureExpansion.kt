@@ -10,12 +10,13 @@ import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxclick.IDxClickListenerFeature
 import com.hotmail.or_dvir.dxclick.OnItemClickListener
 import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
+import org.jetbrains.annotations.TestOnly
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 class DxFeatureExpansion<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
-    private val expandAndCollapseOnClick: Boolean,
+    private var expandAndCollapseOnClick: Boolean,
     private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
@@ -25,6 +26,11 @@ class DxFeatureExpansion<ITEM : IDxBaseItem>(
     init {
         adapter.addFeature(clickFeature)
         clickFeature.clickListenerFeatures.add(this)
+    }
+
+    @TestOnly
+    fun setExpandOnClick(expandOnClick: Boolean) {
+        expandAndCollapseOnClick = expandOnClick
     }
 
     override fun onCreateViewHolder(

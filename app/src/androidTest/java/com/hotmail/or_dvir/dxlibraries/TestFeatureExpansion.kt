@@ -15,8 +15,6 @@ import org.junit.Test
 
 class TestFeatureExpansion : BaseTest() {
 
-    //todo test expansion with expandOnClick = false
-
     private val mAdapter = AdapterExpandableMix(mutableListOf())
     private lateinit var mItemExpansion: OnItemExpansionStateChangedListener<BaseItem>
     private lateinit var mExpansionFeature: DxFeatureExpansion<BaseItem>
@@ -249,6 +247,22 @@ class TestFeatureExpansion : BaseTest() {
                 expand(expandable1)
                 verify(exactly = 0) { mItemExpansion.invoke(any(), any(), any()) }
             }
+        }
+    }
+
+    @Test
+    fun expansionOnClickIsFalse() {
+        val expandable1 = ItemExpandable("expandable 1").apply { isExpanded = false }
+        mAdapter.mItems.add(expandable1)
+
+        mExpansionFeature.apply {
+            setExpandOnClick(false)
+
+            clickAtPosition(0)
+            verify(exactly = 0) { mItemExpansion.invoke(any(), any(), any()) }
+            assertEquals(getNumExpandedItems(), 0)
+            assertEquals(getAllExpandedIndices().size, 0)
+            assertEquals(getAllExpandedItems().size, 0)
         }
     }
 }
