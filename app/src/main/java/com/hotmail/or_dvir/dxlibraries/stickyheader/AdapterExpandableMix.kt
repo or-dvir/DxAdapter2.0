@@ -10,7 +10,6 @@ import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
 import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
 import kotlinx.android.synthetic.main.list_item_expandable.view.*
-import kotlinx.android.synthetic.main.list_item_header.view.*
 
 class AdapterExpandableMix(mItems: MutableList<BaseItem>) :
     BaseSampleAdapter<BaseItem, RecyclerView.ViewHolder>(mItems) {
@@ -51,7 +50,7 @@ class AdapterExpandableMix(mItems: MutableList<BaseItem>) :
     /////////////////////////////////////
 
     class ViewHolder(itemView: View) : DxFeatureExpansion.ViewHolder(itemView) {
-        val tv: TextView = itemView.listItem_header_tv
+        val tv: TextView = itemView.listItem_tv
         override val expandableView: View = itemView.listItem_expandable_expansionRoot
     }
 }

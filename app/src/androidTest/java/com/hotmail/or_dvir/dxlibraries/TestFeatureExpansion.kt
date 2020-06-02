@@ -2,12 +2,11 @@ package com.hotmail.or_dvir.dxlibraries
 
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxexpansion.DxFeatureExpansion
+import com.hotmail.or_dvir.dxexpansion.IDxItemExpandable
 import com.hotmail.or_dvir.dxexpansion.OnItemExpansionStateChangedListener
 import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
 import com.hotmail.or_dvir.dxlibraries.expandable.ItemNonExpandable
-import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
 import com.hotmail.or_dvir.dxlibraries.stickyheader.AdapterExpandableMix
-import com.hotmail.or_dvir.dxselection.IDxItemSelectable
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Assert.*
@@ -16,9 +15,7 @@ import org.junit.Test
 
 class TestFeatureExpansion : BaseTest() {
 
-    //todo
-    // test expand/collapse on click
-    // test mixed adapter
+    //todo test expansion with expandOnClick = false
 
     private val mAdapter = AdapterExpandableMix(mutableListOf())
     private lateinit var mItemExpansion: OnItemExpansionStateChangedListener<BaseItem>
@@ -183,7 +180,6 @@ class TestFeatureExpansion : BaseTest() {
             var position = 0
 
             //cannot "reset" the verify calls counter, so keep our own counter
-            var numCallsSelectionMode = 0
             var numCallsItemTrue = 0
             var numCallsItemFalse = 0
 
@@ -192,105 +188,56 @@ class TestFeatureExpansion : BaseTest() {
             //specify the item parameter, because it makes it complicated to track the number
             //of calls
 
-            //region clicking item (nothing should happen)
-            clickAtPosition(position)
-            verify(exactly = numCallsItemTrue) { mItemExpansion.invoke(any(), any(), any()) }
-            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
-            //endregion
-
-            //region long clicking non-selectable item (nothing should happen)
+            //region non-expandable item
             position = 3
-            longClickAtPosition(position)
+            clickAtPosition(position)
             verify(exactly = numCallsItemTrue) { mItemExpansion.invoke(any(), any(), any()) }
-            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
             //endregion
 
-            //region long clicking first item
+            //region expanding item
             position = 0
-            longClickAtPosition(position)
+            clickAtPosition(position)
             ++numCallsItemTrue
-            ++numCallsSelectionMode
-            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(true) }
-            verify(exactly = numCallsItemTrue) {
-                mItemExpansion.invoke(
-                    position,
-                    true,
-                    any()
-                )
-            }
-            assertTrue((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
-            assertTrue(isInSelectionMode())
-            assertEquals(getNumSelectedItems(), 1)
+            verify(exactly = numCallsItemTrue) { mItemExpansion.invoke(position, true, any()) }
+            assertTrue((mAdapter.getItem(position) as IDxItemExpandable).isExpanded)
+            assertEquals(getNumExpandedItems(), 1)
             //endregion
 
-            //region long clicking another item (nothing should change)
+            //region expanding another item
             position = 1
-            longClickAtPosition(position)
-
-            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
-            verify(exactly = numCallsItemTrue) { mItemExpansion.invoke(any(), any(), any()) }
-            assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
-            assertEquals(getNumSelectedItems(), 1)
-            //endregion
-
-            //region selecting another item by clicking it
-            //position and itemToCheck have not changed
             clickAtPosition(position)
             ++numCallsItemTrue
 
-            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
-            verify(exactly = 1) {
-                mItemExpansion.invoke(
-                    position,
-                    true,
-                    any()
-                )
-            }
-            assertTrue((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
-            assertEquals(getNumSelectedItems(), 2)
+            verify(exactly = 1) { mItemExpansion.invoke(position, true, any()) }
+            assertTrue((mAdapter.getItem(position) as IDxItemExpandable).isExpanded)
+            assertEquals(getNumExpandedItems(), 2)
             //endregion
 
-            //region deselecting item by clicking it
-            //clickedPosition and itemToCheck have not changed
+            //region collapsing an item by clicking it
+            //position did not change
             clickAtPosition(position)
             ++numCallsItemFalse
 
-            verify(exactly = numCallsSelectionMode) { mSelectionMode.invoke(any()) }
-            verify(exactly = numCallsItemFalse) {
-                mItemExpansion.invoke(
-                    position,
-                    false,
-                    any()
-                )
-            }
-            assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
-            assertTrue(isInSelectionMode())
-            assertEquals(getNumSelectedItems(), 1)
+            verify(exactly = numCallsItemFalse) { mItemExpansion.invoke(position, false, any()) }
+            assertFalse((mAdapter.getItem(position) as IDxItemExpandable).isExpanded)
+            assertEquals(getNumExpandedItems(), 1)
             //endregion
 
-            //region deselecting last item
+            //region collapsing last item
             position = 0
             clickAtPosition(position)
 
-            //not using numCallsSelectionMode and numCallsItem because this is the first time the
+            //not using numCallsItem because this is the first time the
             //method is called with these specific parameters
-            verify(exactly = 1) { mSelectionMode.invoke(false) }
-            verify(exactly = 1) {
-                mItemExpansion.invoke(
-                    position,
-                    false,
-                    any()
-                )
-            }
-            assertFalse((mAdapter.getItem(position) as IDxItemSelectable).isSelected)
-            assertFalse(isInSelectionMode())
-            assertEquals(getNumSelectedItems(), 0)
+            verify(exactly = 1) { mItemExpansion.invoke(position, false, any()) }
+            assertFalse((mAdapter.getItem(position) as IDxItemExpandable).isExpanded)
+            assertEquals(getNumExpandedItems(), 0)
             //endregion
         }
     }
 
     @Test
-    fun alreadySelectedItemDoesNotTriggerListenerAgain() {
+    fun alreadyExpandedItemDoesNotTriggerListenerAgain() {
         val expandable1 = ItemExpandable("expandable 1").apply { isExpanded = true }
         mAdapter.mItems.add(expandable1)
 
