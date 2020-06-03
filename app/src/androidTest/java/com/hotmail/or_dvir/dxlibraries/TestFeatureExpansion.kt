@@ -15,6 +15,8 @@ import org.junit.Test
 
 class TestFeatureExpansion : BaseTest() {
 
+    add test for only one item expandable
+
     private val mAdapter = AdapterExpandableMix(mutableListOf())
     private lateinit var mItemExpansion: OnItemExpansionStateChangedListener<BaseItem>
     private lateinit var mExpansionFeature: DxFeatureExpansion<BaseItem>

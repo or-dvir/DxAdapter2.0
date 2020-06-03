@@ -21,9 +21,6 @@ class DxFeatureExpansion<ITEM : IDxBaseItem>(
     private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
-    //todo
-    // add option for only 1 item expanded
-
     init {
         adapter.addFeature(clickFeature)
         clickFeature.clickListenerFeatures.add(this)
@@ -117,10 +114,14 @@ class DxFeatureExpansion<ITEM : IDxBaseItem>(
     fun expand(index: Int) = expand(adapter.getItem(index))
     fun expand(item: ITEM) = expand(listOf(item))
     fun expand(items: List<ITEM>) {
+        //todo when documenting, add note to explain that if none of items is expandable,
+        // all items will be collapsed
         if (onlyOneItemExpanded) {
-            val itemsToCollapse = getAllExpandedItems().minus(items[0])
+            val firstExpandableItem = items.first { it is IDxItemExpandable }
+            val itemsToCollapse = getAllExpandedItems().minus(firstExpandableItem)
+
             collapse(itemsToCollapse)
-            expandOrCollapse(true, listOf(items.first { it is IDxItemExpandable }))
+            expandOrCollapse(true, listOf(firstExpandableItem))
         } else {
             expandOrCollapse(true, items)
         }
