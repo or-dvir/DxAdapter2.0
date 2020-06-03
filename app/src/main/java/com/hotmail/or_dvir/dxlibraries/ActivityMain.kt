@@ -47,6 +47,7 @@ class ActivityMain : AppCompatActivity() {
     // add documentation about which dependencies EACH MODULE forwards to the user
     // make sure to have proper documentation for all classes in ALL MODULES
     // add readme file to all modules
+    //todo what happens if (for example) the user imports 2 modules that both have "api recycler view"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
