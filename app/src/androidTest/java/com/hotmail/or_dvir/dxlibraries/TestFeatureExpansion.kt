@@ -51,10 +51,11 @@ class TestFeatureExpansion : BaseTest() {
         mAdapter.mItems.addAll(listOf(expanded1, expanded2, expanded3))
         mExpansionFeature.setOnlyOneItemExpanded(true)
 
-        //clicking an item -> only that item should be expanded
+        //clicking an item -> only that item should be expanded.
+        //note:
+        // the first click collapsed the item, and onlyOneItemExpanded property only takes effect after
+        // the first time an item is expanded - so we need to click it again
         clickAtPosition(1)
-        //the first click collapsed the item, and onlyOneItemExpanded property only takes effect after
-        //the first time an item is expanded - so we need to click it again
         clickAtPosition(1)
 
         mExpansionFeature.apply {
@@ -80,11 +81,6 @@ class TestFeatureExpansion : BaseTest() {
             assertEquals(1, getAllExpandedItems().size)
             assertEquals(expanded2, getAllExpandedItems()[0])
         }
-
-        //todo
-        // all items are expanded
-        // expand one item
-        // check that only that item is expanded
     }
 
     @Test

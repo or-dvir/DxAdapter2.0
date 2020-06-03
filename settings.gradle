@@ -1,6 +1,6 @@
+rootProject.name='DxLibraries'
 include ':dxexpansion'
 include ':dxstickyheader'
-rootProject.name='DxLibraries'
 include ':app'
 include ':dxrecyclerview'
 include ':dxcountingidlingresource'
