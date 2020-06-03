@@ -43,15 +43,10 @@ class ActivityMain : AppCompatActivity() {
     //      this should make the code a lot more readable
     // add documentation for everything (mostly copy from DxAdapter)
     // export each module as its own library!!!
-    // remove unnecessary dependencies FOR EACH MODULE!!!!
-    //      pay SPECIAL ATTENTION to modules that depends on one-another (e.g. DxRecyclerView and DxCountingIdlingResource)
     // go over all to-do's from ALL the modules
-    // define project wide constants for versions of:
-    //      EVERYTHING IN ALL BUILD.GRADLE FILES!!!!!
     // add documentation about which dependencies EACH MODULE forwards to the user
     // make sure to have proper documentation for all classes in ALL MODULES
     // add readme file to all modules
-    // delete all example test files from all modules
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
