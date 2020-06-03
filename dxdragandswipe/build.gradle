@@ -30,13 +30,12 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
     implementation "androidx.core:core-ktx:$version_core_ktx"
 
-    //todo should i use implementation or api?
     //recycler view
     api "androidx.recyclerview:recyclerview:$version_recyclerView"
 
     //todo when exported to a library,
-    //todo do i need to change this line to import the library instead of the project
-    //todo or is it ok to leave it like this???
-    //todo change implementation to api???
+    // do i need to change this line to import the library instead of the project
+    // or is it ok to leave it like this???
+    // change implementation to api???
     implementation project(path: ':dxadapter')
 }

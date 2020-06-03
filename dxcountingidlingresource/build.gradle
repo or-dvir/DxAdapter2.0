@@ -31,5 +31,5 @@ dependencies {
     implementation "androidx.core:core-ktx:$version_core_ktx"
 
     //idling resources
-    api "androidx.test.espresso:espresso-idling-resource:$version_idlingResource"
+    implementation "androidx.test.espresso:espresso-idling-resource:$version_idlingResource"
 }
