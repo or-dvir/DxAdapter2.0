@@ -15,8 +15,6 @@ import org.junit.Test
 
 class TestFeatureExpansion : BaseTest() {
 
-    add test for only one item expandable
-
     private val mAdapter = AdapterExpandableMix(mutableListOf())
     private lateinit var mItemExpansion: OnItemExpansionStateChangedListener<BaseItem>
     private lateinit var mExpansionFeature: DxFeatureExpansion<BaseItem>
@@ -42,6 +40,51 @@ class TestFeatureExpansion : BaseTest() {
         //selection feature automatically adds the click feature to the adapter
         mAdapter.addFeature(mExpansionFeature)
         onActivity { it.apply { setAdapter(mAdapter) } }
+    }
+
+    @Test
+    fun onlyOneExpandableItem_startExpanded() {
+        val expanded1 = ItemExpandable("expandable 1").apply { isExpanded = true }
+        val expanded2 = ItemExpandable("expandable 2").apply { isExpanded = true }
+        val expanded3 = ItemExpandable("expandable 3").apply { isExpanded = true }
+
+        mAdapter.mItems.addAll(listOf(expanded1, expanded2, expanded3))
+        mExpansionFeature.setOnlyOneItemExpanded(true)
+
+        //clicking an item -> only that item should be expanded
+        clickAtPosition(1)
+        //the first click collapsed the item, and onlyOneItemExpanded property only takes effect after
+        //the first time an item is expanded - so we need to click it again
+        clickAtPosition(1)
+
+        mExpansionFeature.apply {
+            assertEquals(1, getAllExpandedItems().size)
+            assertEquals(expanded2, getAllExpandedItems()[0])
+        }
+    }
+
+    @Test
+    fun onlyOneExpandableItem_startCollapsed() {
+        val expanded1 = ItemExpandable("expandable 1").apply { isExpanded = false }
+        val expanded2 = ItemExpandable("expandable 2").apply { isExpanded = false }
+        val expanded3 = ItemExpandable("expandable 3").apply { isExpanded = false }
+
+        mAdapter.mItems.addAll(listOf(expanded1, expanded2, expanded3))
+        mExpansionFeature.setOnlyOneItemExpanded(true)
+
+        //clicking first two items -> only the second one should be expanded
+        clickAtPosition(0)
+        clickAtPosition(1)
+
+        mExpansionFeature.apply {
+            assertEquals(1, getAllExpandedItems().size)
+            assertEquals(expanded2, getAllExpandedItems()[0])
+        }
+
+        //todo
+        // all items are expanded
+        // expand one item
+        // check that only that item is expanded
     }
 
     @Test
@@ -178,8 +221,6 @@ class TestFeatureExpansion : BaseTest() {
         mAdapter.mItems.addAll(listOf(expandable1, expandable2, expandable3, nonSelectable))
 
         mExpansionFeature.apply {
-            var position = 0
-
             //cannot "reset" the verify calls counter, so keep our own counter
             var numCallsItemTrue = 0
             var numCallsItemFalse = 0
@@ -190,7 +231,7 @@ class TestFeatureExpansion : BaseTest() {
             //of calls
 
             //region non-expandable item
-            position = 3
+            var position = 3
             clickAtPosition(position)
             verify(exactly = numCallsItemTrue) { mItemExpansion.invoke(any(), any(), any()) }
             //endregion

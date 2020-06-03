@@ -17,13 +17,22 @@ class DxFeatureExpansion<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
     private var expandAndCollapseOnClick: Boolean,
-    private val onlyOneItemExpanded: Boolean,
+    private var onlyOneItemExpanded: Boolean,
     private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
 ) : IDxBaseFeature, IDxClickListenerFeature {
+
+    //todo when documenting add a note that onlyOneItemExpanded does not include the initial state
+    // of the items. meaning that if the items start off expanded, they will first show as expanded
+    // even if onlyOneItemExpanded is true
 
     init {
         adapter.addFeature(clickFeature)
         clickFeature.clickListenerFeatures.add(this)
+    }
+
+    @TestOnly
+    fun setOnlyOneItemExpanded(onlyOne: Boolean) {
+        onlyOneItemExpanded = onlyOne
     }
 
     @TestOnly
