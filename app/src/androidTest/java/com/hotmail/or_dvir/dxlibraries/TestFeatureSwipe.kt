@@ -31,9 +31,9 @@ class TestFeatureSwipe : BaseTest() {
     //the following features are simple variables to return to google's default
     //implementation (in other words: there is no custom logic behind them), and therefore they
     //do not need to be tested:
-    // swipeThreshold.
-    // swipeEscapeVelocity.
-    // swipeEscapeVelocityMultiplier.
+    //      swipeThreshold.
+    //      swipeEscapeVelocity.
+    //      swipeEscapeVelocityMultiplier.
 
     //IMPORTANT NOTE:
     //do to the way ItemTouchCallback works, you MUST do something with the item once its swiped!

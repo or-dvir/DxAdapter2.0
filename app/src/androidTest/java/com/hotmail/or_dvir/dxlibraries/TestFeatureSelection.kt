@@ -1,6 +1,5 @@
 package com.hotmail.or_dvir.dxlibraries
 
-import android.util.Log
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemNonSelectable
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable

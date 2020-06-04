@@ -15,6 +15,8 @@ class AdapterClickable(mItems: MutableList<ItemClickable>) :
         R.layout.list_item_standard
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        super.onBindViewHolder(holder, position)
+
         val item = getItem(position)
         holder.tv.text = item.text
     }

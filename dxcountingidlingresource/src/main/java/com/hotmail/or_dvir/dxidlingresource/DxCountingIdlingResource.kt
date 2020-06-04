@@ -1,7 +1,6 @@
 package com.hotmail.or_dvir.dxidlingresource
 
 import android.util.Log
-import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.idling.CountingIdlingResource
 
 open class DxCountingIdlingResource(private val uniqueName: String) {

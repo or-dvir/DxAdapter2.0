@@ -9,8 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
 abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Adapter<VH>() {
-
-    //    private val allFeatures: MutableList<IDxBaseFeature> = mutableListOf()
     private val allFeatures: LinkedHashMap<Int, IDxBaseFeature> = LinkedHashMap()
 
     fun addFeature(feature: IDxBaseFeature) =
@@ -40,19 +38,6 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
             it.onBindViewHolder(this, holder.itemView, holder)
         }
     }
-
-//    @CallSuper
-//    override fun onViewRecycled(holder: ViewHolder) {
-//        super.onViewRecycled(holder)
-//
-//        //todo
-//
-////        holder.adapterPosition.let {
-////            if (it != RecyclerView.NO_POSITION) {
-////                unbindViewHolder(holder, it, getItems()[it])
-////            }
-////        }
-//    }
 
     override fun getItemCount() = getDxAdapterItems().size
     override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
@@ -120,29 +105,4 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
      */
     @LayoutRes
     abstract fun getItemLayoutRes(parent: ViewGroup, viewType: Int): Int
-
-    //todo commented out because i cannot have ITEM as a type of one of the parameters
-    // as long as its marked as "out"
-//    /**
-//     * wrapper for [onBindViewHolder][RecyclerView.Adapter.onBindViewHolder]
-//     * with the addition of [item].
-//     *
-//     * use this function only. do NOT override
-//     * [onBindViewHolder][RecyclerView.Adapter.onBindViewHolder] directly
-//     * @param item the item at [position]
-//     */
-//    abstract fun bindViewHolder(holder: ViewHolder, position: Int, item: ITEM)
-
-    //todo commented out because i cannot have ITEM as a type of one of the parameters
-    // as long as its marked as "out"
-//    /**
-//     * wrapper for [onViewRecycled][RecyclerView.Adapter.onViewRecycled]
-//     * with the addition of [position] and [item].
-//     *
-//     * use this function only. do NOT override
-//     * [onViewRecycled][RecyclerView.Adapter.onViewRecycled] directly
-//     * @param position the adapter position being recycled
-//     * @param item the item associated with [position]
-//     */
-//    abstract fun unbindViewHolder(holder: ViewHolder, position: Int, item: ITEM)
 }

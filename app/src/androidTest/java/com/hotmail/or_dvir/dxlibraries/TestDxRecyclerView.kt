@@ -48,12 +48,6 @@ class TestDxRecyclerView : BaseTest() {
                 setAdapter(testAdapter)
             }
         }
-
-        //set a fresh empty list.
-        //IMPORTANT NOTE
-        //this method should NOT be called from inside the activity (e.g. inside onActivity{} block)
-        //or the test will get stuck!!!
-//        setListForActivity(0)
     }
 
     @After

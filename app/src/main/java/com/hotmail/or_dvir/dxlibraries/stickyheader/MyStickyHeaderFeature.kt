@@ -1,8 +1,6 @@
 package com.hotmail.or_dvir.dxlibraries.stickyheader
 
 import android.view.View
-import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxlibraries.BaseItem
 import com.hotmail.or_dvir.dxlibraries.R
 import com.hotmail.or_dvir.dxstickyheader.DxFeatureStickyHeader

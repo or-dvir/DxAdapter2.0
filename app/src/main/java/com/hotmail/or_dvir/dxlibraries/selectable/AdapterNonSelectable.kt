@@ -4,7 +4,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
-import com.hotmail.or_dvir.dxlibraries.expandable.ItemNonExpandable
 
 class AdapterNonSelectable(mItems: MutableList<ItemNonSelectable>) :
     BaseSampleAdapter<ItemNonSelectable, BaseSampleAdapter.ViewHolder>(mItems) {

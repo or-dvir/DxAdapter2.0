@@ -1,7 +1,6 @@
 package com.hotmail.or_dvir.dxlibraries
 
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.DxAdapter

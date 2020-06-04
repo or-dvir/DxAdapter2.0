@@ -43,11 +43,12 @@ class ActivityMain : AppCompatActivity() {
     // add documentation for everything (mostly copy from DxAdapter)
     // export each module as its own library!!!
     // go over all to-do's from ALL the modules
-    // add documentation about which dependencies EACH MODULE forwards to the user
     // make sure to have proper documentation for all classes in ALL MODULES
-    // add readme file to all modules
+    // add readme file FOR EACH MODULE
+    //      which dependencies EACH MODULE forwards to the user?
     // when documenting add a note for the minSdkVersion
     // look in EVERY SINGLE FILE and remove unused or commented out code
+    // can i make the sample more clear?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,7 +161,6 @@ class ActivityMain : AppCompatActivity() {
                     //(e.g. remove, reset). if you don't, listeners will be called for wrong items
                     //todo add this note in documentation
                     //this resets the item
-//                    adapter.removeItem(adapterPosition)
                     adapter.notifyItemChanged(adapterPosition)
                     Log.i("aaaaa", "${item.text} swiped")
                 },

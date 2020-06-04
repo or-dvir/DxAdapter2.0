@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
-import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
 
 class AdapterSelectable(mItems: MutableList<ItemSelectable>) :
     BaseSampleAdapter<ItemSelectable, BaseSampleAdapter.ViewHolder>(mItems) {
