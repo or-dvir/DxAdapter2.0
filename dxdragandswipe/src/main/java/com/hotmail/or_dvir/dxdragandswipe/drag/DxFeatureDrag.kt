@@ -77,7 +77,7 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
-        //do nothinig
+        //do nothing
     }
 
     override fun getFeatureId() = R.id.feature_drag
