@@ -12,7 +12,7 @@ import com.hotmail.or_dvir.dxclick.OnItemClickListener
 import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class DxFeatureSelection<ITEM : IDxBaseItem>(
+open class DxFeatureSelection<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
     private val onItemSelectionChanged: OnItemSelectionChangedListener<ITEM>,

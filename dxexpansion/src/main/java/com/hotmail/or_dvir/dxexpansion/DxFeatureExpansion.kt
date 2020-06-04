@@ -13,7 +13,7 @@ import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
 import org.jetbrains.annotations.TestOnly
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class DxFeatureExpansion<ITEM : IDxBaseItem>(
+open class DxFeatureExpansion<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
     private var expandAndCollapseOnClick: Boolean,

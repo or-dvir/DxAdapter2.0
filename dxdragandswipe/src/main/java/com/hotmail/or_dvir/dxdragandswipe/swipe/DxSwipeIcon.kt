@@ -20,7 +20,7 @@ import androidx.core.content.ContextCompat
  * @param desiredHeightPx the desired height of the icon, in pixels (recommended to use
  * DP from dimens.xml)
  */
-class DxSwipeIcon(
+open class DxSwipeIcon(
     @DrawableRes val iconRes: Int,
     private val context: Context,
     private val desiredHeightPx: Int

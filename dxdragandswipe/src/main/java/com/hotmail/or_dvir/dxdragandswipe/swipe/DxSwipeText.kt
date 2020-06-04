@@ -18,7 +18,7 @@ import androidx.annotation.ColorInt
  * @param desiredSizePx the desired size of the text, in pixels (see note in class description)
  * @param textColor the color of the text
  */
-class DxSwipeText(
+open class DxSwipeText(
     internal val text: String,
     private val desiredSizePx: Float,
     @ColorInt internal val textColor: Int

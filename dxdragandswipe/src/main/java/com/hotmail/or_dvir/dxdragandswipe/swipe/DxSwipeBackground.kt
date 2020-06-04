@@ -3,7 +3,7 @@ package com.hotmail.or_dvir.dxdragandswipe.swipe
 import android.graphics.drawable.ColorDrawable
 import androidx.annotation.ColorInt
 
-class DxSwipeBackground(
+open class DxSwipeBackground(
     internal var paddingPx: Int,
     @ColorInt internal val backgroundColor: Int?,
     internal val dxText: DxSwipeText?,

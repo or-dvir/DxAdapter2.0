@@ -8,7 +8,7 @@ package com.hotmail.or_dvir.dxrecyclerview
  * @see onLastItemVisible
  * @see onLastItemInvisible
  */
-class DxVisibilityListener {
+open class DxVisibilityListener {
     internal var flagNotifiedFirstVisible = false
     internal var flagNotifiedFirstInvisible = false
     internal var flagNotifiedLastVisible = false

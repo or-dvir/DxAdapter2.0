@@ -6,7 +6,7 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
-class DxFeatureClick<ITEM : IDxBaseItem>(
+open class DxFeatureClick<ITEM : IDxBaseItem>(
     private val onItemClick: OnItemClickListener<ITEM>,
     private val onItemLongClick: OnItemLongClickListener<ITEM>
 ) : IDxBaseFeature {

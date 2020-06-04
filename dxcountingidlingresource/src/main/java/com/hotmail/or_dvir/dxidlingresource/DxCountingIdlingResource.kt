@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.test.espresso.IdlingResource
 import androidx.test.espresso.idling.CountingIdlingResource
 
-class DxCountingIdlingResource(private val uniqueName: String) {
+open class DxCountingIdlingResource(private val uniqueName: String) {
     companion object {
         val TAG = DxCountingIdlingResource::class.java.simpleName
     }

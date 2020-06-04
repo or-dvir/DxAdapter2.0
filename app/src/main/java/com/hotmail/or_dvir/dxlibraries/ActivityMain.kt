@@ -40,14 +40,14 @@ class ActivityMain : AppCompatActivity() {
 
     //todo
     // should i add filtering feature? is that useful?
-    // make all features open so the user can extend them and simply use in the activity...
-    //      this should make the code a lot more readable
     // add documentation for everything (mostly copy from DxAdapter)
     // export each module as its own library!!!
     // go over all to-do's from ALL the modules
     // add documentation about which dependencies EACH MODULE forwards to the user
     // make sure to have proper documentation for all classes in ALL MODULES
     // add readme file to all modules
+    // when documenting add a note for the minSdkVersion
+    // look in EVERY SINGLE FILE and remove unused or commented out code
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

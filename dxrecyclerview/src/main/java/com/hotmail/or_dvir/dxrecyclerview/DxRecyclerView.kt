@@ -13,7 +13,7 @@ import kotlin.math.abs
  * @see onItemsVisibilityListener
  * @see onScrollListener
  */
-class DxRecyclerView @JvmOverloads constructor(
+open class DxRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0

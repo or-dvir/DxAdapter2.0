@@ -7,7 +7,7 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 /**
  * a convenience wrapper for [ItemTouchHelper] what allows dragging with a handle
  */
-class DxItemTouchHelper<ITEM: IDxBaseItem>(private val itemTouchCallback: DxItemTouchCallback<ITEM>) :
+open class DxItemTouchHelper<ITEM: IDxBaseItem>(private val itemTouchCallback: DxItemTouchCallback<ITEM>) :
     ItemTouchHelper(itemTouchCallback) {
 
     /**

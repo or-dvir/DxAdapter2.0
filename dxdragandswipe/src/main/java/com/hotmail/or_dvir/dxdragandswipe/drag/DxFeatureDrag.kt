@@ -17,7 +17,7 @@ import org.jetbrains.annotations.TestOnly
 //due to the fact that both swipe and drag are handled inside DxItemTouchCallback,
 //the generic type CANNOT be IDxItemDraggable (because then we wouldn't be able to handle
 //IDxItemSwipeable items in DxItemTouchCallback)
-class DxFeatureDrag<ITEM : IDxBaseItem>(
+open class DxFeatureDrag<ITEM : IDxBaseItem>(
     internal var dragDirections: Int,
     private val onDragStart: OnDragEventListener<ITEM>,
     private val onDragEnd: OnDragEventListener<ITEM>,

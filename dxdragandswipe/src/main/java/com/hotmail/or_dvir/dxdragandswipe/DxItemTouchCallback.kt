@@ -15,7 +15,7 @@ import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.IDxItemSwipeable
 import kotlin.math.roundToInt
 
-class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<ITEM, *>) :
+open class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<ITEM, *>) :
     ItemTouchHelper.Callback() {
 
     //region

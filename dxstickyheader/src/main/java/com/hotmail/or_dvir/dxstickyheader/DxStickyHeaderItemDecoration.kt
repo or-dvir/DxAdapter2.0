@@ -12,7 +12,7 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseItem
  * add this [ItemDecoration][RecyclerView.ItemDecoration] to your [RecyclerView] to draw
  * the sticky header at the top of your list
  */
-class DxStickyHeaderItemDecoration<ITEM : IDxBaseItem>(
+open class DxStickyHeaderItemDecoration<ITEM : IDxBaseItem>(
     private val stickyHeaderFeature: DxFeatureStickyHeader<ITEM>
 ) : RecyclerView.ItemDecoration() {
 
