@@ -25,6 +25,9 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
     internal var dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 
+    stopped here going through all the files for todo notes
+
+
     //todo when documenting note that in onDragEnd, the parameter adapterPosition is
     // the FINAL position of the item
 

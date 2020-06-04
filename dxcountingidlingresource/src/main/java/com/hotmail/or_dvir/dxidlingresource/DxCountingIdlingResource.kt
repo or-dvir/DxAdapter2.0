@@ -8,9 +8,6 @@ open class DxCountingIdlingResource(private val uniqueName: String) {
         val TAG = DxCountingIdlingResource::class.java.simpleName
     }
 
-    //todo make this class an actual IdlingResource instead of holding a reference to one
-    // (implement IdlingResource interface)
-
     //todo add a note in documentation that this will also run in release builds
 
     //resource name should be unique so we use TAG which is the class name
