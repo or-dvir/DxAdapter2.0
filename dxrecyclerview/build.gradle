@@ -32,7 +32,7 @@ dependencies {
     //recycler view
     api "androidx.recyclerview:recyclerview:$version_recyclerView"
 
-    //todo when dx-counting-idling-resource is exported to a library,
+    //todo when exporting to a library,
     // do i need to change this line to import the library instead of the project
     // or is it ok to leave it like this???
     implementation project(path: ':dxcountingidlingresource')

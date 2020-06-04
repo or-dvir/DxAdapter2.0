@@ -40,14 +40,12 @@ class ActivityMain : AppCompatActivity() {
 
     //todo
     // should i add filtering feature? is that useful?
-    // add documentation for everything (mostly copy from DxAdapter)
     // export each module as its own library!!!
     // go over all to-do's from ALL the modules
-    // make sure to have proper documentation for all classes in ALL MODULES
+    // make sure to have proper documentation for all files in ALL MODULES
     // add readme file FOR EACH MODULE
     //      which dependencies EACH MODULE forwards to the user?
     // when documenting add a note for the minSdkVersion
-    // look in EVERY SINGLE FILE and remove unused or commented out code
     // can i make the sample more clear?
 
     override fun onCreate(savedInstanceState: Bundle?) {
