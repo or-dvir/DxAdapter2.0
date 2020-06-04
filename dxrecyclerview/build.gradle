@@ -35,6 +35,5 @@ dependencies {
     //todo when dx-counting-idling-resource is exported to a library,
     // do i need to change this line to import the library instead of the project
     // or is it ok to leave it like this???
-    // change implementation to api???
     implementation project(path: ':dxcountingidlingresource')
 }
