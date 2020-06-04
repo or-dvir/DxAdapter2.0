@@ -39,6 +39,7 @@ import org.jetbrains.annotations.TestOnly
 class ActivityMain : AppCompatActivity() {
 
     //todo
+    // choose whether to use implementation or api for each dependency on each of the modules
     // make all features open so the user can extend them and simply use in the activity...
     //      this should make the code a lot more readable
     // add documentation for everything (mostly copy from DxAdapter)
