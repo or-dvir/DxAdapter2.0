@@ -12,6 +12,32 @@ import com.hotmail.or_dvir.dxclick.OnItemClickListener
 import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
 import org.jetbrains.annotations.TestOnly
 
+/**
+ * a feature adding selection functionality to your adapter
+ *
+ * note that the listeners in this class will NOT be triggered in [onCreateViewHolder] and
+ * [onBindViewHolder]. They will only be triggered when an item is being manually selected
+ * or deselected (by user interaction or by code).
+ *
+ * @param adapter your adapter
+ * @param clickFeature the [DxFeatureClick] used by your adapter
+ * @param defaultClickBehavior whether or not to use the default selection behavior:
+ *
+ * when no items are selected, long-clicking an item will select that item and start selection mode.
+ * any subsequent regular clicks on any item will select/deselect the clicked item.
+ *
+ * @param onItemSelectionChanged a listener to be invoked when an item has been selected/deselected.
+ *
+ * note that visual changes to your item should be done in your adapter inside the
+ * onBindViewHolder() function (you can use this listener for example to change the title, showing how many
+ * items are currently selected).
+ *
+ * @param onSelectionModeChanged a listener to be invoked when selection mode has started or ended
+ * (first item has been selected or last item has been deselected).
+ *
+ * note that visual changes to your item should be done in your adapter inside the
+ * onBindViewHolder() function (you can use this listener for example to start/finish ActionMode)
+ */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 open class DxFeatureSelection<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
@@ -37,12 +63,6 @@ open class DxFeatureSelection<ITEM : IDxBaseItem>(
         holder: RecyclerView.ViewHolder
     ) {
         //do nothing
-        //todo when documenting add a note that the listeners will only be invoked when an item is
-        // manually selected/deselected (and not here).
-        // any visual changes (like background) should be done in the user's adapter using the
-        // IDxItemSelectable.isSelected field.
-        // the onItemSelectionChanged listener are good to update the actionMode title for example.
-        // the
     }
 
     override fun onBindViewHolder(
@@ -121,38 +141,89 @@ open class DxFeatureSelection<ITEM : IDxBaseItem>(
     }
 
     //region select
+    /**
+     * selects the item at the given index
+     */
     fun select(index: Int) = select(adapter.getItem(index))
+
+    /**
+     * selects the given item
+     */
     fun select(item: ITEM) = select(listOf(item))
+
+    /**
+     * selects all the given items
+     */
     fun select(items: List<ITEM>) = selectOrDeselect(true, items)
 
+    /**
+     * selects all the items at the given indices.
+     *
+     * any out of bounds indices will be ignored
+     */
     @JvmName("selectIndices")
     fun select(indices: List<Int>) = select(adapter.getItemsForIndices(indices))
 
+    /**
+     * selects all the items in the adapter
+     */
     fun selectAll() = select(adapter.getDxAdapterItems())
     //endregion
 
     //region deselect
+    /**
+     * deselects the item at the given index
+     */
     fun deselect(index: Int) = deselect(adapter.getItem(index))
+
+    /**
+     * deselects the given item
+     */
     fun deselect(item: ITEM) = deselect(listOf(item))
+
+    /**
+     * deselects all the given items
+     */
     fun deselect(items: List<ITEM>) = selectOrDeselect(false, items)
 
+    /**
+     * deselects all the items at the given indices.
+     *
+     * any out of bounds indices will be ignored
+     */
     @JvmName("deselectIndices")
     fun deselect(indices: List<Int>) = deselect(adapter.getItemsForIndices(indices))
 
+    /**
+     * deselects all the items in the adapter
+     */
     fun deselectAll() = deselect(adapter.getDxAdapterItems())
     //endregion
 
     //region general
+    /**
+     * returns all currently selected items
+     */
     fun getAllSelectedItems() =
         adapter.getDxAdapterItems().filter { it is IDxItemSelectable && it.isSelected }
 
+    /**
+     * returns the indices of all currently selected items
+     */
     //the returned list should NOT contain -1, because getAllSelectableItems()
     //only returns items that are already in the adapter
     fun getAllSelectedIndices() =
         adapter.getIndexList(getAllSelectedItems(), true)
 
+    /**
+     * returns the number of currently selected items
+     */
     fun getNumSelectedItems() = getAllSelectedItems().size
 
+    /**
+     * return TRUE if there is at least one item in the adapter that is currently selected,
+     * or FALSE if none of the items in the adapter are selected
+     */
     fun isInSelectionMode() = getAllSelectableItems().any { it.isSelected }
 
     //NOTE:
