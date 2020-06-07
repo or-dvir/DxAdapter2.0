@@ -7,6 +7,12 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
+/**
+ * a feature adding sticky headers to your adapter.
+ * to use this feature, you must extend this class and pass it to [DxStickyHeaderItemDecoration]
+ *
+ * @param adapter your adapter
+ */
 abstract class DxFeatureStickyHeader<ITEM : IDxBaseItem>(private val adapter: DxAdapter<ITEM, *>) :
     IDxBaseFeature {
 

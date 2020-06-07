@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
 /**
- * add this [ItemDecoration][RecyclerView.ItemDecoration] to your [RecyclerView] to draw
- * the sticky header at the top of your list
+ * a wrapper for [RecyclerView.ItemDecoration].
+ * add this to your [RecyclerView].
  */
 open class DxStickyHeaderItemDecoration<ITEM : IDxBaseItem>(
     private val stickyHeaderFeature: DxFeatureStickyHeader<ITEM>
