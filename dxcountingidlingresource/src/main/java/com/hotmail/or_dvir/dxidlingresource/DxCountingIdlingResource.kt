@@ -10,7 +10,6 @@ open class DxCountingIdlingResource(private val uniqueName: String) {
 
     //todo add a note in documentation that this will also run in release builds
 
-    //resource name should be unique so we use TAG which is the class name
     @JvmField
     val resource = CountingIdlingResource(uniqueName)
 

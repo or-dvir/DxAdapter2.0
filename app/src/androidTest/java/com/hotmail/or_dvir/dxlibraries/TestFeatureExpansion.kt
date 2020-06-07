@@ -32,7 +32,7 @@ class TestFeatureExpansion : BaseTest() {
         mExpansionFeature = DxFeatureExpansion(
             mAdapter,
             featureClick,
-            expandAndCollapseOnClick = true,
+            defaultClickBehavior = true,
             onlyOneItemExpanded = false,
             onItemExpansionStateChanged = mItemExpansion
         )

@@ -8,15 +8,35 @@ import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
+/**
+ * The main class of this library. your adapter must extend this class.
+ *
+ * Note that you must add any desired feature using [addFeature] function.
+ *
+ * @param ITEM the type of object this adapter will hold.
+ * @param VH the [ViewHolder] this adapter will use
+ */
 abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Adapter<VH>() {
+
     private val allFeatures: LinkedHashMap<Int, IDxBaseFeature> = LinkedHashMap()
 
+    /**
+     * adds a feature to this adapter (selection, click, expansion, etc...)
+     *
+     * if you do not add your feature using this function, it will not work properly.
+     */
     fun addFeature(feature: IDxBaseFeature) =
         allFeatures.put(feature.getFeatureId(), feature)
 
+    /**
+     * removes a feature from this adapter (selection, click, expansion, etc...)
+     */
     fun removeFeature(feature: IDxBaseFeature) =
         allFeatures.remove(feature.getFeatureId())
 
+    /**
+     * do not override this function directly. Use [createAdapterViewHolder]
+     */
     @CallSuper
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val itemView = LayoutInflater
@@ -43,7 +63,7 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
     override fun getItemViewType(position: Int) = getDxAdapterItems()[position].getViewType()
 
     /**
-     * convenience function for [List.indexOf]
+     * convenience function for [List.indexOf] for the items held by this adapter.
      */
     fun getIndex(item: ITEM) = getDxAdapterItems().indexOf(item)
 
@@ -69,9 +89,8 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
     fun getItem(position: Int) = getDxAdapterItems()[position]
 
     /**
-     * returns a list of items at the given [indices].
-     *
-     * If an index in [indices] is out of bounds of the adapter, that index is ignored
+     * Returns a list of items at the given [indices].
+     * Any out of bounds indices will be ignored
      */
     fun getItemsForIndices(indices: List<Int>): List<ITEM> {
         val range = 0 until itemCount - 1
@@ -86,6 +105,9 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
         return list
     }
 
+    /**
+     * returns the list of [ITEM] this adapter holds
+     */
     abstract fun getDxAdapterItems(): MutableList<ITEM>
 
     /**
@@ -93,7 +115,7 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
      * with the addition of [itemView].
      *
      * use this function only. do NOT override
-     * [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder] directly
+     * [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder] directly.
      * @param itemView the inflated view returned from [getItemLayoutRes]
      */
     abstract fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int): VH

@@ -41,7 +41,6 @@ class ActivityMain : AppCompatActivity() {
     //todo
     // should i add filtering feature? is that useful?
     // export each module as its own library!!!
-    // make sure to have proper documentation for all files in ALL MODULES
     // add readme file FOR EACH MODULE
     //      which dependencies EACH MODULE forwards to the user?
     // when documenting add a note for the minSdkVersion

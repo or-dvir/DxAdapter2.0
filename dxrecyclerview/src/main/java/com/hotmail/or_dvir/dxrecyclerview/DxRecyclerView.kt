@@ -58,8 +58,9 @@ open class DxRecyclerView @JvmOverloads constructor(
     /**
      * a convenience method that retrieves the instance of this [DxRecyclerView]'s idling resource
      */
-    @TestOnly
-    fun getIdlingResourceInstance() = idlingResource.resource
+    //todo commented out because all of a sudden it gives a weird error
+//    @TestOnly
+//    fun getIdlingResourceInstance() = idlingResource.resource
 
     //todo add support for other types of layout managers
     // note that grid layout manager extends linear layout manager.

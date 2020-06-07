@@ -5,7 +5,7 @@ import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * a base interface for all functionalities (click listeners, swipe, etc.) to share
+ * a base interface for all functionalities (click listeners, swipe, etc.)
  */
 interface IDxBaseFeature {
 

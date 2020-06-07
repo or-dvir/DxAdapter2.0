@@ -8,6 +8,7 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import com.hotmail.or_dvir.dxidlingresource.DxCountingIdlingResource
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
@@ -42,8 +43,9 @@ class TestDxRecyclerView : BaseTest() {
         onActivity {
             it.apply {
                 //register idling resource
-                IdlingRegistry.getInstance()
-                    .register(activityMain_rv.getIdlingResourceInstance())
+                //todo commented because for some reason that method gives me an error
+//                IdlingRegistry.getInstance()
+//                    .register(activityMain_rv.getIdlingResourceInstance())
 
                 setAdapter(testAdapter)
             }
@@ -54,7 +56,8 @@ class TestDxRecyclerView : BaseTest() {
     fun after() {
         //unregister idling resource
         onActivity {
-            IdlingRegistry.getInstance().unregister(it.activityMain_rv.getIdlingResourceInstance())
+            //todo commented because for some reason that method gives me an error
+//            IdlingRegistry.getInstance().unregister(it.activityMain_rv.getIdlingResourceInstance())
         }
     }
 
