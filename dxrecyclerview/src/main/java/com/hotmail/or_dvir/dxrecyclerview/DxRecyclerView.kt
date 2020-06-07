@@ -9,9 +9,11 @@ import org.jetbrains.annotations.TestOnly
 import kotlin.math.abs
 
 /**
- * a wrapper for RecyclerView with built-in listeners
+ * a wrapper for [RecyclerView] with built-in listeners.
+ *
  * @see onItemsVisibilityListener
  * @see onScrollListener
+ * @see idlingResource
  */
 open class DxRecyclerView @JvmOverloads constructor(
     context: Context,
@@ -28,11 +30,18 @@ open class DxRecyclerView @JvmOverloads constructor(
     // also note that in order for it to actually take effect, you must perform an instrumented test
     // (that is just the way espresso works) e.g. for this is actually work you must perform
     // an instrumented test that should always pass
+    /**
+     * if you use [DxRecyclerView] in your app and wish to perform some automated UI tests,
+     * you can use this already existing [DxCountingIdlingResource].
+     *
+     * note that you need to register this idling resource in your tests.
+     */
     val idlingResource = DxCountingIdlingResource(IDLING_RESOURCE_NAME)
 
+    //region optional listeners
     /**
      * a visibility listener for items in this [DxRecyclerView].
-     * the listener may be triggered when set, and when the recycler view is scrolled.
+     * the listener may be invoked when set, and when the recycler view is scrolled.
      *
      * * the listener is tied only to the [DxRecyclerView] and NOT to it's adapter.
      * this means that it will NOT be triggered when the adapter updates.
@@ -49,11 +58,12 @@ open class DxRecyclerView @JvmOverloads constructor(
         }
 
     /**
-     * a listener that will be invoked when this [DxRecyclerView] is scrolled.
+     * a listener to be invoked when this [DxRecyclerView] is scrolled.
      *
      * @see DxScrollListener
      */
     var onScrollListener: DxScrollListener? = null
+    //endregion
 
     /**
      * a convenience method that retrieves the instance of this [DxRecyclerView]'s idling resource
