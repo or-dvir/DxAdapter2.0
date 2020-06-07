@@ -1,10 +1,11 @@
 package com.hotmail.or_dvir.dxexpansion
 
 /**
- * a listener called when the expanded state of an item has changed
- * @param view the view that was changed
- * @param adapterPosition the adapter position of the changed item
- * @param isExpanded the new expanded state of the item at [adapterPosition]
+ * a listener to be invoked when the expanded state of an item has changed.
+ *
+ * @param adapterPosition the position of the item
+ * @param isExpanded whether the item is expanded or not
+ * @param item the item for which the expansion state has changed
  */
 typealias OnItemExpansionStateChangedListener<ITEM> =
             (adapterPosition: Int, isExpanded: Boolean, item: ITEM) -> Unit
