@@ -11,14 +11,16 @@ import androidx.core.content.ContextCompat
 /**
  * convenience class to be used with [DxSwipeBackground].
  *
+ * @param iconRes the resources id of the icon to be drawn behind the item being swiped.
+ * @param context the context to use for retrieving the icon.
+ * @param desiredHeightPx the desired height of the icon (in pixels).
+ *
+ * it is recommended to use DP (and not SP) from dimens.xml, because it is assumed that your
+ * list items are sized using DP and therefore the icon size should be calculated by the same scale.
+ *
  * note that the provided icon will be scaled according to [desiredHeightPx] while
  * maintaining aspect ratio. it is therefore recommended that [iconRes] will be large
- * rather than small because scaling down is preferable to scaling up
- * (scaling up can reduce image quality).
- *
- * @param iconRes the resources id of the icon to be drawn when swiping an item
- * @param desiredHeightPx the desired height of the icon, in pixels (recommended to use
- * DP from dimens.xml)
+ * rather than small because scaling down is preferable to scaling up.
  */
 open class DxSwipeIcon(
     @DrawableRes val iconRes: Int,

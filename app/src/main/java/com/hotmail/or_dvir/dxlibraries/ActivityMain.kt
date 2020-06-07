@@ -43,7 +43,9 @@ class ActivityMain : AppCompatActivity() {
     // export each module as its own library!!!
     // add readme file FOR EACH MODULE
     //      which dependencies EACH MODULE forwards to the user?
+    //      read each files documentation for special notes that should be added to the readme
     // when documenting add a note for the minSdkVersion
+    // check all todo notes in all files regarding documentation
     // can i make the sample more clear?
 
     override fun onCreate(savedInstanceState: Bundle?) {
