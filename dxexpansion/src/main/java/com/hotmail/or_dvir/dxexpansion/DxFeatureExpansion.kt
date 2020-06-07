@@ -66,10 +66,6 @@ open class DxFeatureExpansion<ITEM : IDxBaseItem>(
         }
 
         //todo
-        // should i trigger the listener here?
-        // unlike selection which the user can interpret in different ways,
-        //      in this case there are only 2 possible cases: expanded view is visible or gone
-        // this is the old explanation (from selection feature):
         //  when documenting add a note that the listeners will only be invoked when an item is
         //  manually expanded/collapsed (and not here).
         //  any visual changes (like expansion handle) should be done in the user's adapter using the

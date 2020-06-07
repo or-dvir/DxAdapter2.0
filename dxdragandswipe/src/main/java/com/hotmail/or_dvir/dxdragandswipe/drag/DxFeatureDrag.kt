@@ -13,10 +13,6 @@ import com.hotmail.or_dvir.dxdragandswipe.OnItemMovedListener
 import com.hotmail.or_dvir.dxdragandswipe.R
 import org.jetbrains.annotations.TestOnly
 
-//NOTE:
-//due to the fact that both swipe and drag are handled inside DxItemTouchCallback,
-//the generic type CANNOT be IDxItemDraggable (because then we wouldn't be able to handle
-//IDxItemSwipeable items in DxItemTouchCallback)
 open class DxFeatureDrag<ITEM : IDxBaseItem>(
     internal var dragDirections: Int,
     private val onDragStart: OnDragEventListener<ITEM>,
@@ -24,9 +20,6 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
     internal val onItemMoved: OnItemMovedListener<ITEM>,
     internal var dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
-
-    stopped here going through all the files for todo notes
-
 
     //todo when documenting note that in onDragEnd, the parameter adapterPosition is
     // the FINAL position of the item

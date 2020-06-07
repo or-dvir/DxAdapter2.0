@@ -11,10 +11,6 @@ import com.hotmail.or_dvir.dxdragandswipe.OnSwipeEventListener
 import com.hotmail.or_dvir.dxdragandswipe.R
 import org.jetbrains.annotations.TestOnly
 
-//NOTE:
-//due to the fact that both swipe and drag are handled inside DxItemTouchCallback,
-//the generic type CANNOT be IDxItemSwipeable (because then we wouldn't be able to handle
-//IDxItemDraggable items in DxItemTouchCallback)
 open class DxFeatureSwipe<ITEM : IDxBaseItem>(
     internal var swipeDirections: Int,
     private val onSwipeStart: OnSwipeEventListener<ITEM>,
