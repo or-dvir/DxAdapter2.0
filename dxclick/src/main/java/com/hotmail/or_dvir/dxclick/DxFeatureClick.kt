@@ -6,11 +6,17 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
+/**
+ * A feature that adds click listeners functionality to your adapter.
+ */
 open class DxFeatureClick<ITEM : IDxBaseItem>(
     private val onItemClick: OnItemClickListener<ITEM>,
     private val onItemLongClick: OnItemLongClickListener<ITEM>
 ) : IDxBaseFeature {
 
+    /**
+     * do NOT access or modify this field. It's used internally by the library.
+     */
     val clickListenerFeatures =
         mutableListOf<IDxClickListenerFeature>()
 

@@ -3,7 +3,7 @@ package com.hotmail.or_dvir.dxclick
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 
 /**
- * represents an item that wishes to know when an item is clicked or long-clicked
+ * represents a feature that depends on an item click for its' functionality
  */
 interface IDxClickListenerFeature {
     val onItemClick: OnItemClickListener<IDxBaseItem>
