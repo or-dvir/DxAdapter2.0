@@ -41,7 +41,6 @@ class ActivityMain : AppCompatActivity() {
     //todo
     // should i add filtering feature? is that useful?
     // export each module as its own library!!!
-    // go over all to-do's from ALL the modules
     // make sure to have proper documentation for all files in ALL MODULES
     // add readme file FOR EACH MODULE
     //      which dependencies EACH MODULE forwards to the user?
@@ -103,7 +102,7 @@ class ActivityMain : AppCompatActivity() {
         val expandFeature = DxFeatureExpansion(
             adapter,
             clickFeature,
-            expandAndCollapseOnClick = true,
+            defaultClickBehavior = true,
             onlyOneItemExpanded = true,
             onItemExpansionStateChanged = { adapterPosition, isExpanded, item ->
                 //do something
@@ -127,6 +126,7 @@ class ActivityMain : AppCompatActivity() {
         val selectFeature = DxFeatureSelection<ItemExpandable>(
             adapter,
             clickFeature,
+            defaultClickBehavior = true,
             onItemSelectionChanged = { adapterPosition, isSelected, item ->
                 Log.i("aaaaa", "${item.text} selected: $isSelected")
             },

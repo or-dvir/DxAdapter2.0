@@ -34,6 +34,7 @@ class TestFeatureSelection : BaseTest() {
         mSelectionFeature = DxFeatureSelection(
             mAdapter,
             featureClick,
+            true,
             mItemSelection,
             mSelectionMode
         )
@@ -172,7 +173,24 @@ class TestFeatureSelection : BaseTest() {
     }
 
     @Test
-    fun clickBehaviourAndListeners() {
+    fun defaultClickBehavior_false() {
+        val selectable1 = ItemSelectable("selectable 1").apply { isSelected = true }
+        val selectable2 = ItemSelectable("selectable 2").apply { isSelected = true }
+        val selectable3 = ItemSelectable("selectable 3").apply { isSelected = false }
+
+        mAdapter.mItems.addAll(listOf(selectable1, selectable2, selectable3))
+        mSelectionFeature.setDefaultClickBehavior(false)
+
+        //long clicking first item and clicking another item - nothing should happen
+        longClickAtPosition(0)
+        clickAtPosition(1)
+
+        verify(exactly = 0) { mItemSelection.invoke(any(), any(), any()) }
+        verify(exactly = 0) { mSelectionMode.invoke(any()) }
+    }
+
+    @Test
+    fun defaultClickBehavior_true() {
         //start off with no items selected
         val selectable1 = ItemSelectable("selectable 1").apply { isSelected = false }
         val selectable2 = ItemSelectable("selectable 2").apply { isSelected = false }

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.TestOnly
 open class DxFeatureExpansion<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
-    private var expandAndCollapseOnClick: Boolean,
+    private var defaultClickBehavior: Boolean,
     private var onlyOneItemExpanded: Boolean,
     private val onItemExpansionStateChanged: OnItemExpansionStateChangedListener<ITEM>
 ) : IDxBaseFeature, IDxClickListenerFeature {
@@ -37,7 +37,7 @@ open class DxFeatureExpansion<ITEM : IDxBaseItem>(
 
     @TestOnly
     fun setExpandOnClick(expandOnClick: Boolean) {
-        expandAndCollapseOnClick = expandOnClick
+        defaultClickBehavior = expandOnClick
     }
 
     override fun onCreateViewHolder(
@@ -78,7 +78,7 @@ open class DxFeatureExpansion<ITEM : IDxBaseItem>(
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     override val onItemClick: OnItemClickListener<IDxBaseItem> =
         { view, adapterPosition, item ->
-            if (expandAndCollapseOnClick && item is IDxItemExpandable) {
+            if (defaultClickBehavior && item is IDxItemExpandable) {
                 //reverse the expansion
                 if (item.isExpanded) {
                     collapse(adapterPosition)

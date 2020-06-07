@@ -10,21 +10,25 @@ import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxclick.IDxClickListenerFeature
 import com.hotmail.or_dvir.dxclick.OnItemClickListener
 import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
+import org.jetbrains.annotations.TestOnly
 
 @Suppress("MemberVisibilityCanBePrivate", "unused")
 open class DxFeatureSelection<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
+    private var defaultClickBehavior: Boolean,
     private val onItemSelectionChanged: OnItemSelectionChangedListener<ITEM>,
     private var onSelectionModeChanged: OnSelectionModeStateChanged
 ) : IDxBaseFeature, IDxClickListenerFeature {
 
-    //todo add flag whether selection should be done with clicks or not
-    // maybe the user only wants to select when clicking the user image for example...
-
     init {
         adapter.addFeature(clickFeature)
         clickFeature.clickListenerFeatures.add(this)
+    }
+
+    @TestOnly
+    fun setDefaultClickBehavior(defaultBehavior: Boolean) {
+        defaultClickBehavior = defaultBehavior
     }
 
     override fun onCreateViewHolder(
@@ -53,32 +57,36 @@ open class DxFeatureSelection<ITEM : IDxBaseItem>(
 
     override val onItemClick: OnItemClickListener<IDxBaseItem> =
         { view, adapterPosition, item ->
-            //only trigger the selection actions if the item is selectable and
-            //we are already in selection mode
-            if (item is IDxItemSelectable && isInSelectionMode()) {
-                //reverse the selection
-                if (item.isSelected) {
-                    deselect(adapterPosition)
-                } else {
-                    select(adapterPosition)
-                }
+            if (defaultClickBehavior) {
+                //only trigger the selection actions if the item is selectable and
+                //we are already in selection mode
+                if (item is IDxItemSelectable && isInSelectionMode()) {
+                    //reverse the selection
+                    if (item.isSelected) {
+                        deselect(adapterPosition)
+                    } else {
+                        select(adapterPosition)
+                    }
 
-                //NOTE:
-                //do NOT trigger any listeners here.
-                //all listeners are controlled in selectOrDeselect()
+                    //NOTE:
+                    //do NOT trigger any listeners here.
+                    //all listeners are controlled in selectOrDeselect()
+                }
             }
         }
 
     override val onItemLongClick: OnItemLongClickListener<IDxBaseItem> =
         { view, adapterPosition, item ->
-            //only trigger the selection actions if the item is selectable and we are not
-            //already in selection mode (first long click triggers selectionMode)
-            if (item is IDxItemSelectable && !isInSelectionMode()) {
-                select(adapterPosition)
+            if (defaultClickBehavior) {
+                //only trigger the selection actions if the item is selectable and we are not
+                //already in selection mode (first long click triggers selectionMode)
+                if (item is IDxItemSelectable && !isInSelectionMode()) {
+                    select(adapterPosition)
 
-                //NOTE:
-                //do NOT trigger any listeners here.
-                //all listeners are controlled in selectOrDeselect()
+                    //NOTE:
+                    //do NOT trigger any listeners here.
+                    //all listeners are controlled in selectOrDeselect()
+                }
             }
 
             //it doesn't matter which value we return here
