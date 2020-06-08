@@ -45,8 +45,9 @@ class ActivityMain : AppCompatActivity() {
     //      which dependencies EACH MODULE forwards to the user?
     //      read each files documentation for special notes that should be added to the readme
     // when documenting add a note for the minSdkVersion
-    // check all todo notes in all files regarding documentation
+    // check all to-do notes in all files regarding documentation
     // can i make the sample more clear?
+    // fix problem with idling resource with dependencies error
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
