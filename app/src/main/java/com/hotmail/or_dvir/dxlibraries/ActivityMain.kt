@@ -40,14 +40,14 @@ class ActivityMain : AppCompatActivity() {
 
     //todo
     // should i add filtering feature? is that useful?
+    // make all features open so the user can extend them and simply use in the activity...
+    //      this should make the code a lot more readable
+    // add documentation for everything (mostly copy from DxAdapter)
     // export each module as its own library!!!
-    // add readme file FOR EACH MODULE
-    //      which dependencies EACH MODULE forwards to the user?
-    //      read each files documentation for special notes that should be added to the readme
-    // when documenting add a note for the minSdkVersion
-    // check all to-do notes in all files regarding documentation
-    // can i make the sample more clear?
-    // fix problem with idling resource with dependencies error
+    // go over all to-do's from ALL the modules
+    // add documentation about which dependencies EACH MODULE forwards to the user
+    // make sure to have proper documentation for all classes in ALL MODULES
+    // add readme file to all modules
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,7 +104,7 @@ class ActivityMain : AppCompatActivity() {
         val expandFeature = DxFeatureExpansion(
             adapter,
             clickFeature,
-            defaultClickBehavior = true,
+            expandAndCollapseOnClick = true,
             onlyOneItemExpanded = true,
             onItemExpansionStateChanged = { adapterPosition, isExpanded, item ->
                 //do something
@@ -128,7 +128,6 @@ class ActivityMain : AppCompatActivity() {
         val selectFeature = DxFeatureSelection<ItemExpandable>(
             adapter,
             clickFeature,
-            defaultClickBehavior = true,
             onItemSelectionChanged = { adapterPosition, isSelected, item ->
                 Log.i("aaaaa", "${item.text} selected: $isSelected")
             },
@@ -161,6 +160,7 @@ class ActivityMain : AppCompatActivity() {
                     //(e.g. remove, reset). if you don't, listeners will be called for wrong items
                     //todo add this note in documentation
                     //this resets the item
+//                    adapter.removeItem(adapterPosition)
                     adapter.notifyItemChanged(adapterPosition)
                     Log.i("aaaaa", "${item.text} swiped")
                 },

@@ -22,7 +22,7 @@ import androidx.core.content.ContextCompat
  * maintaining aspect ratio. it is therefore recommended that [iconRes] will be large
  * rather than small because scaling down is preferable to scaling up.
  */
-open class DxSwipeIcon(
+class DxSwipeIcon(
     @DrawableRes val iconRes: Int,
     private val context: Context,
     private val desiredHeightPx: Int

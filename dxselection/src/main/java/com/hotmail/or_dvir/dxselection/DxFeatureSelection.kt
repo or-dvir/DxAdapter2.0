@@ -39,7 +39,7 @@ import org.jetbrains.annotations.TestOnly
  * onBindViewHolder() function (you can use this listener for example to start/finish ActionMode)
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-open class DxFeatureSelection<ITEM : IDxBaseItem>(
+class DxFeatureSelection<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
     private var defaultClickBehavior: Boolean,

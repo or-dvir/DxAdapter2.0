@@ -11,7 +11,7 @@ package com.hotmail.or_dvir.dxrecyclerview
  * @param sensitivityLeft sensitivity for scrolling left
  * @param sensitivityRight sensitivity for scrolling right
  */
-open class DxScrollListener(
+class DxScrollListener(
     internal val sensitivityUp: Int,
     internal val sensitivityDown: Int,
     internal val sensitivityLeft: Int,

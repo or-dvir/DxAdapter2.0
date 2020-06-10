@@ -12,7 +12,7 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseItem
  * a wrapper for [RecyclerView.ItemDecoration].
  * add this to your [RecyclerView].
  */
-open class DxStickyHeaderItemDecoration<ITEM : IDxBaseItem>(
+class DxStickyHeaderItemDecoration<ITEM : IDxBaseItem>(
     private val stickyHeaderFeature: DxFeatureStickyHeader<ITEM>
 ) : RecyclerView.ItemDecoration() {
 

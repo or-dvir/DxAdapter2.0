@@ -13,24 +13,11 @@ import com.hotmail.or_dvir.dxdragandswipe.OnItemMovedListener
 import com.hotmail.or_dvir.dxdragandswipe.R
 import org.jetbrains.annotations.TestOnly
 
-/**
- * a feature that adds dragging functionality to your adapter.
- *
- * @param dragDirections the direction of allowed dragging. one or more of:
- * [ItemTouchHelper.LEFT], [ItemTouchHelper.RIGHT], [ItemTouchHelper.START], [ItemTouchHelper.END].
- * @param onDragStart a listener to be invoked when a drag operation has started. you can use this
- * to highlight the item being dragged.
- * @param onDragEnd a listener to be invoked when the user interaction of the drag operation has
- * finished. you can use this to undo changes you made in [onDragStart].
- *
- * note that this listener is for the end of the user interaction with the dragged item, and does not
- * necessarily mean that the item has been moved.
- * @param onItemMoved a listener to be invoked when an item has been switched with another item.
- * @param dragOnLongClick whether or not long-clicking an item should start a drag operation
- *
- * @see isDragEnabled
- */
-open class DxFeatureDrag<ITEM : IDxBaseItem>(
+//NOTE:
+//due to the fact that both swipe and drag are handled inside DxItemTouchCallback,
+//the generic type CANNOT be IDxItemDraggable (because then we wouldn't be able to handle
+//IDxItemSwipeable items in DxItemTouchCallback)
+class DxFeatureDrag<ITEM : IDxBaseItem>(
     internal var dragDirections: Int,
     private val onDragStart: OnDragEventListener<ITEM>,
     private val onDragEnd: OnDragEventListener<ITEM>,
@@ -38,15 +25,14 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
     internal var dragOnLongClick: Boolean = false
 ) : IDxBaseFeature {
 
+    //todo when documenting note that in onDragEnd, the parameter adapterPosition is
+    // the FINAL position of the item
+
     @IdRes
     internal var dragHandleId: Int? = null
     internal var itemTouchHelper: ItemTouchHelper? = null
 
-    /**
-     * a flag indicating whether dragging is currently allowed (defaults to TRUE)
-     */
     var isDragEnabled = true
-
     private var flagIsDragging = false
 
     @TestOnly
@@ -91,7 +77,7 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
         itemView: View,
         holder: RecyclerView.ViewHolder
     ) {
-        //do nothing
+        //do nothinig
     }
 
     override fun getFeatureId() = R.id.feature_drag

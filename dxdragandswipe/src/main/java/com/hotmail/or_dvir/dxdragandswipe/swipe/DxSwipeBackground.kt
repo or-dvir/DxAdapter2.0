@@ -3,19 +3,7 @@ package com.hotmail.or_dvir.dxdragandswipe.swipe
 import android.graphics.drawable.ColorDrawable
 import androidx.annotation.ColorInt
 
-/**
- * a helper class for drawing behind an item that is being swiped
- *
- * @param paddingPx amount of padding (in pixels) between the edge of the item and the text and/or icon.
- * note that if you have both text AND an icon, this is also the amount of space between them.
- * @param backgroundColor the background color of the area behind the item being swiped.
- * pass null to not show a color.
- * @param dxText the text to show behind the item being swiped (should be as short as possible).
- * pass null to not show text.
- * @param dxIcon the icon to show behind the item being swiped.
- * pass null to not show an icon.
- */
-open class DxSwipeBackground(
+class DxSwipeBackground(
     internal var paddingPx: Int,
     @ColorInt internal val backgroundColor: Int?,
     internal val dxText: DxSwipeText?,
