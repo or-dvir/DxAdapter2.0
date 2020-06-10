@@ -8,7 +8,6 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.hotmail.or_dvir.dxidlingresource.DxCountingIdlingResource
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
@@ -43,9 +42,8 @@ class TestDxRecyclerView : BaseTest() {
         onActivity {
             it.apply {
                 //register idling resource
-                //todo commented because for some reason that method gives me an error
-//                IdlingRegistry.getInstance()
-//                    .register(activityMain_rv.getIdlingResourceInstance())
+                IdlingRegistry.getInstance()
+                    .register(activityMain_rv.idlingResource.resource)
 
                 setAdapter(testAdapter)
             }
@@ -56,50 +54,7 @@ class TestDxRecyclerView : BaseTest() {
     fun after() {
         //unregister idling resource
         onActivity {
-            //todo commented because for some reason that method gives me an error
-//            IdlingRegistry.getInstance().unregister(it.activityMain_rv.getIdlingResourceInstance())
-        }
-    }
-
-    /**
-     * perform a dummy test that should always pass in order to make espresso
-     * wait until all idling resources have finished
-     */
-    private fun pauseTestUntilAsyncOperationDone() {
-        //the recycler view should always be visible, so this is a simple test
-        //that should always pass
-        onView(withId(R.id.activityMain_rv)).check(
-            ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))
-        )
-    }
-
-    private fun setListForActivity(listSize: Int) {
-        onActivity {
-            it.apply {
-                setAdapterItems((MutableList(listSize) { index -> ItemDraggable("item $index") }))
-            }
-        }
-
-        //since the listeners may be called after a small delay, we need to wait for
-        //idling resources in order for testing to not fail
-        pauseTestUntilAsyncOperationDone()
-    }
-
-    private fun setupVisibilityListeners() {
-        mFirstVisible = spyk({})
-        mFirstInvisible = spyk({})
-
-        mLastVisible = spyk({})
-        mLastInvisible = spyk({})
-
-        onActivity {
-            it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
-                onFirstItemVisible = mFirstVisible
-                onFirstItemInvisible = mFirstInvisible
-
-                onLastItemVisible = mLastVisible
-                onLastItemInvisible = mLastInvisible
-            }
+            IdlingRegistry.getInstance().unregister(it.activityMain_rv.idlingResource.resource)
         }
     }
 
@@ -175,37 +130,6 @@ class TestDxRecyclerView : BaseTest() {
         verify(exactly = 1) { mFirstInvisible.invoke() }
         verify(exactly = 1) { mLastVisible.invoke() }
     }
-
-    private fun setupScrollListeners(sensitivity: Int) {
-        mOnScrollUp = spyk({})
-        mOnScrollDown = spyk({})
-        mOnScrollLeft = spyk({})
-        mOnScrollRight = spyk({})
-
-        onActivity {
-            it.activityMain_rv.onScrollListener = DxScrollListener(sensitivity).apply {
-                onScrollUp = mOnScrollUp
-                onScrollDown = mOnScrollDown
-                onScrollLeft = mOnScrollLeft
-                onScrollRight = mOnScrollRight
-            }
-        }
-    }
-
-    private fun swipe(speed: Swipe, from: GeneralLocation, to: GeneralLocation) =
-        GeneralSwipeAction(speed, from, to, Press.FINGER)
-
-    private fun swipeUp(speed: Swipe) =
-        swipe(speed, GeneralLocation.BOTTOM_CENTER, GeneralLocation.TOP_CENTER)
-
-    private fun swipeDown(speed: Swipe) =
-        swipe(speed, GeneralLocation.TOP_CENTER, GeneralLocation.BOTTOM_CENTER)
-
-    private fun swipeUpFast() = swipeUp(Swipe.FAST)
-    private fun swipeUpSlow() = swipeUp(Swipe.SLOW)
-
-    private fun swipeDownFast() = swipeDown(Swipe.FAST)
-    private fun swipeDownSlow() = swipeDown(Swipe.SLOW)
 
     @Test
     fun scrollListenerTest_highSensitivity() {
@@ -330,4 +254,79 @@ class TestDxRecyclerView : BaseTest() {
         verify(exactly = 0) { mOnScrollUp.invoke() }
         verify(exactly = 0) { mOnScrollDown.invoke() }
     }
+
+    private fun setupScrollListeners(sensitivity: Int) {
+        mOnScrollUp = spyk({})
+        mOnScrollDown = spyk({})
+        mOnScrollLeft = spyk({})
+        mOnScrollRight = spyk({})
+
+        onActivity {
+            it.activityMain_rv.onScrollListener = DxScrollListener(sensitivity).apply {
+                onScrollUp = mOnScrollUp
+                onScrollDown = mOnScrollDown
+                onScrollLeft = mOnScrollLeft
+                onScrollRight = mOnScrollRight
+            }
+        }
+    }
+
+    //region helper functions
+    /**
+     * perform a dummy test that should always pass in order to make espresso
+     * wait until all idling resources have finished
+     */
+    private fun pauseTestUntilAsyncOperationDone() {
+        //the recycler view should always be visible, so this is a simple test
+        //that should always pass
+        onView(withId(R.id.activityMain_rv)).check(
+            ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))
+        )
+    }
+
+    private fun setListForActivity(listSize: Int) {
+        onActivity {
+            it.apply {
+                setAdapterItems((MutableList(listSize) { index -> ItemDraggable("item $index") }))
+            }
+        }
+
+        //since the listeners may be called after a small delay, we need to wait for
+        //idling resources in order for testing to not fail
+        pauseTestUntilAsyncOperationDone()
+    }
+
+    private fun setupVisibilityListeners() {
+        mFirstVisible = spyk({})
+        mFirstInvisible = spyk({})
+
+        mLastVisible = spyk({})
+        mLastInvisible = spyk({})
+
+        onActivity {
+            it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
+                onFirstItemVisible = mFirstVisible
+                onFirstItemInvisible = mFirstInvisible
+
+                onLastItemVisible = mLastVisible
+                onLastItemInvisible = mLastInvisible
+            }
+        }
+    }
+
+    private fun swipe(speed: Swipe, from: GeneralLocation, to: GeneralLocation) =
+        GeneralSwipeAction(speed, from, to, Press.FINGER)
+
+    private fun swipeUp(speed: Swipe) =
+        swipe(speed, GeneralLocation.BOTTOM_CENTER, GeneralLocation.TOP_CENTER)
+
+    private fun swipeDown(speed: Swipe) =
+        swipe(speed, GeneralLocation.TOP_CENTER, GeneralLocation.BOTTOM_CENTER)
+
+    private fun swipeUpFast() = swipeUp(Swipe.FAST)
+    private fun swipeUpSlow() = swipeUp(Swipe.SLOW)
+
+    private fun swipeDownFast() = swipeDown(Swipe.FAST)
+    private fun swipeDownSlow() = swipeDown(Swipe.SLOW)
+    //endregion
 }

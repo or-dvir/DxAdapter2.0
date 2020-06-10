@@ -5,7 +5,6 @@ import android.util.AttributeSet
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxidlingresource.DxCountingIdlingResource
-import org.jetbrains.annotations.TestOnly
 import kotlin.math.abs
 
 /**
@@ -64,13 +63,6 @@ open class DxRecyclerView @JvmOverloads constructor(
      */
     var onScrollListener: DxScrollListener? = null
     //endregion
-
-    /**
-     * a convenience method that retrieves the instance of this [DxRecyclerView]'s idling resource
-     */
-    //todo commented out because all of a sudden it gives a weird error
-    @TestOnly
-    fun getIdlingResourceInstance() = idlingResource.resource
 
     //todo add support for other types of layout managers
     // note that grid layout manager extends linear layout manager.
