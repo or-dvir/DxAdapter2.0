@@ -32,7 +32,7 @@ import org.jetbrains.annotations.TestOnly
  * done in [onBindViewHolder] and NOT in this listener
  */
 @Suppress("MemberVisibilityCanBePrivate", "unused")
-class DxFeatureExpansion<ITEM : IDxBaseItem>(
+open class DxFeatureExpansion<ITEM : IDxBaseItem>(
     private val adapter: DxAdapter<ITEM, *>,
     clickFeature: DxFeatureClick<ITEM>,
     private var defaultClickBehavior: Boolean,

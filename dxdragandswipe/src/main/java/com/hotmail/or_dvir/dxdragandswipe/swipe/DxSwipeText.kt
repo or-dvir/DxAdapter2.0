@@ -13,7 +13,7 @@ import androidx.annotation.ColorInt
  * list items are sized using DP and therefore the text size should be calculated by the same scale.
  * @param textColor the color of the text
  */
-class DxSwipeText(
+open class DxSwipeText(
     internal val text: String,
     private val desiredSizePx: Float,
     @ColorInt internal val textColor: Int

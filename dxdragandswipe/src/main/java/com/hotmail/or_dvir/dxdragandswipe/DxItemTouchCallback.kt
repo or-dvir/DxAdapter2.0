@@ -15,7 +15,13 @@ import com.hotmail.or_dvir.dxdragandswipe.swipe.DxSwipeBackground
 import com.hotmail.or_dvir.dxdragandswipe.swipe.IDxItemSwipeable
 import kotlin.math.roundToInt
 
-class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<ITEM, *>) :
+/**
+ * a wrapper for [ItemTouchHelper.Callback] that handles swiping and dragging
+ *
+ * @see dragFeature
+ * @see swipeFeature
+ */
+open class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<ITEM, *>) :
     ItemTouchHelper.Callback() {
 
     //region
@@ -33,7 +39,12 @@ class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<IT
     //endregion
 
     //region optional variables
-    //todo when documenting note that there is no need to add the feature to the adapter
+    /**
+     * the [DxFeatureDrag] to use for your adapter.
+     * note that in this case the feature will be automatically added to your adapter.
+     * (however it's still recommended to manually add it to prevent possible bugs in the future if
+     * this feature will be updated).
+     */
     var dragFeature: DxFeatureDrag<ITEM>? = null
         set(value) {
             val prevField = field
@@ -46,8 +57,12 @@ class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapter<IT
             }
         }
 
-    //todo when documenting note that there is no need to add the feature to the adapter
-    // even though nothing will happen as the map in DxAdapter will override it
+    /**
+     * the [DxFeatureSwipe] to use for your adapter.
+     * note that in this case the feature will be automatically added to your adapter.
+     * (however it's still recommended to manually add it to prevent possible bugs in the future if
+     * this feature will be updated).
+     */
     var swipeFeature: DxFeatureSwipe<ITEM>? = null
         set(value) {
             val prevField = field

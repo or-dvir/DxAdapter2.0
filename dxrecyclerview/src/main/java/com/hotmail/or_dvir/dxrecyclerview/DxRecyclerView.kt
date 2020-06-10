@@ -15,7 +15,7 @@ import kotlin.math.abs
  * @see onScrollListener
  * @see idlingResource
  */
-class DxRecyclerView @JvmOverloads constructor(
+open class DxRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyle: Int = 0
