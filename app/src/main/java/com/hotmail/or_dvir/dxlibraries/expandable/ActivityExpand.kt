@@ -37,6 +37,7 @@ class ActivityExpand : BaseFeatureActivity() {
             }
         )
 
+        //note that the click feature is automatically added in this case
         adapter.addFeature(expandFeature)
     }
 }
