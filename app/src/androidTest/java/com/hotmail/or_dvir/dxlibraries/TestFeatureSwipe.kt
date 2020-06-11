@@ -9,23 +9,25 @@ import androidx.test.espresso.action.Press
 import androidx.test.espresso.action.Swipe
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
 import com.hotmail.or_dvir.dxdragandswipe.OnItemSwipedListener
 import com.hotmail.or_dvir.dxdragandswipe.OnSwipeEventListener
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
-import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterNonSwipeable
-import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterSwipeable
-import com.hotmail.or_dvir.dxlibraries.swipeable.ItemNonSwipeable
-import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
+import com.hotmail.or_dvir.dxlibraries.swipeable.*
 import io.mockk.spyk
 import io.mockk.verify
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_base.*
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
-class TestFeatureSwipe : BaseTest() {
+class TestFeatureSwipe : BaseTest<ActivitySwipe>() {
+    @get:Rule
+    var scenario = ActivityScenarioRule(ActivitySwipe::class.java)
+    override fun getTestActivityScenario() = scenario
 
     //NOTE:
     //the following features are simple variables to return to google's default
@@ -81,7 +83,14 @@ class TestFeatureSwipe : BaseTest() {
 
         verify(exactly = 1) { mSwipeStart.invoke(any(), swipePosition, swipeItem) }
         verify(exactly = 1) { mSwipeEnd.invoke(any(), swipePosition, swipeItem) }
-        verify(exactly = 1) { onItemSwiped.invoke(any(), swipePosition, ItemTouchHelper.RIGHT, swipeItem) }
+        verify(exactly = 1) {
+            onItemSwiped.invoke(
+                any(),
+                swipePosition,
+                ItemTouchHelper.RIGHT,
+                swipeItem
+            )
+        }
     }
 
     @Test
@@ -173,7 +182,14 @@ class TestFeatureSwipe : BaseTest() {
 
         verify(exactly = 1) { mSwipeStart.invoke(any(), position, swipeItem) }
         verify(exactly = 1) { mSwipeEnd.invoke(any(), position, swipeItem) }
-        verify(exactly = 1) { onItemSwiped.invoke(any(), position, ItemTouchHelper.RIGHT, swipeItem) }
+        verify(exactly = 1) {
+            onItemSwiped.invoke(
+                any(),
+                position,
+                ItemTouchHelper.RIGHT,
+                swipeItem
+            )
+        }
 
         //no need to release the press action because its done in @After function
     }
@@ -185,7 +201,7 @@ class TestFeatureSwipe : BaseTest() {
         locationFrom: GeneralLocation,
         locationTo: GeneralLocation
     ) {
-        onView(ViewMatchers.withId(R.id.activityMain_rv))
+        onView(ViewMatchers.withId(R.id.activityBase_rv))
             .perform(
                 RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
                     position,
@@ -214,10 +230,11 @@ class TestFeatureSwipe : BaseTest() {
             )
     }
 
-    private fun <ITEM: BaseItem> getResetItemSwipeListener(adapter: DxAdapter<ITEM, *>): OnItemSwipedListener<BaseItem> {
-        val listener: OnItemSwipedListener<BaseItem> = spyk({ view, adapterPosition, direction, item ->
-            adapter.notifyItemChanged(adapterPosition)
-        })
+    private fun <ITEM : BaseItem> getResetItemSwipeListener(adapter: DxAdapter<ITEM, *>): OnItemSwipedListener<BaseItem> {
+        val listener: OnItemSwipedListener<BaseItem> =
+            spyk({ view, adapterPosition, direction, item ->
+                adapter.notifyItemChanged(adapterPosition)
+            })
 
         mSwipeFeature.setOnItemSwipedListener(listener)
 
@@ -229,7 +246,7 @@ class TestFeatureSwipe : BaseTest() {
             swipeFeature = mSwipeFeature
         }
 
-        onActivity { ItemTouchHelper(touchCallback).attachToRecyclerView(it.activityMain_rv) }
+        onActivity { ItemTouchHelper(touchCallback).attachToRecyclerView(it.activityBase_rv) }
     }
     //endregion
 

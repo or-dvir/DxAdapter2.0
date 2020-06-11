@@ -3,9 +3,9 @@ package com.hotmail.or_dvir.dxlibraries.clickable
 import android.os.Bundle
 import android.util.Log
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
-import com.hotmail.or_dvir.dxlibraries.FeatureActivity
+import com.hotmail.or_dvir.dxlibraries.BaseFeatureActivity
 
-class ActivityClick : FeatureActivity() {
+class ActivityClick : BaseFeatureActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

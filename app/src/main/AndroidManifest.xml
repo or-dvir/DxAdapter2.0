@@ -15,7 +15,7 @@
         <activity android:name=".selectable.ActivitySelect" />
         <activity android:name=".expandable.ActivityExpand" />
         <activity android:name=".draggable.ActivityDrag" />
-        <activity android:name=".FeatureActivity" />
+        <activity android:name=".BaseFeatureActivity" />
         <activity android:name=".clickable.ActivityClick" />
         <activity android:name=".ActivityMain">
             <intent-filter>

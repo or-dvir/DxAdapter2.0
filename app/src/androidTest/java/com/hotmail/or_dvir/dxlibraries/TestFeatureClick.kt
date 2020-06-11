@@ -6,19 +6,22 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
-import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable
-import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
-import com.hotmail.or_dvir.dxlibraries.clickable.ItemNonClickable
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxclick.OnItemClickListener
 import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
+import com.hotmail.or_dvir.dxlibraries.clickable.*
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
-class TestFeatureClick : BaseTest() {
+class TestFeatureClick : BaseTest<ActivityClick>() {
+
+    @get:Rule
+    var scenario = ActivityScenarioRule(ActivityClick::class.java)
+    override fun getTestActivityScenario() = scenario
 
     private lateinit var mClickListener: OnItemClickListener<BaseItem>
     private lateinit var mLongClickListener: OnItemLongClickListener<BaseItem>
@@ -52,7 +55,7 @@ class TestFeatureClick : BaseTest() {
 
         clickedPosition = 1
 
-        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withId(R.id.activityBase_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, longClick())
         )
 
@@ -83,7 +86,7 @@ class TestFeatureClick : BaseTest() {
         clickedPosition = 1
         clickedItem = adapter.getItem(clickedPosition)
 
-        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withId(R.id.activityBase_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(clickedPosition, longClick())
         )
 
@@ -119,7 +122,7 @@ class TestFeatureClick : BaseTest() {
 
         //region clickable item
         position = 1
-        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withId(R.id.activityBase_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(position, click())
         ).perform(
             actionOnItemAtPosition<ViewHolder>(position, longClick())

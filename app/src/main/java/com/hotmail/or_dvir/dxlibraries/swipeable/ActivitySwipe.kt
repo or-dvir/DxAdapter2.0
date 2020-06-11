@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
-import com.hotmail.or_dvir.dxlibraries.FeatureActivity
+import com.hotmail.or_dvir.dxlibraries.BaseFeatureActivity
 import kotlinx.android.synthetic.main.activity_base.*
 
-class ActivitySwipe : FeatureActivity() {
+class ActivitySwipe : BaseFeatureActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

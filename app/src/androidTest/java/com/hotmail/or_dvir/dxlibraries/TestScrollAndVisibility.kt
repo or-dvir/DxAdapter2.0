@@ -8,19 +8,27 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
+import com.hotmail.or_dvir.dxlibraries.scrollandvisibility.ActivityScrollAndVisibility
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.GenericListener
 import io.mockk.spyk
 import io.mockk.verify
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_base.*
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
-class TestDxRecyclerView : BaseTest() {
+class TestScrollAndVisibility : BaseTest<ActivityScrollAndVisibility>() {
+
+    @get:Rule
+    var scenario = ActivityScenarioRule(ActivityScrollAndVisibility::class.java)
+    override fun getTestActivityScenario() = scenario
+
     //visibility listeners
     private lateinit var mFirstVisible: GenericListener
     private lateinit var mFirstInvisible: GenericListener
@@ -43,7 +51,7 @@ class TestDxRecyclerView : BaseTest() {
             it.apply {
                 //register idling resource
                 IdlingRegistry.getInstance()
-                    .register(activityMain_rv.idlingResource.resource)
+                    .register(activityBase_rv.idlingResource.resource)
 
                 setAdapter(testAdapter)
             }
@@ -54,7 +62,7 @@ class TestDxRecyclerView : BaseTest() {
     fun after() {
         //unregister idling resource
         onActivity {
-            IdlingRegistry.getInstance().unregister(it.activityMain_rv.idlingResource.resource)
+            IdlingRegistry.getInstance().unregister(it.activityBase_rv.idlingResource.resource)
         }
     }
 
@@ -92,7 +100,7 @@ class TestDxRecyclerView : BaseTest() {
 
 
         //scroll to end of list
-        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withId(R.id.activityBase_rv)).perform(
             //NOTE: the position parameter must be within the recycler view bounds!
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(longListSize - 1)
         )
@@ -111,7 +119,7 @@ class TestDxRecyclerView : BaseTest() {
         verify(atMost = 1) { mLastInvisible.invoke() }
 
         //scroll to top of list
-        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withId(R.id.activityBase_rv)).perform(
             RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(0)
         )
 
@@ -149,7 +157,7 @@ class TestDxRecyclerView : BaseTest() {
         //scroll down slow
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withId(R.id.activityBase_rv)).perform(
             swipeUpSlow()
         )
 
@@ -181,7 +189,7 @@ class TestDxRecyclerView : BaseTest() {
         //scroll down fast
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withId(R.id.activityMain_rv)).perform(swipeUpFast())
+        onView(withId(R.id.activityBase_rv)).perform(swipeUpFast())
 
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()
@@ -195,7 +203,7 @@ class TestDxRecyclerView : BaseTest() {
         //scroll up fast
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withId(R.id.activityMain_rv)).perform(swipeDownFast())
+        onView(withId(R.id.activityBase_rv)).perform(swipeDownFast())
 
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()
@@ -227,7 +235,7 @@ class TestDxRecyclerView : BaseTest() {
         //scroll to end of list.
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withId(R.id.activityMain_rv)).perform(ViewActions.swipeLeft())
+        onView(withId(R.id.activityBase_rv)).perform(ViewActions.swipeLeft())
 
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()
@@ -241,7 +249,7 @@ class TestDxRecyclerView : BaseTest() {
         //scroll to top of list
         //NOTE: using swipe action and not scrollToPosition() because scrollToPosition()
         //does not trigger the scroll listener properly (dx and dy values are 0)
-        onView(withId(R.id.activityMain_rv)).perform(ViewActions.swipeRight())
+        onView(withId(R.id.activityBase_rv)).perform(ViewActions.swipeRight())
 
         //wait for the scroll to finish
         pauseTestUntilAsyncOperationDone()
@@ -262,7 +270,7 @@ class TestDxRecyclerView : BaseTest() {
         mOnScrollRight = spyk({})
 
         onActivity {
-            it.activityMain_rv.onScrollListener = DxScrollListener(sensitivity).apply {
+            it.activityBase_rv.onScrollListener = DxScrollListener(sensitivity).apply {
                 onScrollUp = mOnScrollUp
                 onScrollDown = mOnScrollDown
                 onScrollLeft = mOnScrollLeft
@@ -279,7 +287,7 @@ class TestDxRecyclerView : BaseTest() {
     private fun pauseTestUntilAsyncOperationDone() {
         //the recycler view should always be visible, so this is a simple test
         //that should always pass
-        onView(withId(R.id.activityMain_rv)).check(
+        onView(withId(R.id.activityBase_rv)).check(
             ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE))
         )
     }
@@ -304,13 +312,12 @@ class TestDxRecyclerView : BaseTest() {
         mLastInvisible = spyk({})
 
         onActivity {
-            it.activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
-                onFirstItemVisible = mFirstVisible
-                onFirstItemInvisible = mFirstInvisible
-
-                onLastItemVisible = mLastVisible
+            it.activityBase_rv.onItemsVisibilityListener = DxVisibilityListener(
+                onFirstItemVisible = mFirstVisible,
+                onFirstItemInvisible = mFirstInvisible,
+                onLastItemVisible = mLastVisible,
                 onLastItemInvisible = mLastInvisible
-            }
+            )
         }
     }
 
@@ -327,6 +334,8 @@ class TestDxRecyclerView : BaseTest() {
     private fun swipeUpSlow() = swipeUp(Swipe.SLOW)
 
     private fun swipeDownFast() = swipeDown(Swipe.FAST)
+
+    @Suppress("unused")
     private fun swipeDownSlow() = swipeDown(Swipe.SLOW)
     //endregion
 }

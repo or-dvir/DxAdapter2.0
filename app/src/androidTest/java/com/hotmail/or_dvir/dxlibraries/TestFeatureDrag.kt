@@ -13,25 +13,28 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
 import com.hotmail.or_dvir.dxdragandswipe.OnDragEventListener
 import com.hotmail.or_dvir.dxdragandswipe.OnItemMovedListener
 import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
-import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
-import com.hotmail.or_dvir.dxlibraries.draggable.AdapterNonDraggable
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
+import com.hotmail.or_dvir.dxlibraries.draggable.*
 import io.mockk.spyk
 import io.mockk.verify
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_base.*
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import kotlin.math.absoluteValue
 
-class TestFeatureDrag : BaseTest() {
+class TestFeatureDrag : BaseTest<ActivityDrag>() {
+
+    @get:Rule
+    var scenario = ActivityScenarioRule(ActivityDrag::class.java)
+    override fun getTestActivityScenario() = scenario
 
     //todo can i test dragging out of bounds of screen?
 
@@ -86,12 +89,7 @@ class TestFeatureDrag : BaseTest() {
 
         performDrag(positionFrom, positionTo, null)
 
-        //IMPORTANT NOTE!!!
-        //for an unknown reason the drag operation in the performDrag() function
-        //triggers mDragEventStart (in addition to the press-and-hold operation).
-        //THIS DOES NOT HAPPEN when i manually test the app!!!
-        //so just accept it and check that it was called 2 times
-        verify(exactly = 2) {
+        verify(exactly = 1) {
             mDragStart.invoke(
                 any(),
                 positionFrom,
@@ -218,12 +216,7 @@ class TestFeatureDrag : BaseTest() {
         //all conditions for allowing drag are fulfilled so its expected behaviour
         // for the start/end drag listeners to trigger. however since this test is about dragging
         // in the wrong direction, the move listener should not be triggered.
-        //IMPORTANT NOTE!!!
-        // for an unknown reason the drag operation in the performDrag() function
-        // triggers mDragEventStart (in addition to the press-and-hold operation).
-        // THIS DOES NOT HAPPEN when i manually test the app!!!
-        // so just accept it and check that it was called 2 times
-        verify(exactly = 2) {
+        verify(exactly = 1) {
             mDragStart.invoke(
                 any(),
                 positionFrom,
@@ -368,7 +361,7 @@ class TestFeatureDrag : BaseTest() {
         positionTo: Int,
         @IdRes innerViewId: Int?
     ) {
-        onView(withId(R.id.activityMain_rv))
+        onView(withId(R.id.activityBase_rv))
             .perform(
                 actionOnItemAtPosition<ViewHolder>(
                     positionFrom,
@@ -404,7 +397,7 @@ class TestFeatureDrag : BaseTest() {
         textToCheck: String,
         adapter: DxAdapter<*, *>
     ) {
-        onView(withId(R.id.activityMain_rv))
+        onView(withId(R.id.activityBase_rv))
             //scroll to end
             .perform(scrollToPosition<ViewHolder>(adapter.getDxAdapterItems().size - 1))
             //scroll to start
@@ -427,7 +420,7 @@ class TestFeatureDrag : BaseTest() {
             dragHandleId?.apply { setDragHandleId(this) }
         }
 
-        onActivity { touchHelper.attachToRecyclerView(it.activityMain_rv) }
+        onActivity { touchHelper.attachToRecyclerView(it.activityBase_rv) }
     }
     //endregion
 }

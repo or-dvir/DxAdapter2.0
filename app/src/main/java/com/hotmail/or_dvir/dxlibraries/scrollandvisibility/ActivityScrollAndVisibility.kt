@@ -2,14 +2,14 @@ package com.hotmail.or_dvir.dxlibraries.scrollandvisibility
 
 import android.os.Bundle
 import android.util.Log
-import com.hotmail.or_dvir.dxlibraries.FeatureActivity
+import com.hotmail.or_dvir.dxlibraries.BaseFeatureActivity
 import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
 import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import kotlinx.android.synthetic.main.activity_base.*
 
-class ActivityScrollAndVisibility : FeatureActivity() {
+class ActivityScrollAndVisibility : BaseFeatureActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -1,12 +1,12 @@
 package com.hotmail.or_dvir.dxlibraries.stickyheader
 
 import android.os.Bundle
-import com.hotmail.or_dvir.dxlibraries.FeatureActivity
+import com.hotmail.or_dvir.dxlibraries.BaseFeatureActivity
 import com.hotmail.or_dvir.dxlibraries.BaseItem
 import com.hotmail.or_dvir.dxstickyheader.DxStickyHeaderItemDecoration
 import kotlinx.android.synthetic.main.activity_base.*
 
-class ActivityStickyHeader : FeatureActivity() {
+class ActivityStickyHeader : BaseFeatureActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

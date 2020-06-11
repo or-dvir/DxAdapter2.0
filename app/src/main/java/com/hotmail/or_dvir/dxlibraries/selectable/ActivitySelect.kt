@@ -3,10 +3,10 @@ package com.hotmail.or_dvir.dxlibraries.selectable
 import android.os.Bundle
 import android.util.Log
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
-import com.hotmail.or_dvir.dxlibraries.FeatureActivity
+import com.hotmail.or_dvir.dxlibraries.BaseFeatureActivity
 import com.hotmail.or_dvir.dxselection.DxFeatureSelection
 
-class ActivitySelect : FeatureActivity() {
+class ActivitySelect : BaseFeatureActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

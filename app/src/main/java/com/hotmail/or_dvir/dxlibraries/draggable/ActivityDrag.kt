@@ -7,11 +7,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
 import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
-import com.hotmail.or_dvir.dxlibraries.FeatureActivity
+import com.hotmail.or_dvir.dxlibraries.BaseFeatureActivity
 import com.hotmail.or_dvir.dxlibraries.BaseAdapter
 import kotlinx.android.synthetic.main.activity_base.*
 
-class ActivityDrag : FeatureActivity() {
+class ActivityDrag : BaseFeatureActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

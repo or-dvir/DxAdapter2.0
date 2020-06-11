@@ -12,7 +12,7 @@ import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import kotlinx.android.synthetic.main.activity_base.*
 import org.jetbrains.annotations.TestOnly
 
-abstract class FeatureActivity : AppCompatActivity() {
+abstract class BaseFeatureActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_base)
@@ -47,10 +47,10 @@ abstract class FeatureActivity : AppCompatActivity() {
             }
 
             addItemDecoration(
-                DividerItemDecoration(this@FeatureActivity, DividerItemDecoration.VERTICAL)
+                DividerItemDecoration(this@BaseFeatureActivity, DividerItemDecoration.VERTICAL)
             )
 
-            layoutManager = LinearLayoutManager(this@FeatureActivity, RecyclerView.VERTICAL, false)
+            layoutManager = LinearLayoutManager(this@BaseFeatureActivity, RecyclerView.VERTICAL, false)
         }
     }
 
@@ -62,10 +62,10 @@ abstract class FeatureActivity : AppCompatActivity() {
             }
 
             addItemDecoration(
-                DividerItemDecoration(this@FeatureActivity, DividerItemDecoration.HORIZONTAL)
+                DividerItemDecoration(this@BaseFeatureActivity, DividerItemDecoration.HORIZONTAL)
             )
 
-            layoutManager = LinearLayoutManager(this@FeatureActivity, RecyclerView.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(this@BaseFeatureActivity, RecyclerView.HORIZONTAL, false)
         }
     }
 }

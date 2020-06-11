@@ -1,6 +1,8 @@
 package com.hotmail.or_dvir.dxlibraries
 
+import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
+import com.hotmail.or_dvir.dxlibraries.selectable.ActivitySelect
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemNonSelectable
 import com.hotmail.or_dvir.dxlibraries.selectable.ItemSelectable
 import com.hotmail.or_dvir.dxselection.DxFeatureSelection
@@ -11,9 +13,14 @@ import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Assert.*
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
-class TestFeatureSelection : BaseTest() {
+class TestFeatureSelection : BaseTest<ActivitySelect>() {
+    @get:Rule
+    var scenario = ActivityScenarioRule(ActivitySelect::class.java)
+    override fun getTestActivityScenario() = scenario
+
     private val mAdapter = BaseAdapter(mutableListOf())
     private lateinit var mItemSelection: OnItemSelectionChangedListener<BaseItem>
     private lateinit var mSelectionMode: OnSelectionModeStateChanged

@@ -12,21 +12,20 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import org.junit.Rule
 
-abstract class BaseTest {
+abstract class BaseTest<T: BaseFeatureActivity> {
 
-    @get:Rule
-    var activityScenario = ActivityScenarioRule(ActivityMain::class.java)
+    abstract fun getTestActivityScenario(): ActivityScenarioRule<T>
 
-    fun onActivity(task: (act: ActivityMain) -> Unit): ActivityScenario<ActivityMain> =
-        activityScenario.scenario.onActivity { task.invoke(it) }
+    fun onActivity(task: (act: BaseFeatureActivity) -> Unit): ActivityScenario<T> =
+        getTestActivityScenario().scenario.onActivity { task.invoke(it) }
 
     fun scrollToPosition(position: Int) {
-        onView(withId(R.id.activityMain_rv)).perform(scrollToPosition<ViewHolder>(position))
+        onView(withId(R.id.activityBase_rv)).perform(scrollToPosition<ViewHolder>(position))
     }
 
     fun clickAtPosition(position: Int) {
         Log.i("aaaaa", "test clicking item at $position")
-        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withId(R.id.activityBase_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(
                 position,
                 click()
@@ -36,7 +35,7 @@ abstract class BaseTest {
 
     fun longClickAtPosition(position: Int) {
         Log.i("aaaaa", "test long-clicking item at $position")
-        onView(withId(R.id.activityMain_rv)).perform(
+        onView(withId(R.id.activityBase_rv)).perform(
             actionOnItemAtPosition<ViewHolder>(
                 position,
                 longClick()

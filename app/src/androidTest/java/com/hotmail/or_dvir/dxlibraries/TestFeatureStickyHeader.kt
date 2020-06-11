@@ -1,6 +1,14 @@
 package com.hotmail.or_dvir.dxlibraries
 
-class TestFeatureStickyHeader : BaseTest() {
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.hotmail.or_dvir.dxlibraries.stickyheader.ActivityStickyHeader
+import org.junit.Rule
+
+class TestFeatureStickyHeader : BaseTest<ActivityStickyHeader>() {
+
+    @get:Rule
+    var scenario = ActivityScenarioRule(ActivityStickyHeader::class.java)
+    override fun getTestActivityScenario() = scenario
 
     //todo
     // HOW DO I TEST THESE?!?! CANT FIND A WAY

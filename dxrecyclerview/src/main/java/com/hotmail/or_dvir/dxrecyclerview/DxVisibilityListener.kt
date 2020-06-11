@@ -23,10 +23,10 @@ package com.hotmail.or_dvir.dxrecyclerview
  * note that if the entire list DOES fit on the screen, this will NEVER trigger.
  */
 open class DxVisibilityListener(
-    private var onFirstItemVisible: GenericListener? = null,
-    private var onFirstItemInvisible: GenericListener? = null,
-    private var onLastItemVisible: GenericListener? = null,
-    private var onLastItemInvisible: GenericListener? = null
+    val onFirstItemVisible: GenericListener? = null,
+    val onFirstItemInvisible: GenericListener? = null,
+    val onLastItemVisible: GenericListener? = null,
+    val onLastItemInvisible: GenericListener? = null
 ) {
     internal var flagNotifiedFirstVisible = false
     internal var flagNotifiedFirstInvisible = false
