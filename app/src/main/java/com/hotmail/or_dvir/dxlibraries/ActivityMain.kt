@@ -44,10 +44,9 @@ class ActivityMain : AppCompatActivity() {
     // add readme file FOR EACH MODULE
     //      which dependencies EACH MODULE forwards to the user?
     //      read each files documentation for special notes that should be added to the readme
-    // when documenting add a note for the minSdkVersion
-    // check all to-do notes in all files regarding documentation
+    //      add note that not all features need to be manually added but its recommended
+    //      add a note for the minSdkVersion
     // can i make the sample more clear?
-    // fix problem with idling resource with dependencies error
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,8 +83,6 @@ class ActivityMain : AppCompatActivity() {
         setAdapter(adapter)
 
         val featureHeader = MyStickyHeaderFeature(adapter)
-        //todo when documenting add note that this is not really needed but should
-        // do it for future updates
         adapter.addFeature(featureHeader)
         activityMain_rv.addItemDecoration(DxStickyHeaderItemDecoration(featureHeader))
     }
@@ -157,9 +154,8 @@ class ActivityMain : AppCompatActivity() {
                 },
                 onItemSwiped = { view, adapterPosition, direction, item ->
                     //IMPORTANT NOTE:
-                    //do to the way ItemTouchCallback works, you MUST do something with the item!
-                    //(e.g. remove, reset). if you don't, listeners will be called for wrong items
-                    //todo add this note in documentation
+                    //due to the way ItemTouchCallback works, you MUST do something with the item!
+                    //(e.g. remove, reset). if you don't, listeners will be called for wrong parameters
                     //this resets the item
                     adapter.notifyItemChanged(adapterPosition)
                     Log.i("aaaaa", "${item.text} swiped")

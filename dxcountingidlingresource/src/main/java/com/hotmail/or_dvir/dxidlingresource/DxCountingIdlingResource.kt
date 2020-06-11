@@ -5,14 +5,15 @@ import androidx.test.espresso.idling.CountingIdlingResource
 
 /**
  * a convenience class that holds a [CountingIdlingResource].
- * This class is used in DxRecyclerView for automated UI tests
+ * This class is used in DxRecyclerView for automated UI tests.
+ *
+ * note that while idling resources are used for testing, their logic also executes in
+ * production/release versions
  */
 open class DxCountingIdlingResource(private val uniqueName: String) {
     companion object {
         val TAG = DxCountingIdlingResource::class.java.simpleName
     }
-
-    //todo add a note in documentation that this will also run in release builds
 
     @JvmField
     val resource = CountingIdlingResource(uniqueName)

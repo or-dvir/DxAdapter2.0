@@ -19,7 +19,6 @@ open class DxSwipeText(
     @ColorInt internal val textColor: Int
 ) {
     internal val mPaint = Paint().apply {
-        //todo check if this alignment works for RTL languages
         textAlign = Paint.Align.LEFT
         textSize = desiredSizePx
         color = textColor

@@ -146,7 +146,6 @@ open class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapt
             //and targetPosition would ve reversed (because they have been switched...)
             //NOTE:
             //if the item is not draggable, this function will not be called
-            //todo add this note to documentation
             dragFeature?.onItemMoved?.invoke(
                 dragged.itemView,
                 draggedPosition,

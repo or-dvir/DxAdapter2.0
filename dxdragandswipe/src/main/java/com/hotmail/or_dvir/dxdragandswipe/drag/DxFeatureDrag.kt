@@ -25,7 +25,8 @@ import org.jetbrains.annotations.TestOnly
  *
  * note that this listener is for the end of the user interaction with the dragged item, and does not
  * necessarily mean that the item has been moved.
- * @param onItemMoved a listener to be invoked when an item has been switched with another item.
+ * @param onItemMoved a listener to be invoked when an item is about to be switched with another item.
+ * note that the parameters are BEFORE the switching.
  * @param dragOnLongClick whether or not long-clicking an item should start a drag operation
  *
  * @see isDragEnabled

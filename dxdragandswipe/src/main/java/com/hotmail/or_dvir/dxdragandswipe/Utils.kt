@@ -1,6 +1,7 @@
 package com.hotmail.or_dvir.dxdragandswipe
 
 import android.view.View
+import androidx.recyclerview.widget.ItemTouchHelper
 
 //region drag
 /**
@@ -30,7 +31,11 @@ typealias OnItemMovedListener<ITEM> = (
 
 //region swipe
 /**
- * a listener to be invoked when a swipe event happened for an item
+ * a listener to be invoked when a swipe event happened for an item.
+ *
+ * IMPORTANT: due to the way [ItemTouchHelper.Callback] works, you MUST do something with the item when it is swiped
+ * (like remove or reset it into the adapter). otherwise the listeners will be called with
+ * wrong parameters
  *
  * @param view the root view of the ViewHolder of [item] for which the swipe event has occurred
  * @param adapterPosition the position of the item in the adapter
