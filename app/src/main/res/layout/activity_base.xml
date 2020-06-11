@@ -7,15 +7,15 @@
     android:orientation="vertical">
 
     <com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
-        android:id="@+id/activityMain_rv"
+        android:id="@+id/activityBase_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/activityMain_btn"
+        app:layout_constraintBottom_toTopOf="@+id/activityBase_btn"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/list_item_standard" />
 
     <Button
-        android:id="@+id/activityMain_btn"
+        android:id="@+id/activityBase_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="button for testing"

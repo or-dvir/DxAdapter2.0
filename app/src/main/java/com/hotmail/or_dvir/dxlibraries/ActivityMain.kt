@@ -36,7 +36,7 @@ import com.hotmail.or_dvir.dxstickyheader.DxStickyHeaderItemDecoration
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.annotations.TestOnly
 
-class ActivityMain : AppCompatActivity() {
+open class ActivityMain : AppCompatActivity() {
 
     //todo
     // should i add filtering feature? is that useful?
