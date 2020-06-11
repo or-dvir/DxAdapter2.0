@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxlibraries
+package com.hotmail.or_dvir.dxlibraries.tests
 
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import androidx.test.espresso.Espresso.onView
@@ -6,23 +6,22 @@ import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxclick.OnItemClickListener
 import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
-import com.hotmail.or_dvir.dxlibraries.clickable.*
+import com.hotmail.or_dvir.dxlibraries.BaseAdapter
+import com.hotmail.or_dvir.dxlibraries.BaseItem
+import com.hotmail.or_dvir.dxlibraries.R
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.AdapterNonClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
+import com.hotmail.or_dvir.dxlibraries.clickable.ItemNonClickable
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-class TestFeatureClick : BaseTest<ActivityClick>() {
-
-    @get:Rule
-    var scenario = ActivityScenarioRule(ActivityClick::class.java)
-    override fun getTestActivityScenario() = scenario
-
+class TestFeatureClick : BaseTest() {
     private lateinit var mClickListener: OnItemClickListener<BaseItem>
     private lateinit var mLongClickListener: OnItemLongClickListener<BaseItem>
     private lateinit var mClickFeature: DxFeatureClick<BaseItem>

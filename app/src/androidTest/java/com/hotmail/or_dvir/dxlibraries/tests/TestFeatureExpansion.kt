@@ -1,11 +1,10 @@
-package com.hotmail.or_dvir.dxlibraries
+package com.hotmail.or_dvir.dxlibraries.tests
 
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
 import com.hotmail.or_dvir.dxexpansion.DxFeatureExpansion
 import com.hotmail.or_dvir.dxexpansion.IDxItemExpandable
 import com.hotmail.or_dvir.dxexpansion.OnItemExpansionStateChangedListener
-import com.hotmail.or_dvir.dxlibraries.expandable.ActivityExpand
+import com.hotmail.or_dvir.dxlibraries.BaseItem
 import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
 import com.hotmail.or_dvir.dxlibraries.expandable.ItemNonExpandable
 import com.hotmail.or_dvir.dxlibraries.stickyheader.AdapterExpandableMix
@@ -13,15 +12,9 @@ import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Assert.*
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-class TestFeatureExpansion : BaseTest<ActivityExpand>() {
-
-    @get:Rule
-    var scenario = ActivityScenarioRule(ActivityExpand::class.java)
-    override fun getTestActivityScenario() = scenario
-
+class TestFeatureExpansion : BaseTest() {
     private val mAdapter = AdapterExpandableMix(mutableListOf())
     private lateinit var mItemExpansion: OnItemExpansionStateChangedListener<BaseItem>
     private lateinit var mExpansionFeature: DxFeatureExpansion<BaseItem>

@@ -16,25 +16,29 @@ class ActivitySwipe : BaseFeatureActivity() {
         )
         setAdapter(adapter)
 
+        val mySwipeFeature = MySwipeFeature(
+            context = this@ActivitySwipe,
+            onSwipeStart = { view, adapterPosition, item ->
+                Log.i("aaaaa", "swipe start for ${item.text}")
+            },
+            onSwipeEnd = { view, adapterPosition, item ->
+                Log.i("aaaaa", "swipe end for ${item.text}")
+            },
+            onItemSwiped = { view, adapterPosition, direction, item ->
+                //IMPORTANT NOTE:
+                //due to the way ItemTouchCallback works, you MUST do something with the item!
+                //(e.g. remove, reset). if you don't, listeners will be called for wrong parameters
+                //this resets the item
+                adapter.notifyItemChanged(adapterPosition)
+                Log.i("aaaaa", "${item.text} swiped")
+            },
+            swipeDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
+        )
+
+        adapter.addFeature(mySwipeFeature)
+
         val touchCallBack = DxItemTouchCallback(adapter).apply {
-            swipeFeature = MySwipeFeature(
-                context = this@ActivitySwipe,
-                onSwipeStart = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "swipe start for ${item.text}")
-                },
-                onSwipeEnd = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "swipe end for ${item.text}")
-                },
-                onItemSwiped = { view, adapterPosition, direction, item ->
-                    //IMPORTANT NOTE:
-                    //due to the way ItemTouchCallback works, you MUST do something with the item!
-                    //(e.g. remove, reset). if you don't, listeners will be called for wrong parameters
-                    //this resets the item
-                    adapter.notifyItemChanged(adapterPosition)
-                    Log.i("aaaaa", "${item.text} swiped")
-                },
-                swipeDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-            )
+            swipeFeature = mySwipeFeature
         }
 
         ItemTouchHelper(touchCallBack).attachToRecyclerView(activityBase_rv)

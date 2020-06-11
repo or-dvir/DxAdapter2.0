@@ -1,5 +1,6 @@
-package com.hotmail.or_dvir.dxlibraries
+package com.hotmail.or_dvir.dxlibraries.tests
 
+import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -9,27 +10,24 @@ import androidx.test.espresso.action.Press
 import androidx.test.espresso.action.Swipe
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
 import com.hotmail.or_dvir.dxdragandswipe.OnItemSwipedListener
 import com.hotmail.or_dvir.dxdragandswipe.OnSwipeEventListener
 import com.hotmail.or_dvir.dxdragandswipe.swipe.DxFeatureSwipe
-import com.hotmail.or_dvir.dxlibraries.swipeable.*
+import com.hotmail.or_dvir.dxlibraries.*
+import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterNonSwipeable
+import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterSwipeable
+import com.hotmail.or_dvir.dxlibraries.swipeable.ItemNonSwipeable
+import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_base.*
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-class TestFeatureSwipe : BaseTest<ActivitySwipe>() {
-    @get:Rule
-    var scenario = ActivityScenarioRule(ActivitySwipe::class.java)
-    override fun getTestActivityScenario() = scenario
-
-    some tests fail
+class TestFeatureSwipe : BaseTest() {
 
     //NOTE:
     //the following features are simple variables to return to google's default
@@ -50,15 +48,19 @@ class TestFeatureSwipe : BaseTest<ActivitySwipe>() {
     @Suppress("UNUSED_ANONYMOUS_PARAMETER")
     @Before
     fun before() {
-        mSwipeStart = spyk({ view, position, item -> })
-        mSwipeEnd = spyk({ view, position, item -> })
+        mSwipeStart = spyk({ view, position, item ->
+            Log.i("aaaaa", "test swipe start")
+        })
+        mSwipeEnd = spyk({ view, position, item ->
+            Log.i("aaaaa", "test swipe end")
+        })
 
         mSwipeFeature = DxFeatureSwipe(
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT, //may be overridden later
             mSwipeStart,
             mSwipeEnd,
             { _, _, _, _ ->
-                //this will be overridden in each test function, but must be supplied here
+                //this will be overridden in each test function, but required in constructor
             }
         )
     }

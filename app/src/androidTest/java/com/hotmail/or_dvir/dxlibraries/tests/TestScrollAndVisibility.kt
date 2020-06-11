@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxlibraries
+package com.hotmail.or_dvir.dxlibraries.tests
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
@@ -8,10 +8,9 @@ import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.hotmail.or_dvir.dxlibraries.R
 import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
 import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
-import com.hotmail.or_dvir.dxlibraries.scrollandvisibility.ActivityScrollAndVisibility
 import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
 import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
 import com.hotmail.or_dvir.dxrecyclerview.GenericListener
@@ -20,15 +19,9 @@ import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_base.*
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 
-class TestScrollAndVisibility : BaseTest<ActivityScrollAndVisibility>() {
-
-    @get:Rule
-    var scenario = ActivityScenarioRule(ActivityScrollAndVisibility::class.java)
-    override fun getTestActivityScenario() = scenario
-
+class TestScrollAndVisibility : BaseTest() {
     //visibility listeners
     private lateinit var mFirstVisible: GenericListener
     private lateinit var mFirstInvisible: GenericListener

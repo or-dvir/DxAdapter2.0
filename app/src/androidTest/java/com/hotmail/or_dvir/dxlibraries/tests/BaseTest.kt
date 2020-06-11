@@ -1,8 +1,7 @@
-package com.hotmail.or_dvir.dxlibraries
+package com.hotmail.or_dvir.dxlibraries.tests
 
 import android.util.Log
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.longClick
@@ -10,14 +9,17 @@ import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.hotmail.or_dvir.dxlibraries.BaseFeatureActivity
+import com.hotmail.or_dvir.dxlibraries.R
 import org.junit.Rule
 
-abstract class BaseTest<T: BaseFeatureActivity> {
+abstract class BaseTest {
+    @get:Rule
+    var activityScenario = ActivityScenarioRule(BaseFeatureActivity::class.java)
 
-    abstract fun getTestActivityScenario(): ActivityScenarioRule<T>
-
-    fun onActivity(task: (act: BaseFeatureActivity) -> Unit): ActivityScenario<T> =
-        getTestActivityScenario().scenario.onActivity { task.invoke(it) }
+    fun onActivity(task: (act: BaseFeatureActivity) -> Unit) {
+        activityScenario.scenario.onActivity { task.invoke(it) }
+    }
 
     fun scrollToPosition(position: Int) {
         onView(withId(R.id.activityBase_rv)).perform(scrollToPosition<ViewHolder>(position))

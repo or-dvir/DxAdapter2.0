@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxlibraries
+package com.hotmail.or_dvir.dxlibraries.tests
 
 import android.util.Log
 import androidx.annotation.IdRes
@@ -13,30 +13,26 @@ import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
 import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
 import com.hotmail.or_dvir.dxdragandswipe.OnDragEventListener
 import com.hotmail.or_dvir.dxdragandswipe.OnItemMovedListener
 import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
-import com.hotmail.or_dvir.dxlibraries.draggable.*
+import com.hotmail.or_dvir.dxlibraries.*
+import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
+import com.hotmail.or_dvir.dxlibraries.draggable.AdapterNonDraggable
+import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
+import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.android.synthetic.main.activity_base.*
 import org.junit.After
 import org.junit.Before
-import org.junit.Rule
 import org.junit.Test
 import kotlin.math.absoluteValue
 
-class TestFeatureDrag : BaseTest<ActivityDrag>() {
-    @get:Rule
-    var scenario = ActivityScenarioRule(ActivityDrag::class.java)
-    override fun getTestActivityScenario() = scenario
-
-    some tests fail
-
+class TestFeatureDrag : BaseTest() {
     //todo can i test dragging out of bounds of screen?
 
     private lateinit var mDragStart: OnDragEventListener<BaseItem>
@@ -406,7 +402,14 @@ class TestFeatureDrag : BaseTest<ActivityDrag>() {
             //scroll to position to make sure its visible
             .perform(scrollToPosition<ViewHolder>(positionToCheck))
             //check the text
-            .check(matches(atPosition(positionToCheck, hasDescendant(withText(textToCheck)))))
+            .check(
+                matches(
+                    atPosition(
+                        positionToCheck,
+                        hasDescendant(withText(textToCheck))
+                    )
+                )
+            )
     }
 
     private fun setupDragFeatureWithRecyclerView(
