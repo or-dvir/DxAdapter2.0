@@ -1,44 +1,24 @@
 package com.hotmail.or_dvir.dxlibraries
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.annotation.IdRes
-import androidx.annotation.VisibleForTesting
+import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.hotmail.or_dvir.dxadapter.DxAdapter
-import com.hotmail.or_dvir.dxadapter.IDxBaseItem
-import com.hotmail.or_dvir.dxclick.DxFeatureClick
-import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchCallback
-import com.hotmail.or_dvir.dxdragandswipe.DxItemTouchHelper
-import com.hotmail.or_dvir.dxdragandswipe.drag.DxFeatureDrag
-import com.hotmail.or_dvir.dxexpansion.DxFeatureExpansion
-import com.hotmail.or_dvir.dxlibraries.clickable.AdapterClickable
-import com.hotmail.or_dvir.dxlibraries.clickable.ItemClickable
-import com.hotmail.or_dvir.dxlibraries.draggable.AdapterDraggable
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemDraggable
-import com.hotmail.or_dvir.dxlibraries.draggable.ItemNonDraggable
-import com.hotmail.or_dvir.dxlibraries.expandable.AdapterExpandable
-import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
-import com.hotmail.or_dvir.dxlibraries.stickyheader.AdapterStickyHeader
-import com.hotmail.or_dvir.dxlibraries.stickyheader.ItemHeader
-import com.hotmail.or_dvir.dxlibraries.stickyheader.MyStickyHeaderFeature
-import com.hotmail.or_dvir.dxlibraries.swipeable.AdapterSwipeable
-import com.hotmail.or_dvir.dxlibraries.swipeable.ItemSwipeable
-import com.hotmail.or_dvir.dxlibraries.swipeable.MySwipeFeature
-import com.hotmail.or_dvir.dxrecyclerview.DxScrollListener
-import com.hotmail.or_dvir.dxrecyclerview.DxVisibilityListener
-import com.hotmail.or_dvir.dxselection.DxFeatureSelection
-import com.hotmail.or_dvir.dxstickyheader.DxStickyHeaderItemDecoration
+import androidx.core.view.children
+import com.hotmail.or_dvir.dxlibraries.clickable.ActivityClick
+import com.hotmail.or_dvir.dxlibraries.draggable.ActivityDrag
+import com.hotmail.or_dvir.dxlibraries.expandable.ActivityExpand
+import com.hotmail.or_dvir.dxlibraries.scrollandvisibility.ActivityScrollAndVisibility
+import com.hotmail.or_dvir.dxlibraries.selectable.ActivitySelect
+import com.hotmail.or_dvir.dxlibraries.stickyheader.ActivityStickyHeader
+import com.hotmail.or_dvir.dxlibraries.swipeable.ActivitySwipe
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.annotations.TestOnly
 
-open class ActivityMain : AppCompatActivity() {
+open class ActivityMain : AppCompatActivity(), View.OnClickListener {
 
     //todo
+    // edit all tests to work with the new activity structure
     // should i add filtering feature? is that useful?
     // export each module as its own library!!!
     // add readme file FOR EACH MODULE
@@ -51,272 +31,32 @@ open class ActivityMain : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setLayoutManagerVertical()
 
-//        setScrollListeners()
-//        setVisibilityListeners()
-//        setClickFeature()
-//        setDragFeature(true, null)
-//        setDragFeature(false, R.id.listItem_dragHandle)
-//        setDragFeatureMixed()
-//        setSwipeFeature()
-//        setSelectionFeature()
-//        setExpansionFeature()
-//        setStickyHeader()
-    }
-
-    @VisibleForTesting
-    fun setStickyHeader() {
-        val items = mutableListOf<BaseItem>()
-
-        var headerCounter = 1
-        for (i in 1..100) {
-            if (i % 10 == 0) {
-                items.add(ItemHeader("Header $headerCounter"))
-                headerCounter++
-            } else {
-                items.add(BaseItem("item $i"))
+        activityMain_ll_allButtons.children.forEach {
+            if (it is Button) {
+                it.setOnClickListener(this@ActivityMain)
             }
         }
-
-        val adapter = AdapterStickyHeader(items)
-        setAdapter(adapter)
-
-        val featureHeader = MyStickyHeaderFeature(adapter)
-        adapter.addFeature(featureHeader)
-        activityMain_rv.addItemDecoration(DxStickyHeaderItemDecoration(featureHeader))
     }
 
-    private fun setExpansionFeature() {
-        val adapter = AdapterExpandable(
-            MutableList(10) { index -> ItemExpandable("item $index") }
-        )
-        setAdapter(adapter)
-
-        val clickFeature = DxFeatureClick<ItemExpandable>(
-            onItemClick = { _, _, _ -> },
-            onItemLongClick = { _, _, _ -> true }
-        )
-
-        val expandFeature = DxFeatureExpansion(
-            adapter,
-            clickFeature,
-            defaultClickBehavior = true,
-            onlyOneItemExpanded = true,
-            onItemExpansionStateChanged = { adapterPosition, isExpanded, item ->
-                //do something
-            }
-        )
-
-        adapter.addFeature(expandFeature)
-    }
-
-    private fun setSelectionFeature() {
-        val adapter = AdapterExpandable(
-            MutableList(10) { index -> ItemExpandable("item $index") }
-        )
-        setAdapter(adapter)
-
-        val clickFeature = DxFeatureClick<ItemExpandable>(
-            onItemClick = { _, _, _ -> },
-            onItemLongClick = { _, _, _ -> true }
-        )
-
-        val selectFeature = DxFeatureSelection<ItemExpandable>(
-            adapter,
-            clickFeature,
-            defaultClickBehavior = true,
-            onItemSelectionChanged = { adapterPosition, isSelected, item ->
-                Log.i("aaaaa", "${item.text} selected: $isSelected")
-            },
-            onSelectionModeChanged = { isSelectionModeActive ->
-                Log.i("aaaaa", "in selection mode? $isSelectionModeActive")
-            }
-        )
-
-        adapter.addFeature(selectFeature)
-    }
-
-    private fun setSwipeFeature() {
-        val adapter = AdapterSwipeable(
-            MutableList(10) { index -> ItemSwipeable("item $index") }
-        )
-        setAdapter(adapter)
-
-        val touchCallBack = DxItemTouchCallback(adapter).apply {
-            swipeFeature = MySwipeFeature(
-                context = this@ActivityMain,
-                onSwipeStart = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "swipe start for ${item.text}")
-                },
-                onSwipeEnd = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "swipe end for ${item.text}")
-                },
-                onItemSwiped = { view, adapterPosition, direction, item ->
-                    //IMPORTANT NOTE:
-                    //due to the way ItemTouchCallback works, you MUST do something with the item!
-                    //(e.g. remove, reset). if you don't, listeners will be called for wrong parameters
-                    //this resets the item
-                    adapter.notifyItemChanged(adapterPosition)
-                    Log.i("aaaaa", "${item.text} swiped")
-                },
-                swipeDirections = ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT
-            )
+    override fun onClick(v: View?) {
+        if (v == null) {
+            throw Exception("clicked view was null")
         }
 
-        ItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
-    }
-
-    private fun setDragFeatureMixed() {
-        val items = mutableListOf(
-            ItemNonDraggable("non-draggable"),
-            ItemDraggable("draggable")
-        )
-        val adapter = BaseAdapter(items)
-        setAdapter(adapter)
-
-        val touchCallBack = DxItemTouchCallback(adapter).apply {
-            dragFeature = DxFeatureDrag(
-                onDragStart = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "drag start for ${item.text}")
-                },
-                onDragEnd = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "drag end for ${item.text}")
-                },
-
-                onItemMoved = { draggedView, draggedPosition, draggedItem,
-                                targetView, targetPosition, targetItem ->
-                    Log.i(
-                        "aaaaa",
-                        "replaced ${draggedItem.text}($draggedPosition) " +
-                                "with ${targetItem.text}($targetPosition)"
-                    )
-                },
-                dragDirections = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-                dragOnLongClick = true
-            )
-        }
-
-        DxItemTouchHelper(touchCallBack).attachToRecyclerView(activityMain_rv)
-    }
-
-    @Suppress("SameParameterValue")
-    private fun setDragFeature(dragOnLongClick: Boolean, @IdRes dragHandleId: Int?) {
-        val adapter = AdapterDraggable(
-            MutableList(100) { index -> ItemDraggable("item $index") }
-        )
-
-        setAdapter(adapter)
-
-        val touchCallBack = DxItemTouchCallback(adapter).apply {
-            dragFeature = DxFeatureDrag(
-                onDragStart = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "drag start for ${item.text}")
-                },
-                onDragEnd = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "drag end for ${item.text}")
-                },
-
-                onItemMoved = { draggedView, draggedPosition, draggedItem,
-                                targetView, targetPosition, targetItem ->
-                    Log.i(
-                        "aaaaa",
-                        "replaced ${draggedItem.text}($draggedPosition) " +
-                                "with ${targetItem.text}($targetPosition)"
-                    )
-                },
-                dragDirections = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-                dragOnLongClick = dragOnLongClick
-            )
-        }
-
-        DxItemTouchHelper(touchCallBack).apply {
-            dragHandleId?.apply { setDragHandleId(this) }
-            attachToRecyclerView(activityMain_rv)
-        }
-    }
-
-    private fun setClickFeature() {
-        val adapter = AdapterClickable(
-            MutableList(100) { index -> ItemClickable("item $index") }
-        )
-
-        setAdapter(adapter)
-
-        val clickListeners = DxFeatureClick<ItemClickable>(
-            onItemClick = { view, adapterPosition, item ->
-                Log.i("aaaaa", "clicked ${item.text}")
-            },
-            onItemLongClick = { view, adapterPosition, item ->
-                Log.i("aaaaa", "long clicked ${item.text}")
-                true
-            }
-        )
-
-        adapter.addFeature(clickListeners)
-    }
-
-    private fun setVisibilityListeners() {
-        //in this case it doesn't matter which adapter is used
-        val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
-        setAdapter(adapter)
-
-        activityMain_rv.onItemsVisibilityListener = DxVisibilityListener().apply {
-            onFirstItemVisible = { Log.i("aaaaa", adapter.getItem(0).text) }
-            onLastItemVisible = { Log.i("aaaaa", adapter.getItem(1).text) }
-        }
-    }
-
-    private fun setScrollListeners() {
-        //in this case it doesn't matter which adapter is used
-        val adapter = AdapterClickable(MutableList(100) { index -> ItemClickable("item $index") })
-        setAdapter(adapter)
-
-        activityMain_rv.onScrollListener = DxScrollListener(1).apply {
-            onScrollUp = { Log.i("aaaaa", "scroll up") }
-            onScrollDown = { Log.i("aaaaa", "scroll down") }
-            onScrollLeft = { Log.i("aaaaa", "scroll left") }
-            onScrollRight = { Log.i("aaaaa", "scroll right") }
-        }
-    }
-
-    @VisibleForTesting
-    fun setAdapter(adapter: DxAdapter<*, *>) {
-        activityMain_rv.adapter = adapter
-    }
-
-    @TestOnly
-    fun setAdapterItems(items: MutableList<IDxBaseItem>) {
-        (activityMain_rv.adapter as BaseSampleAdapter<IDxBaseItem, *>).setItems(items)
-    }
-
-    @VisibleForTesting
-    fun setLayoutManagerVertical() {
-        activityMain_rv.apply {
-            if (itemDecorationCount > 0) {
-                removeItemDecorationAt(0)
+        val clazz =
+            when (v.id) {
+                R.id.activityMain_btn_click -> ActivityClick::class.java
+                R.id.activityMain_btn_drag -> ActivityDrag::class.java
+                R.id.activityMain_btn_expand -> ActivityExpand::class.java
+                R.id.activityMain_btn_scrollAndVisibility -> ActivityScrollAndVisibility::class.java
+                R.id.activityMain_btn_select -> ActivitySelect::class.java
+                R.id.activityMain_btn_stickyHeader -> ActivityStickyHeader::class.java
+                R.id.activityMain_btn_swipe -> ActivitySwipe::class.java
+                else -> throw Exception("did you forget to add the button to this \"when\" statement?")
             }
 
-            addItemDecoration(
-                DividerItemDecoration(this@ActivityMain, DividerItemDecoration.VERTICAL)
-            )
-
-            layoutManager = LinearLayoutManager(this@ActivityMain, RecyclerView.VERTICAL, false)
-        }
-    }
-
-    @VisibleForTesting
-    fun setLayoutManagerHorizontal() {
-        activityMain_rv.apply {
-            if (itemDecorationCount > 0) {
-                removeItemDecorationAt(0)
-            }
-
-            addItemDecoration(
-                DividerItemDecoration(this@ActivityMain, DividerItemDecoration.HORIZONTAL)
-            )
-
-            layoutManager = LinearLayoutManager(this@ActivityMain, RecyclerView.HORIZONTAL, false)
-        }
+        val intent = Intent(v.context, clazz)
+        startActivity(intent)
     }
 }

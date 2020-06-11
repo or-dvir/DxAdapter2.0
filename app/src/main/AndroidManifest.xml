@@ -9,7 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".clickable.ActivityClickable"></activity>
+        <activity android:name=".scrollandvisibility.ActivityScrollAndVisibility" />
+        <activity android:name=".swipeable.ActivitySwipe" />
+        <activity android:name=".stickyheader.ActivityStickyHeader" />
+        <activity android:name=".selectable.ActivitySelect" />
+        <activity android:name=".expandable.ActivityExpand" />
+        <activity android:name=".draggable.ActivityDrag" />
+        <activity android:name=".FeatureActivity" />
+        <activity android:name=".clickable.ActivityClick" />
         <activity android:name=".ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

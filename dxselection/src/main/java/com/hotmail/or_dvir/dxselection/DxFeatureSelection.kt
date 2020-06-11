@@ -26,6 +26,9 @@ import org.jetbrains.annotations.TestOnly
  * when no items are selected, long-clicking an item will select that item and start selection mode.
  * any subsequent regular clicks on any item will select/deselect the clicked item.
  *
+ * if you set this to false, you must handle selection on your own using the functions provided in
+ * this feature
+ *
  * @param onItemSelectionChanged a listener to be invoked when an item has been selected/deselected.
  *
  * note that visual changes to your item should be done in your adapter inside the
