@@ -32,6 +32,7 @@ class ActivitySelect : BaseFeatureActivity() {
             }
         )
 
+        //note that the click feature is automatically added in this case
         adapter.addFeature(selectFeature)
     }
 }
