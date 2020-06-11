@@ -25,10 +25,6 @@ open class DxRecyclerView @JvmOverloads constructor(
         val IDLING_RESOURCE_NAME = "${TAG}IdlingResource"
     }
 
-    //todo add note in documentation that this needs to be registered in instrumentation tests
-    // also note that in order for it to actually take effect, you must perform an instrumented test
-    // (that is just the way espresso works) e.g. for this is actually work you must perform
-    // an instrumented test that should always pass
     /**
      * if you use [DxRecyclerView] in your app and wish to perform some automated UI tests,
      * you can use this already existing [DxCountingIdlingResource].
