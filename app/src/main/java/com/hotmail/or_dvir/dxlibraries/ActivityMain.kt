@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 open class ActivityMain : AppCompatActivity(), View.OnClickListener {
 
     //todo
-    // edit all tests to work with the new activity structure
     // should i add filtering feature? is that useful?
     // export each module as its own library!!!
     // add readme file FOR EACH MODULE
