@@ -7,7 +7,7 @@ import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter.IDxBaseFeature
 import com.hotmail.or_dvir.dxadapter.IDxBaseItem
 import com.hotmail.or_dvir.dxclick.DxFeatureClick
-import com.hotmail.or_dvir.dxclick.IDxClickListenerFeature
+import com.hotmail.or_dvir.dxclick.IDxClickFeature
 import com.hotmail.or_dvir.dxclick.OnItemClickListener
 import com.hotmail.or_dvir.dxclick.OnItemLongClickListener
 import org.jetbrains.annotations.TestOnly
@@ -48,7 +48,7 @@ open class DxFeatureSelection<ITEM : IDxBaseItem>(
     private var defaultClickBehavior: Boolean,
     private val onItemSelectionChanged: OnItemSelectionChangedListener<ITEM>,
     private var onSelectionModeChanged: OnSelectionModeStateChanged
-) : IDxBaseFeature, IDxClickListenerFeature {
+) : IDxBaseFeature, IDxClickFeature {
 
     init {
         adapter.addFeature(clickFeature)

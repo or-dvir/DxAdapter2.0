@@ -18,7 +18,7 @@ open class DxFeatureClick<ITEM : IDxBaseItem>(
      * do NOT access or modify this field. It's used internally by the library.
      */
     val clickListenerFeatures =
-        mutableListOf<IDxClickListenerFeature>()
+        mutableListOf<IDxClickFeature>()
 
     override fun onCreateViewHolder(
         adapter: DxAdapter<*, *>,

@@ -15,7 +15,7 @@ class ActivityClick : BaseFeatureActivity() {
 
         setAdapter(adapter)
 
-        val clickListeners = DxFeatureClick<ItemClickable>(
+        val clickFeature = DxFeatureClick<ItemClickable>(
             onItemClick = { view, adapterPosition, item ->
                 Log.i("aaaaa", "clicked ${item.text}")
             },
@@ -25,6 +25,6 @@ class ActivityClick : BaseFeatureActivity() {
             }
         )
 
-        adapter.addFeature(clickListeners)
+        adapter.addFeature(clickFeature)
     }
 }
