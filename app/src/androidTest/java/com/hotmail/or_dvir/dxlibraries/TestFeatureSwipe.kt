@@ -29,6 +29,8 @@ class TestFeatureSwipe : BaseTest<ActivitySwipe>() {
     var scenario = ActivityScenarioRule(ActivitySwipe::class.java)
     override fun getTestActivityScenario() = scenario
 
+    some tests fail
+
     //NOTE:
     //the following features are simple variables to return to google's default
     //implementation (in other words: there is no custom logic behind them), and therefore they

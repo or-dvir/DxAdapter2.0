@@ -31,10 +31,11 @@ import org.junit.Test
 import kotlin.math.absoluteValue
 
 class TestFeatureDrag : BaseTest<ActivityDrag>() {
-
     @get:Rule
     var scenario = ActivityScenarioRule(ActivityDrag::class.java)
     override fun getTestActivityScenario() = scenario
+
+    some tests fail
 
     //todo can i test dragging out of bounds of screen?
 
