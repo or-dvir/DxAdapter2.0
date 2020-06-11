@@ -29,26 +29,31 @@ class ActivityDrag : BaseFeatureActivity() {
 
         setAdapter(adapter)
 
-        val touchCallBack = DxItemTouchCallback(adapter).apply {
-            dragFeature = DxFeatureDrag(
-                onDragStart = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "drag start for ${item.text}")
-                },
-                onDragEnd = { view, adapterPosition, item ->
-                    Log.i("aaaaa", "drag end for ${item.text}")
-                },
+        val myDragFeature = DxFeatureDrag<ItemDraggable>(
+            onDragStart = { view, adapterPosition, item ->
+                Log.i("aaaaa", "drag start for ${item.text}")
+            },
+            onDragEnd = { view, adapterPosition, item ->
+                Log.i("aaaaa", "drag end for ${item.text}")
+            },
 
-                onItemMoved = { draggedView, draggedPosition, draggedItem,
-                                targetView, targetPosition, targetItem ->
-                    Log.i(
-                        "aaaaa",
-                        "replaced ${draggedItem.text}($draggedPosition) " +
-                                "with ${targetItem.text}($targetPosition)"
-                    )
-                },
-                dragDirections = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
-                dragOnLongClick = dragOnLongClick
-            )
+            onItemMoved = { draggedView, draggedPosition, draggedItem,
+                            targetView, targetPosition, targetItem ->
+                Log.i(
+                    "aaaaa",
+                    "replaced ${draggedItem.text}($draggedPosition) " +
+                            "with ${targetItem.text}($targetPosition)"
+                )
+            },
+            dragDirections = ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+            dragOnLongClick = dragOnLongClick
+        )
+
+        adapter.addFeature(myDragFeature)
+
+
+        val touchCallBack = DxItemTouchCallback(adapter).apply {
+            dragFeature = myDragFeature
         }
 
         DxItemTouchHelper(touchCallBack).apply {
