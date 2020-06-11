@@ -30,7 +30,7 @@ import org.junit.Test
 class TestFeatureSwipe : BaseTest() {
 
     //NOTE:
-    //the following features are simple variables to return to google's default
+    //the following are simple variables to return to google's default
     //implementation (in other words: there is no custom logic behind them), and therefore they
     //do not need to be tested:
     //      swipeThreshold.

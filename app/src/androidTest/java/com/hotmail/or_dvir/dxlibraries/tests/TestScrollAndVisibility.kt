@@ -22,18 +22,20 @@ import org.junit.Before
 import org.junit.Test
 
 class TestScrollAndVisibility : BaseTest() {
-    //visibility listeners
+    //region visibility listeners
     private lateinit var mFirstVisible: GenericListener
     private lateinit var mFirstInvisible: GenericListener
 
     private lateinit var mLastVisible: GenericListener
     private lateinit var mLastInvisible: GenericListener
+    //endregion
 
-    //scroll listeners
+    //region scroll listeners
     private lateinit var mOnScrollUp: GenericListener
     private lateinit var mOnScrollDown: GenericListener
     private lateinit var mOnScrollLeft: GenericListener
     private lateinit var mOnScrollRight: GenericListener
+    //endregion
 
     @Before
     fun before() {
