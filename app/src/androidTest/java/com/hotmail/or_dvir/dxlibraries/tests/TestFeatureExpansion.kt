@@ -7,7 +7,7 @@ import com.hotmail.or_dvir.dxexpansion.OnItemExpansionStateChangedListener
 import com.hotmail.or_dvir.dxlibraries.BaseItem
 import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
 import com.hotmail.or_dvir.dxlibraries.expandable.ItemNonExpandable
-import com.hotmail.or_dvir.dxlibraries.stickyheader.AdapterExpandableMix
+import com.hotmail.or_dvir.dxlibraries.expandable.AdapterExpandableMix
 import io.mockk.spyk
 import io.mockk.verify
 import org.junit.Assert.*
@@ -15,7 +15,10 @@ import org.junit.Before
 import org.junit.Test
 
 class TestFeatureExpansion : BaseTest() {
-    private val mAdapter = AdapterExpandableMix(mutableListOf())
+    private val mAdapter =
+        AdapterExpandableMix(
+            mutableListOf()
+        )
     private lateinit var mItemExpansion: OnItemExpansionStateChangedListener<BaseItem>
     private lateinit var mExpansionFeature: DxFeatureExpansion<BaseItem>
 

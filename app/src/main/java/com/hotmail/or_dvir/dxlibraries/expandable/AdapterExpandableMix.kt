@@ -1,4 +1,4 @@
-package com.hotmail.or_dvir.dxlibraries.stickyheader
+package com.hotmail.or_dvir.dxlibraries.expandable
 
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +8,6 @@ import com.hotmail.or_dvir.dxexpansion.DxFeatureExpansion
 import com.hotmail.or_dvir.dxlibraries.BaseItem
 import com.hotmail.or_dvir.dxlibraries.BaseSampleAdapter
 import com.hotmail.or_dvir.dxlibraries.R
-import com.hotmail.or_dvir.dxlibraries.expandable.ItemExpandable
 import kotlinx.android.synthetic.main.list_item_expandable.view.*
 
 class AdapterExpandableMix(mItems: MutableList<BaseItem>) :
@@ -21,7 +20,9 @@ class AdapterExpandableMix(mItems: MutableList<BaseItem>) :
     ): RecyclerView.ViewHolder {
         return when (viewType) {
             R.id.MyItemId -> BaseSampleAdapter.ViewHolder(itemView)
-            R.id.MyExpandableItemId -> ViewHolder(itemView)
+            R.id.MyExpandableItemId -> ViewHolder(
+                itemView
+            )
             else -> BaseSampleAdapter.ViewHolder(itemView) //just for compiler
         }
     }
