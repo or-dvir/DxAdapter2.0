@@ -25,7 +25,6 @@ open class ActivityMain : AppCompatActivity(), View.OnClickListener {
     //      read each files documentation for special notes that should be added to the readme
     //      add note that not all features need to be manually added but its recommended
     //      add a note for the minSdkVersion
-    // can i make the sample more clear?
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
