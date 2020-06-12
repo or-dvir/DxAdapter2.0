@@ -1,9 +1,19 @@
 # DxDrag and DxSwipe
-These modules add dragging and swiping capability to your adapter.
+A module adding dragging and swiping capability to your adapter.
 
-# Usage
+Built-in Features:
+* Setting drag/swipe directions.
+* User interaction listeners (drag/swipe event start/end).
+* Flag for enabling/disabling drag/swipe at any time.
+* Item dragged/swiped listeners.
+* Dragging by long-click or by handle.
+* Swipe threshold.
+* Swipe escape velocity.
+* Swipe backgrounds with color, text, and icon (may be static or dynamic according to item state).
 
-## import
+For a complete example please see the sample app.
+
+## Import
 //todo coming soon
 
 ## Your Adapter
@@ -29,8 +39,5 @@ DxItemTouchHelper(touchCallBack).apply {
 Your item must implement the interface `IDxItemDraggable`
 and/or `IDxItemSwipeable`.
 
-See sample app for full usage example, including features like
-swipe background, text, and icon.
-
-# Built-in Dependencies:
+## Built-in Dependencies:
 * `androidx.recyclerview:recyclerview`

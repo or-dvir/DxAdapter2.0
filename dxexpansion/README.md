@@ -1,9 +1,14 @@
 # DxExpansion
 A module adding expandable items to your adapter.
 
-# Usage
+Built-in Features:
+* Expand/collapse listeners.
+* Expansion of a single item, or multiple items simultaneously.
+* Optional default behaviour (expand/collapse by click).
 
-## import
+For a complete example please see the sample app.
+
+## Import
 //todo coming soon
 
 ## Your Adapter
@@ -15,8 +20,11 @@ val myExpandFeature = DxFeatureExpansion<MyItem>(...)
 adapter.addFeature(myExpandFeature)
 ```
 
+## Your ViewHolder
+Your ViewHolder must extend `DxFeatureExpansion.ViewHolder`
+
 ## Your Items
 Your item must implement the interface `IDxItemExpandable`
 
-# Built-in Dependencies:
+## Built-in Dependencies:
 None.

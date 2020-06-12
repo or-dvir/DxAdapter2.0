@@ -18,9 +18,7 @@ DxAdapter is a `RecyclerView` adapter with several built-in features:
 Each feature is encapsulated in its own module so you can only use
 the ones you actually need.
 
-# Usage
-
-## import
+## Import
 Please see the individual modules.
 
 ## Your Adapter
@@ -38,6 +36,7 @@ Note that some of these might work (or work partially), but have not
 been fully tested.
 
 ## Some things to note:
+* Minimum SDK version 21.
 * This library was meant to be used with Kotlin. While it should
   theoretically also work with Java, it was never tested for it.
 * While efficiency is definitely an important factor, the priority for

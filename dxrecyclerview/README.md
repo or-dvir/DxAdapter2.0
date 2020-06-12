@@ -1,9 +1,13 @@
 # DxRecyclerView
-A module adding a custom `RecyclerView` with scroll and visibility listeners.
+A module containing a custom `RecyclerView`.
 
-# Usage
+Built-in Features:
+* Scroll listeners with given sensitivity.
+* Visibility listeners for first and last items.
 
-## import
+For a complete example please see the sample app.
+
+## Import
 //todo coming soon
 
 ## Your Layout
@@ -26,5 +30,5 @@ myRecyclerView.onScrollListener = DxScrollListener(...).apply {
     }
 ```
 
-# Built-in Dependencies:
+## Built-in Dependencies:
 * `androidx.recyclerview:recyclerview`

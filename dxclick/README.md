@@ -1,10 +1,13 @@
 # DxClick
-A module adding regular click (tap) and long-click listeners
-to your items.
+A module adding for handling item clicks.
 
-# Usage
+Built-in Features:
+* Regular click (tap) listener.
+* Long-click listener.
 
-## import
+For a complete example please see the sample app.
+
+## Import
 //todo coming soon
 
 ## Your Adapter
@@ -16,6 +19,6 @@ adapter.addFeature(myClickFeature)
 ## Your Items
 Your item must implement the  interface `IDxItemClickable`
 
-# Built-in Dependencies:
+## Built-in Dependencies:
 None.
 
