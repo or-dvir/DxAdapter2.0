@@ -1,4 +1,4 @@
-# DxDrag and DxSwipe
+# DxDragAndSwipe
 A module adding dragging and swiping capability to your adapter.
 
 Built-in Features:
@@ -25,9 +25,9 @@ adapter.addFeature(myDragFeature)
 adapter.addFeature(mySwipeFeature)
 
 val touchCallBack = DxItemTouchCallback(adapter).apply {
-            dragFeature = myDragFeature
-            swipeFeature = mySwipeFeature
-        }
+        dragFeature = myDragFeature
+        swipeFeature = mySwipeFeature
+    }
         
 DxItemTouchHelper(touchCallBack).apply {
         //setDragHandleId(...) //optional

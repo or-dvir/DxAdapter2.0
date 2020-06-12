@@ -14,7 +14,7 @@ For a complete example please see the sample app.
 ```
 <com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
         ... 
-        />
+/>
 ```
 
 ## Your Activity/Fragment
@@ -23,11 +23,11 @@ For a complete example please see the sample app.
 myRecyclerView.onItemsVisibilityListener = DxVisibilityListener(...)
 
 myRecyclerView.onScrollListener = DxScrollListener(...).apply {
-        onScrollUp = { ... } //optional
-        onScrollDown = { ... } //optional
-        onScrollLeft = { ... } //optional
-        onScrollRight = { ... } //optional
-    }
+    onScrollUp = { ... } //optional
+    onScrollDown = { ... } //optional
+    onScrollLeft = { ... } //optional
+    onScrollRight = { ... } //optional
+}
 ```
 
 ## Built-in Dependencies:
