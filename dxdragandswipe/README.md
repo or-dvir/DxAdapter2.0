@@ -14,7 +14,18 @@ Built-in Features:
 For a complete example please see the sample app.
 
 ## Import
-//todo coming soon
+in your `build.gradle` file add:
+
+```
+repositories {
+    //if already added, skip this one
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.or-dvir.DxAdapterV2:dxdragandswipe:<latest release>'
+}
+```
 
 ## Your Adapter
 ```
@@ -43,5 +54,5 @@ and/or `IDxItemSwipeable`.
 * `androidx.recyclerview:recyclerview`
 
 ## Depends On
-* [DxAdapter](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxadapter)
+* [DxAdapter](https://github.com/or-dvir/DxAdapterV2/tree/master/dxadapter)
 

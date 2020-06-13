@@ -3,7 +3,18 @@ The base module for the entire library. It includes the most basic
 classes and interfaces.
 
 ## Import
-//todo coming soon
+in your `build.gradle` file add:
+
+```
+repositories {
+    //if already added, skip this one
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.or-dvir.DxAdapterV2:dxadapter:<latest release>'
+}
+```
 
 ## Your Adapter
 Simply extend `DxAdapter`

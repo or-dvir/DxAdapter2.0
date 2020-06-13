@@ -4,7 +4,18 @@ A module adding sticky headers to your  adapter.
 For a complete example please see the sample app.
 
 ## Import
-//todo coming soon
+in your `build.gradle` file add:
+
+```
+repositories {
+    //if already added, skip this one
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.or-dvir.DxAdapterV2:dxstickyheader:<latest release>'
+}
+```
 
 ## Your Adapter and RecyclerView
 1. Extend the class `DxFeatureStickyHeader<>`.
@@ -27,4 +38,4 @@ recyclerView.addItemDecoration(decoration)
 None.
 
 ## Depends On
-* [DxAdapter](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxadapter)
+* [DxAdapter](https://github.com/or-dvir/DxAdapterV2/tree/master/dxadapter)

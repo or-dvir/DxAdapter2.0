@@ -10,7 +10,18 @@ next selection/deselection by regular click).
 For a complete example please see the sample app.
 
 ## Import
-//todo coming soon
+in your `build.gradle` file add:
+
+```
+repositories {
+    //if already added, skip this one
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation 'com.github.or-dvir.DxAdapterV2:dxselection:<latest release>'
+}
+```
 
 ## Your Adapter
 ```
@@ -28,8 +39,8 @@ Your item must implement the interface `IDxItemSelectable`
 None.
 
 ## Depends On
-* [DxAdapter](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxadapter)
-* [DxClick](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxclick)
+* [DxAdapter](https://github.com/or-dvir/DxAdapterV2/tree/master/dxadapter)
+* [DxClick](https://github.com/or-dvir/DxAdapterV2/tree/master/dxclick)
 
 
 
