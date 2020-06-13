@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 open class ActivityMain : AppCompatActivity(), View.OnClickListener {
 
     //todo
+    // add notes in all readme files for which other modules it depends on
     // changed library name - check github if the links also changed (for readme files)
     // update the original dx adapter readme file to link to this one
     // should i add filtering feature? is that useful?
