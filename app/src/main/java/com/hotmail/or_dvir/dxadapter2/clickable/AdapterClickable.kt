@@ -2,6 +2,7 @@ package com.hotmail.or_dvir.dxadapter2.clickable
 
 import android.view.View
 import android.view.ViewGroup
+import com.hotmail.or_dvir.dxadapter.DxAdapter
 import com.hotmail.or_dvir.dxadapter2.BaseSampleAdapter
 import com.hotmail.or_dvir.dxadapter2.R
 
