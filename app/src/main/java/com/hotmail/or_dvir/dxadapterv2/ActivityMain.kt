@@ -19,7 +19,6 @@ open class ActivityMain : AppCompatActivity(), View.OnClickListener {
 
     //todo
     // should i add filtering feature? is that useful?
-    // export each module as its own library!!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

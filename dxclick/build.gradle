@@ -32,8 +32,5 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
     implementation "androidx.core:core-ktx:$version_core_ktx"
 
-    //todo when exported to a library,
-    // do i need to change this line to import the library instead of the project
-    // or is it ok to leave it like this???
     implementation project(path: ':dxadapter')
 }
