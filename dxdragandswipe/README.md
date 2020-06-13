@@ -39,5 +39,9 @@ DxItemTouchHelper(touchCallBack).apply {
 Your item must implement the interface `IDxItemDraggable`
 and/or `IDxItemSwipeable`.
 
-## Built-in Dependencies:
+## Dependencies Exposed to User
 * `androidx.recyclerview:recyclerview`
+
+## Depends On
+* [DxAdapter](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxadapter)
+

@@ -30,5 +30,8 @@ myRecyclerView.onScrollListener = DxScrollListener(...).apply {
 }
 ```
 
-## Built-in Dependencies:
+## Dependencies Exposed to User
 * `androidx.recyclerview:recyclerview`
+
+## Depends On
+None.

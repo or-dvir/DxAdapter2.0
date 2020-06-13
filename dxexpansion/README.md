@@ -26,5 +26,9 @@ Your ViewHolder must extend `DxFeatureExpansion.ViewHolder`
 ## Your Items
 Your item must implement the interface `IDxItemExpandable`
 
-## Built-in Dependencies:
+## Dependencies Exposed to User
 None.
+
+## Depends On
+* [DxAdapter](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxadapter)
+* [DxClick](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxaclick)

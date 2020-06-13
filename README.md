@@ -1,15 +1,11 @@
 # DxAdapter 2.0
- currently under construction
-
-
-## DxAdapter
-DxAdapter is a `RecyclerView` adapter with several built-in features:
-* [Click listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxclick)
-* [Dragging and swiping (including text and icon)](https://github.com/or-dvir/DxLibraries/tree/master/dxdragandswipe)
-* [Expandable items](https://github.com/or-dvir/DxLibraries/tree/master/dxexpansion)
-* [Selection listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxselection)
-* [Sticky Headers](https://github.com/or-dvir/DxLibraries/tree/master/dxstickyheader)
-* [RecyclerView Scroll and visibility listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxrecyclerview)
+DxAdapter (v2.0) is a `RecyclerView` adapter with several built-in features:
+* [Click listeners](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxclick)
+* [Dragging and swiping (including text and icon)](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxdragandswipe)
+* [Expandable items](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxexpansion)
+* [Selection listeners](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxselection)
+* [Sticky Headers](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxstickyheader)
+* [RecyclerView Scroll and visibility listeners](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxrecyclerview)
 
 Each feature is encapsulated in its own module so you can only use
 the ones you actually need.

@@ -24,5 +24,12 @@ adapter.addFeature(mySelectionFeature)
 ## Your Items
 Your item must implement the interface `IDxItemSelectable`
 
-## Built-in Dependencies:
+## Dependencies Exposed to User
 None.
+
+## Depends On
+* [DxAdapter](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxadapter)
+* [DxClick](https://github.com/or-dvir/DxAdapter2.0/tree/master/dxclick)
+
+
+
