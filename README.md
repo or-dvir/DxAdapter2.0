@@ -3,17 +3,13 @@
 
 
 ## DxAdapter
-
-//todo make each bullet point into a link for the appropriate module
-
 DxAdapter is a `RecyclerView` adapter with several built-in features:
-* Click listeners
-* Dragging
-* Swiping (including text and icon)
-* Expandable items
-* Selection listeners
-* Sticky Headers
-* RecyclerView Scroll and visibility listeners
+* [Click listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxclick)
+* [Dragging and swiping (including text and icon)](https://github.com/or-dvir/DxLibraries/tree/master/dxdragandswipe)
+* [Expandable items](https://github.com/or-dvir/DxLibraries/tree/master/dxexpansion)
+* [Selection listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxselection)
+* [Sticky Headers](https://github.com/or-dvir/DxLibraries/tree/master/dxstickyheader)
+* [RecyclerView Scroll and visibility listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxrecyclerview)
 
 Each feature is encapsulated in its own module so you can only use
 the ones you actually need.
