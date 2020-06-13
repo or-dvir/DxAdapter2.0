@@ -1,5 +1,6 @@
 # DxAdapter 2.0
 DxAdapter (v2.0) is a `RecyclerView` adapter with several built-in features:
+* [DxAdapter](https://github.com/or-dvir/DxAdapterV2/tree/master/dxadapter)
 * [Click listeners](https://github.com/or-dvir/DxAdapterV2/tree/master/dxclick)
 * [Dragging and swiping (including text and icon)](https://github.com/or-dvir/DxAdapterV2/tree/master/dxdragandswipe)
 * [Expandable items](https://github.com/or-dvir/DxAdapterV2/tree/master/dxexpansion)
