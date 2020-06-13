@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hotmail.or_dvir.dxlibraries">
+    package="com.hotmail.or_dvir.dxadapter2">
 
     <application
         android:allowBackup="true"
@@ -9,15 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".scrollandvisibility.ActivityScrollAndVisibility" />
-        <activity android:name=".swipeable.ActivitySwipe" />
-        <activity android:name=".stickyheader.ActivityStickyHeader" />
-        <activity android:name=".selectable.ActivitySelect" />
-        <activity android:name=".expandable.ActivityExpand" />
-        <activity android:name=".draggable.ActivityDrag" />
-        <activity android:name=".BaseFeatureActivity" />
-        <activity android:name=".clickable.ActivityClick" />
-        <activity android:name=".ActivityMain">
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.scrollandvisibility.ActivityScrollAndVisibility" />
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.swipeable.ActivitySwipe" />
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.stickyheader.ActivityStickyHeader" />
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.selectable.ActivitySelect" />
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.expandable.ActivityExpand" />
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.draggable.ActivityDrag" />
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.BaseFeatureActivity" />
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.clickable.ActivityClick" />
+        <activity android:name="com.hotmail.or_dvir.dxadapter2.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -7,7 +7,7 @@ android {
     buildToolsVersion version_buildTools
 
     defaultConfig {
-        applicationId "com.hotmail.or_dvir.dxLibraries"
+        applicationId "com.hotmail.or_dvir.dxAdapter2"
         minSdkVersion version_minSdk
         targetSdkVersion version_targetSdk
         versionCode version_code

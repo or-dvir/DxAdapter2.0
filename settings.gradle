@@ -1,4 +1,4 @@
-rootProject.name='DxLibraries'
+rootProject.name='DxAdapter2-lib'
 include ':dxexpansion'
 include ':dxstickyheader'
 include ':app'
