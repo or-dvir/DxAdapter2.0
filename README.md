@@ -4,12 +4,12 @@
 
 ## DxAdapter
 DxAdapter is a `RecyclerView` adapter with several built-in features:
-* [Click listeners](https://github.com/or-dvir/DxLibraries/tree/develop/dxclick)
-* [Dragging and swiping (including text and icon)](https://github.com/or-dvir/DxLibraries/tree/develop/dxdragandswipe)
-* [Expandable items](https://github.com/or-dvir/DxLibraries/tree/develop/dxexpansion)
-* [Selection listeners](https://github.com/or-dvir/DxLibraries/tree/develop/dxselection)
-* [Sticky Headers](https://github.com/or-dvir/DxLibraries/tree/develop/dxstickyheader)
-* [RecyclerView Scroll and visibility listeners](https://github.com/or-dvir/DxLibraries/tree/develop/dxrecyclerview)
+* [Click listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxclick)
+* [Dragging and swiping (including text and icon)](https://github.com/or-dvir/DxLibraries/tree/master/dxdragandswipe)
+* [Expandable items](https://github.com/or-dvir/DxLibraries/tree/master/dxexpansion)
+* [Selection listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxselection)
+* [Sticky Headers](https://github.com/or-dvir/DxLibraries/tree/master/dxstickyheader)
+* [RecyclerView Scroll and visibility listeners](https://github.com/or-dvir/DxLibraries/tree/master/dxrecyclerview)
 
 Each feature is encapsulated in its own module so you can only use
 the ones you actually need.
