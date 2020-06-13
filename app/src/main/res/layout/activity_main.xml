@@ -1,24 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:padding="16dp">
 
-    <com.hotmail.or_dvir.dxrecyclerview.DxRecyclerView
-        android:id="@+id/activityMain_rv"
+    <LinearLayout
+        android:id="@+id/activityMain_ll_allButtons"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/activityMain_btn"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/list_item_standard" />
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/activityMain_btn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="do something"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <Button
+            android:id="@+id/activityMain_btn_click"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="click feature"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/activityMain_btn_drag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="drag feature"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/activityMain_btn_swipe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="swipe feature"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/activityMain_btn_expand"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="expansion feature"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/activityMain_btn_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="selection feature"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/activityMain_btn_scrollAndVisibility"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="scroll and visibility"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Button
+            android:id="@+id/activityMain_btn_stickyHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="stickyHeader"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
+</ScrollView>

@@ -9,7 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.hotmail.or_dvir.dxlibraries.ActivityMain">
+        <activity android:name=".scrollandvisibility.ActivityScrollAndVisibility" />
+        <activity android:name=".swipeable.ActivitySwipe" />
+        <activity android:name=".stickyheader.ActivityStickyHeader" />
+        <activity android:name=".selectable.ActivitySelect" />
+        <activity android:name=".expandable.ActivityExpand" />
+        <activity android:name=".draggable.ActivityDrag" />
+        <activity android:name=".BaseFeatureActivity" />
+        <activity android:name=".clickable.ActivityClick" />
+        <activity android:name=".ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

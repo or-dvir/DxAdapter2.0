@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="MyItemId" type="id" />
+    <item name="MyExpandableItemId" type="id" />
+    <item name="MyHeaderId" type="id" />
 </resources>

@@ -14,10 +14,10 @@ import com.hotmail.or_dvir.dxlibraries.R
 class MySwipeFeature(
     context: Context,
     swipeDirections: Int,
-    onSwipeStart: OnSwipeEventListener,
-    onSwipeEnd: OnSwipeEventListener,
-    onItemSwiped: OnItemSwipedListener
-) : DxFeatureSwipe(swipeDirections, onSwipeStart, onSwipeEnd, onItemSwiped) {
+    onSwipeStart: OnSwipeEventListener<ItemSwipeable>,
+    onSwipeEnd: OnSwipeEventListener<ItemSwipeable>,
+    onItemSwiped: OnItemSwipedListener<ItemSwipeable>
+) : DxFeatureSwipe<ItemSwipeable>(swipeDirections, onSwipeStart, onSwipeEnd, onItemSwiped) {
 
     //region
     //possible values to override
@@ -45,10 +45,15 @@ class MySwipeFeature(
             DxSwipeIcon(R.drawable.ic_arrow_left, context, 96)
         )
 
-    override fun getSwipeBackgroundLeft(itemView: View, adapterPosition: Int) = backgroundLeft
+    override fun getSwipeBackgroundLeft(itemView: View, adapterPosition: Int, item: ItemSwipeable) =
+        backgroundLeft
 
-    override fun getSwipeBackgroundRight(itemView: View, adapterPosition: Int): DxSwipeBackground? {
-        return if (adapterPosition % 2 == 0) {
+    override fun getSwipeBackgroundRight(
+        itemView: View,
+        adapterPosition: Int,
+        item: ItemSwipeable
+    ): DxSwipeBackground? {
+        return if (item.randomNum < 50) {
             backgroundRightOptionA
         } else {
             backgroundRightOptionB

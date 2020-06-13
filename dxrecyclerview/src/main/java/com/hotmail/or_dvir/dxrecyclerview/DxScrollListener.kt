@@ -1,8 +1,8 @@
 package com.hotmail.or_dvir.dxrecyclerview
 
 /**
- * a class containing individual scroll directions listeners (up, down, left, right),
- * with given sensitivities.
+ * a convenience class containing individual directional scroll listeners (up, down, left, right),
+ * with the sensitivities.
  *
  * The higher the sensitivity, the faster the user has to scroll for the listeners to trigger.
  *
@@ -11,7 +11,7 @@ package com.hotmail.or_dvir.dxrecyclerview
  * @param sensitivityLeft sensitivity for scrolling left
  * @param sensitivityRight sensitivity for scrolling right
  */
-class DxScrollListener(
+open class DxScrollListener(
     internal val sensitivityUp: Int,
     internal val sensitivityDown: Int,
     internal val sensitivityLeft: Int,
@@ -28,6 +28,7 @@ class DxScrollListener(
         sensitivityAll
     )
 
+    //region optional variables
     /**
      * a listener to be invoked when the list is scrolled up,
      * if the amount of scroll exceeds [sensitivityUp]
@@ -51,6 +52,7 @@ class DxScrollListener(
      * if the amount of scroll exceeds [sensitivityRight]
      */
     var onScrollRight: GenericListener? = null
+    //endregion
 
     internal fun atLeastOneListenerSet() =
         onScrollUp != null || onScrollDown != null || onScrollLeft != null || onScrollRight != null

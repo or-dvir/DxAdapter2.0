@@ -1,0 +1,37 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion version_compileSdk
+    buildToolsVersion version_buildTools
+
+    defaultConfig {
+        minSdkVersion version_minSdk
+        targetSdkVersion version_targetSdk
+        versionCode version_code
+        versionName version_name
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$version_kotlin"
+    implementation "androidx.core:core-ktx:$version_core_ktx"
+
+    //todo when exported to a library,
+    // do i need to change this line to import the library instead of the project
+    // or is it ok to leave it like this???
+    implementation project(path: ':dxadapter')
+}

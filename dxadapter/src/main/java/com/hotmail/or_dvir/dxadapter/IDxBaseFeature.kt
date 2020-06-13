@@ -5,15 +5,32 @@ import androidx.annotation.IdRes
 import androidx.recyclerview.widget.RecyclerView
 
 /**
- * a base interface for all functionalities (click listeners, swipe, etc.) to share
+ * a base interface for all functionalities (click listeners, swipe, etc.)
  */
 interface IDxBaseFeature {
-    fun onCreateViewHolder(adapter: DxAdapter<*>, itemView: View, holder: RecyclerView.ViewHolder)
+
+    //IMPORTANT NOTE:
+    //do NOT add generic <ITEM> to the adapter type!
+    //it leads to not being able to easily call addFeature() method in DxAdapter class
+    /**
+     * a listener to be invoked whenever [RecyclerView.Adapter.onCreateViewHolder] is invoked
+     * on your adapter
+     */
+    fun onCreateViewHolder(
+        adapter: DxAdapter<*, *>,
+        itemView: View,
+        holder: RecyclerView.ViewHolder
+    )
 
     /**
-     * used internally by the library.
-     *
-     * DO NOT OVERRIDE!!!
+     * a listener be invoked whenever [RecyclerView.Adapter.onBindViewHolder] is invoked
+     * on your adapter
      */
-    @IdRes fun getFeatureId(): Int
+    fun onBindViewHolder(adapter: DxAdapter<*, *>, itemView: View, holder: RecyclerView.ViewHolder)
+
+    /**
+     * a unique id used to identify the feature
+     */
+    @IdRes
+    fun getFeatureId(): Int
 }

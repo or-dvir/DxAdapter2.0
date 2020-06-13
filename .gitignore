@@ -84,5 +84,7 @@ lint/tmp/
 .idea/markdown-navigator-enh.xml
 .idea/markdown-navigator.xml
 gradle/wrapper/gradle-wrapper.properties
-.idea/misc.xml
 .idea/jarRepositories.xml
+.idea/misc.xml
+.idea/misc.xml
+.idea/misc.xml
