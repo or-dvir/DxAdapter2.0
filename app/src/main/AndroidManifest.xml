@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hotmail.or_dvir.dxadapter2">
+    package="com.hotmail.or_dvir.dxadapterv2">
 
     <application
         android:allowBackup="true"
@@ -9,15 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.scrollandvisibility.ActivityScrollAndVisibility" />
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.swipeable.ActivitySwipe" />
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.stickyheader.ActivityStickyHeader" />
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.selectable.ActivitySelect" />
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.expandable.ActivityExpand" />
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.draggable.ActivityDrag" />
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.BaseFeatureActivity" />
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.clickable.ActivityClick" />
-        <activity android:name="com.hotmail.or_dvir.dxadapter2.ActivityMain">
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.scrollandvisibility.ActivityScrollAndVisibility" />
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.swipeable.ActivitySwipe" />
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.stickyheader.ActivityStickyHeader" />
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.selectable.ActivitySelect" />
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.expandable.ActivityExpand" />
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.draggable.ActivityDrag" />
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.BaseFeatureActivity" />
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.clickable.ActivityClick" />
+        <activity android:name="com.hotmail.or_dvir.dxadapterv2.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
