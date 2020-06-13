@@ -19,7 +19,6 @@ open class ActivityMain : AppCompatActivity(), View.OnClickListener {
 
     //todo
     // should i add filtering feature? is that useful?
-    // mark the previous library as deprecated
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
