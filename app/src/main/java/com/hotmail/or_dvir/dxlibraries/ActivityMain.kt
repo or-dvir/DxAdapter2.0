@@ -19,6 +19,7 @@ open class ActivityMain : AppCompatActivity(), View.OnClickListener {
 
     //todo
     // should i add filtering feature? is that useful?
+    // merge develop into master branch
     // export each module as its own library!!!
     // add readme file FOR EACH MODULE
     //      read each files documentation for special notes that should be added to the readme
