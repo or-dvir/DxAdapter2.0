@@ -18,11 +18,25 @@ the ones you actually need.
 Please see the individual modules.
 
 ## Your Adapter
-Your adapter must extend `DXAdapter` and implement the required methods.
+Your adapter must extend `DxAdapter`, and you must add each desired feature
+using the `addFeature(...)` function.
+
+* Note: some features are automatically added, but it's still recommended
+that you add them manually in case this changes in a future update.
+
+Note that there are some functions you should not override directly,
+but instead use the library supplied version. Those functions should note
+this in their documentation.
+
 See the sample app for examples.
 
 ## Your Items
-Please see the individual modules.
+The most basic interface for items in this library is `IDxBaseItem`.
+
+Each feature has its own interface your items need to implement,
+which already extends `IDxBaseItem` (so you don't need both).
+
+Please see the individual modules` readme files for details.
 
 ## Current Limitations
 * Only supports `LinearLayoutManager`
@@ -30,8 +44,6 @@ Please see the individual modules.
 
 ## Some things to note:
 * Minimum SDK version 21.
-* While some features do not need to be manually added to the adapter,
-it is still recommended to do so for future updates.
 * This library was meant to be used with Kotlin. While it should
   theoretically also work with Java, it was never tested for it.
 * While efficiency is definitely an important factor, the priority for

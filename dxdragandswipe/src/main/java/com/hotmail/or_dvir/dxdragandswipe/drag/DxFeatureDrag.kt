@@ -71,6 +71,7 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
             return
         }
 
+        //todo fix this warning
         itemView.findViewById<View>(dragHandleId!!).setOnTouchListener { view, motionEvent ->
             when (motionEvent.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {

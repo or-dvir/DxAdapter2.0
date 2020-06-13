@@ -20,8 +20,6 @@ open class ActivityMain : AppCompatActivity(), View.OnClickListener {
     //todo
     // should i add filtering feature? is that useful?
     // export each module as its own library!!!
-    // add readme file FOR EACH MODULE
-    //      read each files documentation for special notes that should be added to the readme
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
