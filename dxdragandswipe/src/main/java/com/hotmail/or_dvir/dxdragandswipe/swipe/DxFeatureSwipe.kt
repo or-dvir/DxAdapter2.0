@@ -15,7 +15,8 @@ import org.jetbrains.annotations.TestOnly
  * a feature that adds swiping functionality to your adapter.
  *
  * @param swipeDirections the direction of allowed swiping. one or more of:
- * [ItemTouchHelper.LEFT], [ItemTouchHelper.RIGHT], [ItemTouchHelper.START], [ItemTouchHelper.END].
+ * [ItemTouchHelper.LEFT], [ItemTouchHelper.RIGHT], [ItemTouchHelper.START], [ItemTouchHelper.END],
+ * [ItemTouchHelper.updateDxDy], [ItemTouchHelper.DOWN].
  * @param onSwipeStart a listener to be invoked when a swipe operation has started.
  * @param onSwipeEnd a listener to be invoked when the user interaction of the swipe operation
  * has finished.
