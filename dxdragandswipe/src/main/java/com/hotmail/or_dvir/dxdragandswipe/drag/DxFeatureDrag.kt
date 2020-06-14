@@ -28,6 +28,12 @@ import org.jetbrains.annotations.TestOnly
  * necessarily mean that the item has been moved.
  * @param onItemMoved a listener to be invoked when an item is about to be switched with another item.
  * note that the parameters are BEFORE the switching.
+ *
+ * IMPORTANT!!!
+ *
+ * the library already takes care of switching the items in your adapter,
+ * so DO NOT make any changes to the backing list in this callback or you will get unexpected results!
+ *
  * @param dragOnLongClick (optional) whether or not long-clicking an item should start a drag operation
  *
  * @see isDragEnabled
@@ -114,7 +120,11 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
             holder.apply {
                 //NOTE:
                 //if the item is not draggable, this function will not be called
-                onDragEnd.invoke(itemView, adapterPosition, adapter.getItem(adapterPosition) as ITEM)
+                onDragEnd.invoke(
+                    itemView,
+                    adapterPosition,
+                    adapter.getItem(adapterPosition) as ITEM
+                )
             }
         }
     }
