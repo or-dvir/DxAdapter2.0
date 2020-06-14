@@ -5,7 +5,9 @@ Built-in Features:
 * Setting drag/swipe directions.
 * User interaction listeners (drag/swipe event start/end).
 * Flag for enabling/disabling drag/swipe at any time.
-* Item dragged/swiped listeners.
+* Item dragged/swiped listeners.  
+  Please carefully read the documentation for these listeners for
+  some important notes.
 * Dragging by long-click or by handle.
 * Swipe threshold.
 * Swipe escape velocity.
