@@ -1,14 +1,14 @@
 # DxClick
-A module adding for handling item clicks.
+This module handles item clicks.
 
 Built-in Features:
-* Regular click (tap) listener.
-* Long-click listener.
+* Regular click (tap) listener
+* Long-click listener
 
-For a complete example please see the sample app.
+For a complete example, please see the sample app.
 
 ## Import
-in your `build.gradle` file add:
+in your `build.gradle` file, add:
 
 ```
 repositories {
@@ -28,7 +28,7 @@ adapter.addFeature(myClickFeature)
 ```
 
 ## Your Items
-Your item must implement the  interface `IDxItemClickable`
+Your item must implement the  interface `IDxItemClickable`.
 
 ## Dependencies Exposed to User
 None.

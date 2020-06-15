@@ -1,10 +1,10 @@
 # DxStickyHeader
-A module adding sticky headers to your  adapter.
+This module adds sticky headers to your  adapter.
 
-For a complete example please see the sample app.
+For a complete example, please see the sample app.
 
 ## Import
-in your `build.gradle` file add:
+in your `build.gradle` file, add:
 
 ```
 repositories {

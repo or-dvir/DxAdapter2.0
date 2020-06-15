@@ -1,15 +1,15 @@
 # DxExpansion
-A module adding expandable items to your adapter.
+This module adds expandable items to your adapter.
 
 Built-in Features:
-* Expand/collapse listeners.
-* Expansion of a single item, or multiple items simultaneously.
-* Optional default behaviour (expand/collapse by click).
+* Expand/collapse listeners
+* Expansion of a single item, or multiple items simultaneously
+* Optional default behaviour (expand/collapse by click)
 
-For a complete example please see the sample app.
+For a complete example, please see the sample app.
 
 ## Import
-in your `build.gradle` file add:
+in your `build.gradle` file, add:
 
 ```
 repositories {
@@ -32,10 +32,10 @@ adapter.addFeature(myExpandFeature)
 ```
 
 ## Your ViewHolder
-Your ViewHolder must extend `DxFeatureExpansion.ViewHolder`
+Your ViewHolder must extend `DxFeatureExpansion.ViewHolder`.
 
 ## Your Items
-Your item must implement the interface `IDxItemExpandable`
+Your item must implement the interface `IDxItemExpandable`.
 
 ## Dependencies Exposed to User
 None.
