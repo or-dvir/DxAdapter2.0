@@ -22,8 +22,8 @@ using the `addFeature(...)` function.
 that you add them manually in case this changes in a future update.
 
 Note that there are some functions you should not override directly,
-but instead use the library supplied version. Those functions should note
-this in their documentation.
+but instead use the library supplied ones. This should
+be noted in the functions' documentation.
 
 See the sample app for examples.
 
@@ -37,7 +37,7 @@ Please see the individual modules` readme files for details.
 
 ## Current Limitations
 * Only supports `LinearLayoutManager`
-* Only support 1 type of sticky header.
+* Only supports 1 type of sticky header.
 
 ## Some things to note:
 * Minimum SDK version 21.
@@ -46,8 +46,8 @@ Please see the individual modules` readme files for details.
 * While efficiency is definitely an important factor, the priority for
   this library is simplicity and readability of code.
   So if it's important for you to save those few extra milliseconds,
-  there's probably some extra code you'll need to write.
-* The readme files for each module are only for general information.
+  you'll probably need to write some extra code.
+* The readme files for each module only provide general information.
   For more in-depth explanations and other important usage notes,
   please see the documentation, the sample app, and the source code.
 

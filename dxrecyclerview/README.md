@@ -1,14 +1,14 @@
 # DxRecyclerView
-A module containing a custom `RecyclerView`.
+This module adds a custom `RecyclerView`.
 
 Built-in Features:
-* Scroll listeners with given sensitivity.
-* Visibility listeners for first and last items.
+* Scroll listeners with given sensitivity
+* Visibility listeners for first and last items
 
-For a complete example please see the sample app.
+For a complete example, please see the sample app.
 
 ## Import
-in your `build.gradle` file add:
+in your `build.gradle` file, add:
 
 ```
 repositories {

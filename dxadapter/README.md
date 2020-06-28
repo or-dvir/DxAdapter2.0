@@ -1,9 +1,9 @@
 # DxAdapter
-The base module for the entire library. It includes the most basic
+The base module for the entire library, which includes all the basic
 classes and interfaces.
 
 ## Import
-in your `build.gradle` file add:
+in your `build.gradle`, add:
 
 ```
 repositories {
@@ -17,7 +17,7 @@ dependencies {
 ```
 
 ## Your Adapter
-Simply extend `DxAdapter`
+Simply extend `DxAdapter`.
 
 ```
 MyAdapter(

@@ -1,22 +1,22 @@
 # DxDragAndSwipe
-A module adding dragging and swiping capability to your adapter.
+This module adds dragging and swiping capability to your adapter.
 
 Built-in Features:
-* Setting drag/swipe directions.
-* User interaction listeners (drag/swipe event start/end).
-* Flag for enabling/disabling drag/swipe at any time.
-* Item dragged/swiped listeners.  
+* Setting drag/swipe directions
+* User interaction listeners (drag/swipe event start/end)
+* Flag for enabling/disabling drag/swipe at any time
+* Item dragged/swiped listeners  
   Please carefully read the documentation for these listeners for
-  some important notes.
-* Dragging by long-click or by handle.
-* Swipe threshold.
-* Swipe escape velocity.
-* Swipe backgrounds with color, text, and icon (may be static or dynamic according to item state).
+  some important notes
+* Dragging by long-click or by handle
+* Swipe threshold
+* Swipe escape velocity
+* Swipe backgrounds with color, text, and icon (may be static or dynamic according to item state)
 
-For a complete example please see the sample app.
+For a complete example, please see the sample app.
 
 ## Import
-in your `build.gradle` file add:
+in your `build.gradle` file, add:
 
 ```
 repositories {
