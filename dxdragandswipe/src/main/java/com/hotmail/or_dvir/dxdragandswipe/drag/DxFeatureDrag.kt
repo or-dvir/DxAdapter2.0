@@ -19,8 +19,8 @@ import org.jetbrains.annotations.TestOnly
  * @param dragDirections the direction of allowed dragging. one or more of:
  * [ItemTouchHelper.LEFT], [ItemTouchHelper.RIGHT], [ItemTouchHelper.START], [ItemTouchHelper.END],
  * [ItemTouchHelper.updateDxDy], [ItemTouchHelper.DOWN].
- * @param onDragStart a listener to be invoked when a drag operation has started. you can use this
- * to highlight the item being dragged.
+ * @param onDragStart a listener to be invoked when the user interaction of the drag operation has
+ * started. you can use this to highlight the item being dragged.
  * @param onDragEnd a listener to be invoked when the user interaction of the drag operation has
  * finished. you can use this to undo changes you made in [onDragStart].
  *
