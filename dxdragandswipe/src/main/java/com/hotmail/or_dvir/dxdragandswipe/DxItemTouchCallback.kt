@@ -1,7 +1,10 @@
 package com.hotmail.or_dvir.dxdragandswipe
 
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
 import android.graphics.Rect
+import android.view.View
 import androidx.annotation.IdRes
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -325,7 +328,7 @@ open class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapt
                 dxText?.apply {
                     mPaint.getTextBounds(text, 0, text.length, mTextRect)
 
-                    mTextY = backDraw.bounds.exactCenterY() + (mTextRect.height() / 4f)
+                    mTextY = backDraw.bounds.exactCenterY() + (mTextRect.height() / 2f)
                     mTextX =
                         if (mIsSwipingLeft) {
                             mIconLeft.toFloat() - paddingPx - textWidthPx
@@ -339,6 +342,52 @@ open class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapt
             }
         }
 
+        drawForTesting(canvas, itemView)
         super.onChildDraw(canvas, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
+    }
+
+    @Suppress("unused")
+    private fun drawForTesting(canvas: Canvas, itemView: View) {
+        val textWidth = mTextRect.width()
+        val textHeight = mTextRect.height()
+        val strokeLine = 3f
+        val strokePoint = 15f
+        val colorLine = Color.BLACK
+        val colorPoint = Color.GREEN
+        val paintPoint = Paint().apply {
+            color = colorPoint
+            strokeWidth = strokePoint
+        }
+
+        //text rectangle
+        canvas.drawRect(
+            mTextX,
+            mTextY - textHeight,
+            mTextX + textWidth,
+            mTextY,
+            Paint().apply {
+                color = colorLine
+                strokeWidth = strokeLine
+                style = Paint.Style.STROKE
+            }
+        )
+
+        //recycler view vertical center
+        val centerY = itemView.let { it.top + ((it.bottom - it.top) / 2f) }
+        canvas.drawLine(
+            itemView.left.toFloat(),
+            centerY,
+            itemView.right.toFloat(),
+            centerY,
+            Paint().apply {
+                color = colorLine
+                strokeWidth = strokeLine
+            }
+        )
+
+        //text base
+        canvas.drawPoint(mTextX, mTextY, paintPoint)
+        //text middle
+        canvas.drawPoint(mTextX + (textWidth / 2), mTextY - (textHeight / 2), paintPoint)
     }
 }
