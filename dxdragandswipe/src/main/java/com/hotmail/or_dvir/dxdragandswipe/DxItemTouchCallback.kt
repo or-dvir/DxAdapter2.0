@@ -342,7 +342,7 @@ open class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapt
             }
         }
 
-        drawForTesting(canvas, itemView)
+//        drawForTesting(canvas, itemView)
         super.onChildDraw(canvas, recyclerView, holder, dx, dy, actionState, isCurrentlyActive)
     }
 
