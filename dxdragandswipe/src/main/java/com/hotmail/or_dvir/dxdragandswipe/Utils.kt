@@ -2,6 +2,7 @@ package com.hotmail.or_dvir.dxdragandswipe
 
 import android.view.View
 import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 
 //region drag
 /**
@@ -11,7 +12,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
  * @param adapterPosition the position of the item in the adapter
  * @param item the item on which the drag event has occurred
  */
-typealias OnDragEventListener<ITEM> = (view: View, adapterPosition: Int, item: ITEM) -> Unit
+typealias OnDragEventListener<ITEM> =
+            (view: View, adapterPosition: Int, item: ITEM, holder: RecyclerView.ViewHolder) -> Unit
 
 /**
  * a listener to be invoked just BEFORE 2 items are about to be switched.

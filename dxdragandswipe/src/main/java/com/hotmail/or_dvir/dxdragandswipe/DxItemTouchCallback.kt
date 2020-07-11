@@ -79,10 +79,11 @@ open class DxItemTouchCallback<ITEM : IDxBaseItem>(private val mAdapter: DxAdapt
         }
     //endregion
 
-    internal fun setUpDragWithHandle(@IdRes handleId: Int, touchHelper: ItemTouchHelper) {
+    internal fun setUpDragWithHandle(@IdRes handleId: Int) {
+//    internal fun setUpDragWithHandle(@IdRes handleId: Int, touchHelper: ItemTouchHelper) {
         dragFeature?.apply {
             dragHandleId = handleId
-            itemTouchHelper = touchHelper
+//            itemTouchHelper = touchHelper
         }
     }
 

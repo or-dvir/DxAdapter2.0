@@ -46,6 +46,9 @@ dependencies {
     testImplementation "io.mockk:mockk:1.10.0"
     androidTestImplementation "io.mockk:mockk-android:1.10.0"
 
+    //leak canary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
+
     //other modules in this project
     implementation project(path: ':dxrecyclerview')
     implementation project(path: ':dxcountingidlingresource')

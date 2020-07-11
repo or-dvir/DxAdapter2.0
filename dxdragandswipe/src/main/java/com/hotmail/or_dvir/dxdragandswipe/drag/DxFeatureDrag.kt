@@ -48,7 +48,7 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
 
     @IdRes
     internal var dragHandleId: Int? = null
-    internal var itemTouchHelper: ItemTouchHelper? = null
+//    internal var itemTouchHelper: ItemTouchHelper? = null
 
     /**
      * a flag indicating whether dragging is currently allowed (defaults to TRUE)
@@ -85,7 +85,7 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
                     notifyDragStart(adapter, holder)
                     //notifyDragStart is also called from DxItemTouchCallback but
                     //we only want to manually start the drag operation from here
-                    itemTouchHelper?.startDrag(holder)
+//                    itemTouchHelper?.startDrag(holder)
                 }
                 MotionEvent.ACTION_UP -> notifyDragEnd(adapter, holder)
             }
@@ -110,7 +110,12 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
         holder.apply {
             //NOTE:
             //if the item is not draggable, this function will not be called
-            onDragStart.invoke(itemView, adapterPosition, adapter.getItem(adapterPosition) as ITEM)
+            onDragStart.invoke(
+                itemView,
+                adapterPosition,
+                adapter.getItem(adapterPosition) as ITEM,
+                this
+            )
         }
     }
 
@@ -123,7 +128,8 @@ open class DxFeatureDrag<ITEM : IDxBaseItem>(
                 onDragEnd.invoke(
                     itemView,
                     adapterPosition,
-                    adapter.getItem(adapterPosition) as ITEM
+                    adapter.getItem(adapterPosition) as ITEM,
+                    this
                 )
             }
         }

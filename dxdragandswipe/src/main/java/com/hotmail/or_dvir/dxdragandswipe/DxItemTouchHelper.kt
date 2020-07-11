@@ -15,5 +15,6 @@ open class DxItemTouchHelper<ITEM: IDxBaseItem>(private val itemTouchCallback: D
      * @param handleId the resource id of the handle used to initiate the drag
      */
     fun setDragHandleId(@IdRes handleId: Int) =
-        itemTouchCallback.setUpDragWithHandle(handleId, this)
+        itemTouchCallback.setUpDragWithHandle(handleId)
+//        itemTouchCallback.setUpDragWithHandle(handleId, this)
 }

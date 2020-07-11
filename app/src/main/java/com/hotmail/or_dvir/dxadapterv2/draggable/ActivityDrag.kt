@@ -30,10 +30,11 @@ class ActivityDrag : BaseFeatureActivity() {
         setAdapter(adapter)
 
         val myDragFeature = DxFeatureDrag<ItemDraggable>(
-            onDragStart = { view, adapterPosition, item ->
+            onDragStart = { view, adapterPosition, item, holder ->
+
                 Log.i("aaaaa", "drag start for ${item.text}")
             },
-            onDragEnd = { view, adapterPosition, item ->
+            onDragEnd = { view, adapterPosition, item, holder ->
                 Log.i("aaaaa", "drag end for ${item.text}")
             },
 
@@ -72,10 +73,10 @@ class ActivityDrag : BaseFeatureActivity() {
 
         val touchCallBack = DxItemTouchCallback(adapter).apply {
             dragFeature = DxFeatureDrag(
-                onDragStart = { view, adapterPosition, item ->
+                onDragStart = { view, adapterPosition, item, holder ->
                     Log.i("aaaaa", "drag start for ${item.text}")
                 },
-                onDragEnd = { view, adapterPosition, item ->
+                onDragEnd = { view, adapterPosition, item, holder ->
                     Log.i("aaaaa", "drag end for ${item.text}")
                 },
 
