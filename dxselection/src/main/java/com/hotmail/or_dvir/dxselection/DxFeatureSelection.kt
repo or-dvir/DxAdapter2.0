@@ -120,6 +120,16 @@ open class DxFeatureSelection<ITEM : IDxBaseItem>(
         var tempPosition: Int
         val wasInSelectionModeBefore = isInSelectionMode()
 
+        //NOTE:
+        //we want onSelectionModeChanged() to be invoked BEFORE the individual items listener,
+        //because this makes more sense to the user. first we let them know that the general
+        //selection state has changed, and then we let them know about the individual changes.
+        //to do this we create a list of items to be updated where:
+        // first - item index
+        // second - the item state (isSelected)
+        // third - the item
+        val changedItems = mutableListOf<Triple<Int, Boolean, ITEM>>()
+
         items.forEach {
             //only select/deselect if actually needed
             //to avoid triggering listener multiple times
@@ -128,8 +138,7 @@ open class DxFeatureSelection<ITEM : IDxBaseItem>(
                 tempPosition = adapter.getIndex(it)
 
                 if (tempPosition != -1) {
-                    onItemSelectionChanged.invoke(tempPosition, it.isSelected, it)
-                    adapter.notifyItemChanged(tempPosition)
+                    changedItems.add(Triple(tempPosition, it.isSelected, it))
                 }
             }
         }
@@ -140,6 +149,11 @@ open class DxFeatureSelection<ITEM : IDxBaseItem>(
             onSelectionModeChanged.invoke(false)
         } else if (!wasInSelectionModeBefore && isInSelectionModeAfter) {
             onSelectionModeChanged.invoke(true)
+        }
+
+        changedItems.forEach {
+            onItemSelectionChanged.invoke(it.first, it.second, it.third)
+            adapter.notifyItemChanged(it.first)
         }
     }
 
