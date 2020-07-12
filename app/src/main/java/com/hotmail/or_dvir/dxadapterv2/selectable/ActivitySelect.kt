@@ -34,8 +34,5 @@ class ActivitySelect : BaseFeatureActivity() {
 
         //note that the click feature is automatically added in this case
         adapter.addFeature(selectFeature)
-
-        selectFeature.select(listOf(0,2,4,6,8))
-        selectFeature.deselect(listOf(2,4))
     }
 }
