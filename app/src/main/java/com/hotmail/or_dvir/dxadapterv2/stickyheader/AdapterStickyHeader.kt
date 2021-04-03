@@ -1,8 +1,10 @@
 package com.hotmail.or_dvir.dxadapterv2.stickyheader
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import com.hotmail.or_dvir.dxadapterv2.BaseItem
 import com.hotmail.or_dvir.dxadapterv2.BaseSampleAdapter
@@ -13,24 +15,23 @@ class AdapterStickyHeader(mItems: MutableList<BaseItem>) :
     BaseSampleAdapter<BaseItem, RecyclerView.ViewHolder>(mItems) {
 
     override fun createAdapterViewHolder(
-        itemView: View,
         parent: ViewGroup,
         viewType: Int
     ): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.id.MyItemId -> BaseSampleAdapter.ViewHolder(itemView)
-            R.id.MyHeaderId -> ViewHolder(itemView)
-            else -> BaseSampleAdapter.ViewHolder(itemView) //just for compiler
+            R.id.MyItemId -> BaseSampleAdapter.ViewHolder(
+                getItemView(parent, R.layout.list_item_standard)
+            )
+            R.id.MyHeaderId -> BaseSampleAdapter.ViewHolder(
+                getItemView(parent, R.layout.list_item_header)
+            )
+            //just for compiler
+            else -> BaseSampleAdapter.ViewHolder(getItemView(parent, R.layout.list_item_standard))
         }
     }
 
-    override fun getItemLayoutRes(parent: ViewGroup, viewType: Int): Int {
-        return when (viewType) {
-            R.id.MyItemId -> R.layout.list_item_standard
-            R.id.MyHeaderId -> R.layout.list_item_header
-            else -> R.layout.list_item_standard //just for compiler
-        }
-    }
+    private fun getItemView(parent: ViewGroup, @LayoutRes layoutRes: Int) =
+        LayoutInflater.from(parent.context).inflate(layoutRes, parent, false)
 
     @Suppress("USELESS_IS_CHECK")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

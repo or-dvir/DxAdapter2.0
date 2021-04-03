@@ -1,5 +1,6 @@
 package com.hotmail.or_dvir.dxadapterv2.draggable
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
@@ -12,11 +13,16 @@ import kotlinx.android.synthetic.main.list_item_standard.view.*
 class AdapterDraggable(mItems: MutableList<ItemDraggable>) :
     BaseSampleAdapter<ItemDraggable, ViewHolder>(mItems) {
 
-    override fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int) =
-        ViewHolder(itemView)
+    override fun createAdapterViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ViewHolder {
+        val itemView =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_item_draggable, parent, false)
 
-    override fun getItemLayoutRes(parent: ViewGroup, viewType: Int) =
-        R.layout.list_item_draggable
+        return ViewHolder(itemView)
+    }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         super.onBindViewHolder(holder, position)

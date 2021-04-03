@@ -1,10 +1,7 @@
 package com.hotmail.or_dvir.dxadapter
 
-import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 
@@ -39,14 +36,10 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
      */
     @CallSuper
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        val itemView = LayoutInflater
-            .from(parent.context)
-            .inflate(getItemLayoutRes(parent, viewType), parent, false)
-
-        val holder = createAdapterViewHolder(itemView, parent, viewType)
+        val holder = createAdapterViewHolder(parent, viewType)
 
         allFeatures.values.forEach {
-            it.onCreateViewHolder(this, itemView, holder)
+            it.onCreateViewHolder(this, holder.itemView, holder)
         }
 
         return holder
@@ -112,19 +105,9 @@ abstract class DxAdapter<ITEM : IDxBaseItem, VH : ViewHolder> : RecyclerView.Ada
 
     /**
      * wrapper for [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder]
-     * with the addition of [itemView].
      *
      * use this function only. do NOT override
      * [onCreateViewHolder][RecyclerView.Adapter.onCreateViewHolder] directly.
-     * @param itemView the inflated view returned from [getItemLayoutRes]
      */
-    abstract fun createAdapterViewHolder(itemView: View, parent: ViewGroup, viewType: Int): VH
-
-    /**
-     * returns the layout resource id for the view to to inflate in [createAdapterViewHolder]
-     * @param parent the same as in [createAdapterViewHolder]
-     * @param viewType the same as in [createAdapterViewHolder]
-     */
-    @LayoutRes
-    abstract fun getItemLayoutRes(parent: ViewGroup, viewType: Int): Int
+    abstract fun createAdapterViewHolder(parent: ViewGroup, viewType: Int): VH
 }
