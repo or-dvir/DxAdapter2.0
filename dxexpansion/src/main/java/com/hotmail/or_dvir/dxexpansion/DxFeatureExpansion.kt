@@ -111,7 +111,10 @@ open class DxFeatureExpansion<ITEM : IDxBaseItem>(
         var tempPosition: Int
 
         items.forEach {
-            if (it is IDxItemExpandable && shouldExpand != it.isExpanded) {
+            if (it is IDxItemExpandable &&
+                it.isExpansionEnabled &&
+                shouldExpand != it.isExpanded
+            ) {
                 it.isExpanded = shouldExpand
                 tempPosition = adapter.getIndex(it)
 

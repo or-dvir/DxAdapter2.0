@@ -13,4 +13,9 @@ interface IDxItemExpandable: IDxItemClickable {
      * to expand or collapse this item, use functions in [DxFeatureExpansion]
      */
     var isExpanded: Boolean
+
+    /**
+     * whether or not this item can currently be expanded.
+     */
+    var isExpansionEnabled: Boolean
 }
